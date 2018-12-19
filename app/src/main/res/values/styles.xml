@@ -1,0 +1,47 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="EnjoySharingTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/baseColor</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/EnjoySharingTextViewStyle</item>
+    </style>
+
+    <style name="EnjoySharingTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="EnjoySharingTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="EnjoySharingButtonStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_gradient</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:buttonStyle">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <style name="EnjoySharingButtonLightStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_gradient_light</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:buttonStyle">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <style name="EnjoySharingButtonRadiousStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_radial</item>
+    </style>
+
+    <style name="EnjoySharingTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="EnjoySharingTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Enjoy Sharing</string>
+    <!-- Strings related to login -->
+    <string name="txtBoxEmail">Email</string>
+    <string name="txtBoxPassword">Password</string>
+    <string name="btnLogin">Login</string>
+    <string name="btnRegister">Registrati</string>
+    <string name="error_invalid_email">Indirizzo email non valido</string>
+    <string name="error_invalid_password">Password troppo corta</string>
+    <string name="error_incorrect_password">Password non corretta</string>
+    <string name="error_field_required">Campo obbligatorio</string>
+    <string name="permission_rationale">"Per usare il completamento automatico è richiesto
+        l'accesso ai contatti."
+    </string>
+    <string name="title_activity_home">EnjoySharing</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
