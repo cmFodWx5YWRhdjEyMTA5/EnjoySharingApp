@@ -108,7 +108,6 @@ public class BaseActivity extends AppCompatActivity {
      * the user.
      */
 
-
     // TODO
         // To use Parameter Collection as input
     protected class RequestTask extends AsyncTask<Void, Void, Boolean> {
