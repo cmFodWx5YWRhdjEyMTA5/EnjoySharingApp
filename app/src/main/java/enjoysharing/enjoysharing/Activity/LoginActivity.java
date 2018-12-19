@@ -82,7 +82,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     user.setEmail(mEmailView.getText().toString());
                     user.setPassword(mPasswordView.getText().toString());
                     user.SaveOnXMLFile();
-                    OpenActivity(LoginActivity.this,HomeActivity.class);
+                    SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
                 }
             }
         });

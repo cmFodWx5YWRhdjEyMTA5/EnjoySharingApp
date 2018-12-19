@@ -32,7 +32,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="enjoysharing.enjoysharing.Activity.BaseActivity" />
         </activity>
-        <activity android:name=".Activity.SearchActivity"></activity>
+        <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".Activity.IUEventActivity"></activity>
     </application>
 
 </manifest>

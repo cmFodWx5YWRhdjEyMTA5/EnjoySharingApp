@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="enjoysharing.enjoysharing.Activity.HomeActivity">
+    tools:context="enjoysharing.enjoysharing.Activity.IUEventActivity">
 
     <include layout="@layout/app_bar_base" />
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/content_home" />
+        <include layout="@layout/content_iuevent" />
     </RelativeLayout>
 
 </LinearLayout>

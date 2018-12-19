@@ -55,7 +55,8 @@ public class BaseActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(context, cl);
         startActivity(intent);
-        finish();
+        overridePendingTransition(0, 0);
+        //finish();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -107,7 +108,6 @@ public class BaseActivity extends AppCompatActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-
     // TODO
         // To use Parameter Collection as input
     protected class RequestTask extends AsyncTask<Void, Void, Boolean> {
