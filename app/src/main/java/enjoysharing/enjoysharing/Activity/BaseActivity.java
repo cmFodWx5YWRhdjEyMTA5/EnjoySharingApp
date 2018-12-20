@@ -56,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(context, cl);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        //finish();
+        finish();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
