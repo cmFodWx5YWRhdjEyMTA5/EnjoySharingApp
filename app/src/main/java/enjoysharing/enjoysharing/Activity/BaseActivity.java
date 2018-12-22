@@ -58,6 +58,9 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         finish();
     }
+    // Used for click on rows
+    public void onRowClick(View v)
+    { }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     protected void showProgress(final boolean show) {
