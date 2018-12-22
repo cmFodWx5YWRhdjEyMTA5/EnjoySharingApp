@@ -1,11 +1,9 @@
 package enjoysharing.enjoysharing.Business;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
 import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CurrentUser;
 
 public class BusinessBase {
 
@@ -14,6 +12,13 @@ public class BusinessBase {
     public BusinessBase(Activity activity)
     {
         this.activity = activity;
+    }
+    // Used to convert width based on percentage
+    protected int ConvertWidthBasedOnPerc(int perc)
+    {
+        Configuration configuration = activity.getResources().getConfiguration();
+        int screenWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
+        return (screenWidth/100)*perc;
     }
     // BusinessCards method
     public void DrawHomeCardsOnTable(CardCollection homeCards){}
