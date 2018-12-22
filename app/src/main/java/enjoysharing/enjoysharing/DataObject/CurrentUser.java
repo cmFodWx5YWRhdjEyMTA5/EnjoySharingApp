@@ -40,6 +40,12 @@ public class CurrentUser {
         this.password = password;
     }
 
+    public void Clear() {
+        username = "";
+        email = "";
+        password = "";
+    }
+
     // TODO
     // Check for remember me
     public void CheckRememberMe()

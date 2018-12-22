@@ -88,6 +88,10 @@ public class BaseHomeActivity extends BaseActivity implements NavigationView.OnN
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_logout) {
+            user.Clear();
+            user.SaveOnXMLFile();
+            SwipeCloseActivity(context, LoginActivity.class);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
