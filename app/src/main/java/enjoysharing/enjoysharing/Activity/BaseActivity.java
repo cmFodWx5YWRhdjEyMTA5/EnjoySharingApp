@@ -5,16 +5,16 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
-
-import java.util.Objects;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.R;
@@ -23,6 +23,10 @@ public class BaseActivity extends AppCompatActivity {
 
     protected CurrentUser user;
     protected BusinessBase business;
+    // Used to load menu elements
+    protected Toolbar toolbar;
+    protected DrawerLayout drawer;
+    protected NavigationView navigationView;
     // Used to call server with requests
     protected RequestTask mTask = null;
     // Used to switch visibility on progress bar and main form
@@ -30,6 +34,8 @@ public class BaseActivity extends AppCompatActivity {
     protected View mFormView;
     // Used to call finish method on post execute request
     protected boolean finishOnPostExecute = false;
+    // Used to checkk if request success
+    protected boolean requestSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,20 @@ public class BaseActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
+    }
+    // User to create menu elements
+    protected void CreateMenuElements()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
     }
     // Enter in Activity with swipe from left to right
     protected void SwipeOpenActivity(Context context, Class cl)
@@ -54,9 +74,10 @@ public class BaseActivity extends AppCompatActivity {
     protected void OpenActivity(Context context, Class cl)
     {
         Intent intent = new Intent(context, cl);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
+        overridePendingTransition(0,0);
+        //finish();
     }
     // Used for click on rows
     public void onRowClick(View v)
@@ -114,8 +135,6 @@ public class BaseActivity extends AppCompatActivity {
     // TODO
         // To use Parameter Collection as input
     protected class RequestTask extends AsyncTask<Void, Void, Boolean> {
-
-        protected boolean requestSuccess;
 
         @Override
         protected Boolean doInBackground(Void... params) {

@@ -33,7 +33,7 @@ public class HomeActivity extends BaseHomeActivity {
 
         business = new BusinessCards(HomeActivity.this);
 
-        CreateFormElements();
+        CreateMenuElements();
         CreateButtons();
 
         navigationView.setNavigationItemSelectedListener(this);

@@ -1,26 +1,18 @@
 package enjoysharing.enjoysharing.Activity;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-
-import enjoysharing.enjoysharing.Business.BusinessCards;
 import enjoysharing.enjoysharing.R;
 
 public class BaseHomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected Context context;
-    protected Toolbar toolbar;
     protected ImageButton imgBtnSearch;
-    protected DrawerLayout drawer;
-    protected NavigationView navigationView;
     protected ImageButton imgBtnAdd;
     protected ImageButton imgBtnRequest;
     protected ImageButton imgBtnEvent;
@@ -65,20 +57,6 @@ public class BaseHomeActivity extends BaseActivity implements NavigationView.OnN
                 //OpenActivity(context, IUEventActivity.class);
             }
         });
-    }
-
-    protected void CreateFormElements()
-    {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
     }
 
     @Override

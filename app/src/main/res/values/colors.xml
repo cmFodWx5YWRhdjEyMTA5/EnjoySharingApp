@@ -6,8 +6,10 @@
     <color name="transparentColor">#002cb4e1</color>
     <color name="baseColor">#d62cb4e1</color>
     <color name="baseColorButton">#4dbfde</color>
+    <color name="baseColorButtonLight">#d470d4ef</color>
     <color name="baseColorDark">#d62363bc</color>
     <color name="baseColorLight">#dac6ecfc</color>
     <color name="textColor">#3e3e3e</color>
+    <color name="textBorder">#3e3e3e</color>
     <color name="buttonColor">#90ff00</color>
 </resources>

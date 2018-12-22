@@ -3,6 +3,8 @@
     <!-- Base application theme. -->
     <style name="EnjoySharingTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="colorPrimary">@color/baseColor</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -36,8 +38,21 @@
         <item name="android:buttonStyle">@style/TextAppearance.AppCompat.Medium</item>
     </style>
 
+    <style name="EnjoySharingButtonRadiousLightStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_radial_light</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:buttonStyle">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
     <style name="EnjoySharingButtonRadiousStyle" parent="android:Widget.Button">
         <item name="android:background">@drawable/button_radial</item>
+    </style>
+
+    <style name="EnjoySharingEditTextStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/edittext_border</item>
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="EnjoySharingTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
