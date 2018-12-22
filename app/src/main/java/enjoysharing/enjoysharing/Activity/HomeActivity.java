@@ -73,7 +73,7 @@ public class HomeActivity extends BaseHomeActivity {
         homeCards = new CardCollection();
         homeCards.Add(new CardHome("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null));
         homeCards.Add(new CardHome("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null));
-        homeCards.Add(new CardHome("Utente 3","Titolo 3","Contenuto di prova 3 caricato da codice",null));
+        homeCards.Add(new CardHome("Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null));
         homeCards.Add(new CardHome("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null));
     }
 
@@ -83,4 +83,9 @@ public class HomeActivity extends BaseHomeActivity {
         // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
         business.DrawHomeCardsOnTable(homeCards);
     }
+    // TODO
+    // When click on card home row -> redirect to detail row!
+    @Override
+    public void onRowClick(View v)
+    { }
 }

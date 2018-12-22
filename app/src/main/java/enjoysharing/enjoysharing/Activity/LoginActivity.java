@@ -55,12 +55,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
+        String email = user.getEmail();
+        String pw = user.getPassword();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txtBoxEmail);
-        mEmailView.setText(user.getEmail());
+        mEmailView.setText(email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.txtBoxPassword);
-        mPasswordView.setText(user.getPassword());
+        mPasswordView.setText(pw);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -76,19 +78,27 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(attemptLogin())
-                {
-                    user.setUsername("Pippo");
-                    user.setEmail(mEmailView.getText().toString());
-                    user.setPassword(mPasswordView.getText().toString());
-                    user.SaveOnXMLFile();
-                    SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
-                }
+                Login();
             }
         });
 
         mFormView = findViewById(R.id.login_form_layout);
         mProgressView = findViewById(R.id.login_progress);
+
+        if(email != null && email != "" && pw != null && pw != "")
+            Login();
+    }
+
+    protected void Login()
+    {
+        if(attemptLogin())
+        {
+            user.setUsername("Pippo");
+            user.setEmail(mEmailView.getText().toString());
+            user.setPassword(mPasswordView.getText().toString());
+            user.SaveOnXMLFile();
+            SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
+        }
     }
 
     private void populateAutoComplete() {
