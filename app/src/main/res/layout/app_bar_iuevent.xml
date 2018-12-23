@@ -7,7 +7,43 @@
     android:layout_height="match_parent"
     tools:context="enjoysharing.enjoysharing.Activity.IUEventActivity">
 
-    <include layout="@layout/app_bar_base" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EnjoySharingTheme.AppBarOverlay"
+        android:id="@+id/relativeLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_NewEvent"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/EnjoySharingTheme.PopupOverlay"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:titleTextColor="@color/white" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgBtnCreatEvent"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:background="@color/transparentColor"
+                app:srcCompat="@drawable/ic_confirm_add_event_custom" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

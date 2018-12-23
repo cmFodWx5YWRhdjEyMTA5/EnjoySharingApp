@@ -11,14 +11,12 @@ import enjoysharing.enjoysharing.R;
 
 public class BaseHomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    protected Context context;
     protected ImageButton imgBtnSearch;
-    protected ImageButton imgBtnAdd;
+    protected ImageButton imgBtnAddEvent;
+    protected ImageButton imgBtnHome;
     protected ImageButton imgBtnRequest;
     protected ImageButton imgBtnEvent;
     protected ImageButton imgBtnNotification;
-
-    protected void SetContext(Context context){ this.context = context; }
 
     protected void CreateButtons()
     {
@@ -29,11 +27,19 @@ public class BaseHomeActivity extends BaseActivity implements NavigationView.OnN
                 SwipeOpenActivity(context, SearchActivity.class);
             }
         });
-        imgBtnAdd = (ImageButton) findViewById(R.id.imgBtnAdd);
-        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+        imgBtnAddEvent = (ImageButton) findViewById(R.id.imgBtnAddEvent);
+        imgBtnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenActivity(context, IUEventActivity.class);
+                SwipeOpenActivity(context, IUEventActivity.class);
+            }
+        });
+        imgBtnHome = (ImageButton) findViewById(R.id.imgBtnHome);
+        imgBtnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Generally back pressed used to back to home
+                onBackPressed();
             }
         });
         imgBtnRequest = (ImageButton) findViewById(R.id.imgBtnRequest);
@@ -57,17 +63,6 @@ public class BaseHomeActivity extends BaseActivity implements NavigationView.OnN
                 //OpenActivity(context, IUEventActivity.class);
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-        OpenActivity(context, HomeActivity.class);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

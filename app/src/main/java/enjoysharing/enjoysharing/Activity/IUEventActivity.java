@@ -2,10 +2,16 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import enjoysharing.enjoysharing.Business.BusinessCards;
 import enjoysharing.enjoysharing.R;
 
@@ -22,18 +28,29 @@ public class IUEventActivity extends BaseHomeActivity {
 
         business = new BusinessCards(IUEventActivity.this);
 
-        CreateMenuElements();
-        CreateButtons();
-        imgBtnAdd.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.button_icon_home_selected_first) );
-        navigationView.setNavigationItemSelectedListener(this);
+        // Toolbar user for back button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_NewEvent);
+        //toolbar.setOverflowIcon(getDrawable(R.drawable.ic_search_custom));
+        //setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+            }
+        });
 
         mFormView = findViewById(R.id.iuevent_form);
         mProgressView = findViewById(R.id.iuevent_progress);
 
         txtTitleIUEvent = (EditText) findViewById(R.id.txtTitleIUEvent);
         txtContentIUEvent = (EditText) findViewById(R.id.txtContentIUEvent);
+        // TODO
+        // In case of UPDATE username will be fill based on event clicked
+        TextView txtUserIUEvent = (TextView) findViewById(R.id.txtUserIUEvent);
+        txtUserIUEvent.setText(user.getUsername());
 
-        Button btnCreatEvent = (Button) findViewById(R.id.btnCreatEvent);
+        ImageButton btnCreatEvent = (ImageButton) findViewById(R.id.imgBtnCreatEvent);
         btnCreatEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

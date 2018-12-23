@@ -20,11 +20,12 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SetContext(SearchActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         business = new BusinessCards(SearchActivity.this);
-
+        // Toolbar user for back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_Search);
         //toolbar.setOverflowIcon(getDrawable(R.drawable.ic_search_custom));
         //setSupportActionBar(toolbar);
@@ -90,10 +91,5 @@ public class SearchActivity extends BaseActivity {
     {
         // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
         business.DrawSearchCardsOnTable(searchCards);
-    }
-
-    @Override
-    public void onBackPressed() {
-        SwipeCloseActivity(SearchActivity.this, HomeActivity.class);
     }
 }

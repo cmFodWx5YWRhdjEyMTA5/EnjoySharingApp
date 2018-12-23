@@ -21,6 +21,7 @@ import enjoysharing.enjoysharing.R;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected Context context;
     protected CurrentUser user;
     protected BusinessBase business;
     // Used to load menu elements
@@ -36,6 +37,8 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean finishOnPostExecute = false;
     // Used to checkk if request success
     protected boolean requestSuccess;
+
+    protected void SetContext(Context context){ this.context = context; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,11 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(0,0);
         //finish();
+    }
+    // Generally back to homepage
+    @Override
+    public void onBackPressed() {
+        OpenActivity(context, HomeActivity.class);
     }
     // Used for click on rows
     public void onRowClick(View v)

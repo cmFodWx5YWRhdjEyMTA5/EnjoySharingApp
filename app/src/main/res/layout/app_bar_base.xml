@@ -21,20 +21,37 @@
             app:title="@string/app_name"
             app:titleTextColor="@color/white" />
 
-        <ImageButton
-            android:id="@+id/imgBtnSearch"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignBottom="@+id/relativeLayout"
-            android:layout_alignParentBottom="false"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="false"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginStart="300dp"
-            android:layout_marginTop="6dp"
-            android:background="@color/transparentColor"
-            app:srcCompat="@drawable/ic_search_custom" />
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgBtnAddEvent"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:background="@color/transparentColor"
+                app:srcCompat="@drawable/ic_add_custom" />
+
+            <ImageButton
+                android:id="@+id/imgBtnSearch"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignBottom="@+id/relativeLayout"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="false"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:background="@color/transparentColor"
+                app:srcCompat="@drawable/ic_search_custom" />
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -46,12 +63,12 @@
         android:theme="@style/EnjoySharingTheme.AppBarOverlay">
 
         <ImageButton
-            android:id="@+id/imgBtnAdd"
+            android:id="@+id/imgBtnHome"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@color/transparentColor"
-            app:srcCompat="@drawable/ic_add_custom" />
+            app:srcCompat="@drawable/ic_home_custom" />
 
         <ImageButton
             android:id="@+id/imgBtnRequest"

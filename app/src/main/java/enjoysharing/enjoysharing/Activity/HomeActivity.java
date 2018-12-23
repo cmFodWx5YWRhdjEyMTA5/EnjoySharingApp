@@ -3,6 +3,7 @@ package enjoysharing.enjoysharing.Activity;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,7 +36,7 @@ public class HomeActivity extends BaseHomeActivity {
 
         CreateMenuElements();
         CreateButtons();
-
+        imgBtnHome.setImageResource(R.drawable.ic_home_selected_custom);
         navigationView.setNavigationItemSelectedListener(this);
 
         mFormView = findViewById(R.id.home_form);
