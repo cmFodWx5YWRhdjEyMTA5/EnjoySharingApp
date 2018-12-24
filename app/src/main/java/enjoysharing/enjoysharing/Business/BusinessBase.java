@@ -2,6 +2,7 @@ package enjoysharing.enjoysharing.Business;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.widget.TableLayout;
 
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 
@@ -21,8 +22,7 @@ public class BusinessBase {
         return (screenWidth/100)*perc;
     }
     // BusinessCards method
-    public void DrawHomeCardsOnTable(CardCollection homeCards){}
-    // BusinessCards method
     public void DrawSearchCardsOnTable(CardCollection homeCards){}
-
+    // BusinessCards method
+    public void DrawCardsOnTable(CardCollection homeCards, TableLayout tableHomeCards) { }
 }

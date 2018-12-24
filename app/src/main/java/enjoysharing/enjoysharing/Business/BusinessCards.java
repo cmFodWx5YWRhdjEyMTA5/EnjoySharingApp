@@ -20,13 +20,6 @@ public class BusinessCards extends BusinessBase {
         super(activity);
         this.activity = activity;
     }
-    // Used to draw home card on home table
-    @Override
-    public void DrawHomeCardsOnTable(CardCollection homeCards)
-    {
-        TableLayout homeTable = (TableLayout) activity.findViewById(R.id.tblHomeCards);
-        DrawCardsOnTable(homeCards,homeTable);
-    }
     // Used to draw search card on search table
     @Override
     public void DrawSearchCardsOnTable(CardCollection searchCards)
@@ -35,7 +28,8 @@ public class BusinessCards extends BusinessBase {
         DrawCardsOnTable(searchCards, searchTable);
     }
     // Used to draw cards on table input
-    protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
+    @Override
+    public void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         table.removeAllViews();
         int txtUserTitleWidth = ConvertWidthBasedOnPerc(80);

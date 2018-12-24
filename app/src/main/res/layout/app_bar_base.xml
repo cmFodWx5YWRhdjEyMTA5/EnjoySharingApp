@@ -55,45 +55,24 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/nav_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:background="@color/baseColor"
-        android:paddingBottom="2dp"
-        android:theme="@style/EnjoySharingTheme.AppBarOverlay">
+        android:itemBackground="@color/baseColor"
+        app:itemIconTint="@color/nav_menu_home_color"
+        app:itemTextColor="@color/nav_menu_home_color"
+        app:menu="@menu/nav_menu_home"></android.support.design.widget.BottomNavigationView>
 
-        <ImageButton
-            android:id="@+id/imgBtnHome"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@color/transparentColor"
-            app:srcCompat="@drawable/ic_home_custom" />
-
-        <ImageButton
-            android:id="@+id/imgBtnRequest"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_icon_home"
-            app:srcCompat="@drawable/ic_request" />
-
-        <ImageButton
-            android:id="@+id/imgBtnEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_icon_home"
-            app:srcCompat="@drawable/ic_event_custom" />
-
-        <ImageButton
-            android:id="@+id/imgBtnNotification"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_icon_home"
-            app:srcCompat="@drawable/ic_notification_custom" />
-
-    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_alignParentTop="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

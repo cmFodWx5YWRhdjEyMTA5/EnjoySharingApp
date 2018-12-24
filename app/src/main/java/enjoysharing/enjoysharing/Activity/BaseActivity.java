@@ -8,13 +8,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.R;
@@ -28,15 +33,16 @@ public class BaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
     protected DrawerLayout drawer;
     protected NavigationView navigationView;
+    protected BottomNavigationView nav_menu_home;
     // Used to call server with requests
     protected RequestTask mTask = null;
     // Used to switch visibility on progress bar and main form
     protected View mProgressView;
-    protected View mFormView;
+    protected FrameLayout mFormView;
     // Used to call finish method on post execute request
     protected boolean finishOnPostExecute = false;
     // Used to checkk if request success
-    protected boolean requestSuccess;
+    public boolean requestSuccess;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -46,20 +52,6 @@ public class BaseActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
-    }
-    // User to create menu elements
-    protected void CreateMenuElements()
-    {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
     }
     // Enter in Activity with swipe from left to right
     protected void SwipeOpenActivity(Context context, Class cl)
@@ -92,7 +84,7 @@ public class BaseActivity extends AppCompatActivity {
     { }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    protected void showProgress(final boolean show) {
+    public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
