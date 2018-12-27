@@ -38,15 +38,16 @@
                 android:gravity="end"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imgBtnCreatEvent"
-                    android:layout_width="45dp"
+                <Button
+                    android:id="@+id/btnCreatEvent"
+                    android:layout_width="wrap_content"
                     android:layout_height="45dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="6dp"
                     android:layout_weight="1"
                     android:background="@color/transparentColor"
-                    app:srcCompat="@drawable/ic_confirm_add_event_custom" />
+                    android:drawableLeft="@drawable/ic_confirm_add_event_custom"
+                    android:text="    Conferma" />
 
             </LinearLayout>
 
@@ -56,8 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="enjoysharing.enjoysharing.Activity.HomeActivity"
-            tools:showIn="@layout/app_bar_iuevent">
+            tools:context="enjoysharing.enjoysharing.Activity.HomeActivity">
 
             <ProgressBar
                 android:id="@+id/iuevent_progress"

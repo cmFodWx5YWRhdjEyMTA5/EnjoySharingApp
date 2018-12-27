@@ -36,7 +36,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_weight="1"
                 android:background="@color/transparentColor"
-                app:srcCompat="@drawable/ic_add_custom" />
+                app:srcCompat="@drawable/ic_add_event_custom" />
 
             <ImageButton
                 android:id="@+id/imgBtnSearch"

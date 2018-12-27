@@ -5,9 +5,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
 
@@ -46,7 +45,7 @@ public class IUEventActivity extends BaseActivity {
         TextView txtUserIUEvent = (TextView) findViewById(R.id.txtUserIUEvent);
         txtUserIUEvent.setText(user.getUsername());
 
-        ImageButton btnCreatEvent = (ImageButton) findViewById(R.id.imgBtnCreatEvent);
+        Button btnCreatEvent = (Button) findViewById(R.id.btnCreatEvent);
         btnCreatEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
