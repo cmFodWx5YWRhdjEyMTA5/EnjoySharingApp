@@ -94,23 +94,26 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:gravity="center|end">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnPartecipateRequest"
-                style="@style/EnjoySharingButtonRadiousLightStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:padding="5dp"
-                android:text="Chiedi di partecipare" />
-        </RelativeLayout>
+            <ImageButton
+                android:id="@+id/imgBtnPartecipateRequest"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@color/whiteTrasparent"
+                app:srcCompat="@drawable/ic_add_request_custom" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

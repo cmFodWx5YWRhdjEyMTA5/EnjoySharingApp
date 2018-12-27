@@ -3,8 +3,11 @@ package enjoysharing.enjoysharing.Fragment;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.ImageButton;
+
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.R;
 
 public class FragmentBase extends Fragment {
 
@@ -19,8 +22,16 @@ public class FragmentBase extends Fragment {
         this.activity = activity;
     }
     // Used for click on rows
-    public void onRowClick(View v)
+    protected void onRowClick(View v)
     { }
+    // Used for click on request partecipate
+    // TODO
+    // Manage click on request partecipate
+    protected void onRequestPartecipate(View v)
+    {
+        ((ImageButton)v).setEnabled(false);
+        ((ImageButton)v).setImageResource(R.drawable.ic_add_request_disabled_custom);
+    }
 
     protected void DoInBackground()
     { }

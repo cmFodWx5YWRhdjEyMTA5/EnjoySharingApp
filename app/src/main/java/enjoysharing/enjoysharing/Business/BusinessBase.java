@@ -15,14 +15,10 @@ public class BusinessBase {
         this.activity = activity;
     }
     // Used to convert width based on percentage
-    protected int ConvertWidthBasedOnPerc(int perc)
+    public int ConvertWidthBasedOnPerc(int perc)
     {
         Configuration configuration = activity.getResources().getConfiguration();
         int screenWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
         return (screenWidth/100)*perc;
     }
-    // BusinessCards method
-    public void DrawSearchCardsOnTable(CardCollection homeCards){}
-    // BusinessCards method
-    public void DrawCardsOnTable(CardCollection homeCards, TableLayout tableHomeCards) { }
 }

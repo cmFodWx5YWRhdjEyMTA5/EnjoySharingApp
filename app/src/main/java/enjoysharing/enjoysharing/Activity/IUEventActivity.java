@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import enjoysharing.enjoysharing.Business.BusinessCards;
+import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
 
 public class IUEventActivity extends BaseActivity {
@@ -22,7 +22,7 @@ public class IUEventActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iuevent);
 
-        business = new BusinessCards(IUEventActivity.this);
+        business = new BusinessBase(IUEventActivity.this);
 
         // Toolbar user for back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_NewEvent);

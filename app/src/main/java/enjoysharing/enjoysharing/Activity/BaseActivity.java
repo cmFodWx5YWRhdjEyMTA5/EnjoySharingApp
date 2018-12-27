@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
@@ -80,8 +81,16 @@ public class BaseActivity extends AppCompatActivity {
         OpenActivity(context, HomeActivity.class);
     }
     // Used for click on rows
-    public void onRowClick(View v)
+    protected void onRowClick(View v)
     { }
+    // Used for click on request partecipate
+    // TODO
+    // Manage click on request partecipate
+    protected void onRequestPartecipate(View v)
+    {
+        ((ImageButton)v).setEnabled(false);
+        ((ImageButton)v).setImageResource(R.drawable.ic_add_request_disabled_custom);
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
