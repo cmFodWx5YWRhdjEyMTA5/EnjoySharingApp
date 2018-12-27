@@ -1,19 +1,14 @@
 package enjoysharing.enjoysharing.Activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -27,12 +22,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import enjoysharing.enjoysharing.R;
-
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**

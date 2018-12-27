@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -121,8 +122,9 @@ public class SearchActivity extends BaseActivity {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
-            ImageButton imgBtnPartecipateRequest = (ImageButton)relLayout.findViewById(R.id.imgBtnPartecipateRequest);
-            imgBtnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
+            Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
+            business.SetButonRequest(btnPartecipateRequest,true);
+            btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v);
                 }

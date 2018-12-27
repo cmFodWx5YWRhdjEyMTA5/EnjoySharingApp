@@ -3,8 +3,7 @@ package enjoysharing.enjoysharing.Fragment;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.ImageButton;
-
+import android.widget.Button;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
@@ -29,8 +28,8 @@ public class FragmentBase extends Fragment {
     // Manage click on request partecipate
     protected void onRequestPartecipate(View v)
     {
-        ((ImageButton)v).setEnabled(false);
-        ((ImageButton)v).setImageResource(R.drawable.ic_add_request_disabled_custom);
+        boolean state = ((Button)v).getHint() == "1";
+        business.SetButonRequest((Button)v,!state);
     }
 
     protected void DoInBackground()
