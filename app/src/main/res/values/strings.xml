@@ -20,5 +20,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="txtRequestPartecipate">Partecipa</string>
-    <string name="txtRequestPartecipateReverse">Annulla partecipazione</string>
+    <string name="txtRequestPartecipateReverse">Annulla richiesta</string>
+    <string name="txtRequestPartecipateReversed">Richiesta annullata</string>
+    <string name="txtConfirmRequest">Conferma</string>
+    <string name="txtDeclineRequest">Non confermare</string>
 </resources>

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -118,12 +117,12 @@ public class SearchActivity extends BaseActivity {
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
             txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
+            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardSendRequest);
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
-            business.SetButonRequest(btnPartecipateRequest,true);
+            business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v);

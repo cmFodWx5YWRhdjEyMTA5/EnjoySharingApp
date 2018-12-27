@@ -20,6 +20,11 @@ public class FragmentBase extends Fragment {
     public void SetActivity(BaseActivity activity) {
         this.activity = activity;
     }
+    // Creo metodo per customizzarlo dove serve
+    protected void ShowProgress(boolean state)
+    {
+        activity.showProgress(state);
+    }
     // Used for click on rows
     protected void onRowClick(View v)
     { }
@@ -29,7 +34,7 @@ public class FragmentBase extends Fragment {
     protected void onRequestPartecipate(View v)
     {
         boolean state = ((Button)v).getHint() == "1";
-        business.SetButonRequest((Button)v,!state);
+        business.SetButtonRequest((Button)v,!state);
     }
 
     protected void DoInBackground()
@@ -41,7 +46,7 @@ public class FragmentBase extends Fragment {
     protected void OnRequestCancelled()
     {
         mTask = null;
-        activity.showProgress(false);
+        ShowProgress(false);
     }
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -81,7 +86,7 @@ public class FragmentBase extends Fragment {
 
             mTask = null;
             OnRequestPostExecute();
-            activity.showProgress(false);
+            ShowProgress(false);
         }
 
         @Override

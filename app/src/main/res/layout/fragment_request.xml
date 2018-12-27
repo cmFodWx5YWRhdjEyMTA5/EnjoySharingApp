@@ -1,20 +1,52 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="enjoysharing.enjoysharing.Fragment.RequestFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TableLayout
-            android:id="@+id/tableRequests"
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/nav_request"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/whiteTrasparent"
+            android:itemBackground="@color/whiteTrasparent"
+            android:textAlignment="center"
+            app:itemIconTint="@color/nav_menu_request_color"
+            app:itemTextColor="@color/nav_menu_request_color"
+            app:menu="@menu/nav_menu_request">
+
+        </android.support.design.widget.BottomNavigationView>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </TableLayout>
+            <ProgressBar
+                android:id="@+id/request_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="@color/baseColor"
+                android:visibility="gone" />
+        </RelativeLayout>
 
-    </ScrollView>
+        <FrameLayout
+            android:id="@+id/request_form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

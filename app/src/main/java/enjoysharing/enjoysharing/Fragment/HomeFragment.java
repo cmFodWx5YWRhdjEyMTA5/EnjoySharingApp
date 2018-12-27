@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,7 +17,7 @@ import enjoysharing.enjoysharing.R;
 
 public class HomeFragment extends FragmentBase {
 
-    TableLayout tableHomeCards;
+    protected TableLayout tableHomeCards;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,6 +29,8 @@ public class HomeFragment extends FragmentBase {
         FillHomeCards();
         return v;
     }
+
+    protected CardCollection homeCards;
     // User to load home cards
     // TODO
     // Fill cards by server call
@@ -40,13 +41,12 @@ public class HomeFragment extends FragmentBase {
             DrawCardsOnTable(homeCards,tableHomeCards);
             return;
         }
-        activity.showProgress(true);
+        ShowProgress(true);
         mTask = new FragmentRequestTask();
         mTask.execute((Void) null);
     }
-
-    protected CardCollection homeCards;
-
+    // TODO
+    // Server call
     @Override
     protected void DoInBackground()
     {
@@ -67,7 +67,7 @@ public class HomeFragment extends FragmentBase {
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         table.removeAllViews();
-        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(80);
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             CardHome card = (CardHome)cards.List().get(i);
@@ -82,12 +82,12 @@ public class HomeFragment extends FragmentBase {
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
             txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
+            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardSendRequest);
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
-            business.SetButonRequest(btnPartecipateRequest,true);
+            business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v);

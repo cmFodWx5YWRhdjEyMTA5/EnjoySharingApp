@@ -25,7 +25,7 @@ public class BusinessBase {
         return (screenWidth/100)*perc;
     }
     // Used to manage button request partecipate
-    public void SetButonRequest(Button btn, boolean state)
+    public void SetButtonRequest(Button btn, boolean state)
     {
         if(state)
         {
