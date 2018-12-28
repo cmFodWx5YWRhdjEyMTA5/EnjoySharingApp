@@ -32,8 +32,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="enjoysharing.enjoysharing.Activity.BaseActivity" />
         </activity>
-        <activity android:name=".Activity.SearchActivity" />
-        <activity android:name=".Activity.IUEventActivity"></activity>
+        <activity android:name=".Activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.IUEventActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

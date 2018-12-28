@@ -92,11 +92,25 @@ public class RecivedRequestFragment extends FragmentBase {
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtRecivedRequest = (TextView)relLayout.findViewById(R.id.txtRecivedRequest);
+            TextView txtUserRecivedRequest = (TextView)relLayout.findViewById(R.id.txtUserRecivedRequest);
+            txtUserRecivedRequest.setWidth(txtUserTitleWidth);
+            txtUserRecivedRequest.setText(card.getUsername());
+            txtUserRecivedRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // TODO
+                    // Open user detail
+                }
+            });
+            TextView txtTitleRecivedRequest = (TextView)relLayout.findViewById(R.id.txtTitleRecivedRequest);
             // Set width based on screen percentage
-            txtRecivedRequest.setWidth(txtUserTitleWidth);
-            String text = String.format("L'utente %1$s ha chiesto di partecipare all'evento %2$s", card.getUsername(), card.getTitle());
-            txtRecivedRequest.setText(text);
+            txtTitleRecivedRequest.setWidth(txtUserTitleWidth);
+            txtTitleRecivedRequest.setText(card.getTitle());
+            txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // TODO
+                    // Open event detail
+                }
+            });
             final Button btnConfirmRequest = (Button)relLayout.findViewById(R.id.btnConfirmRequest);
             final Button btnDeclineRequest = (Button)relLayout.findViewById(R.id.btnDeclineRequest);
             final TextView txtConfirmDeclineRequest = (TextView)relLayout.findViewById(R.id.txtConfirmDeclineRequest);

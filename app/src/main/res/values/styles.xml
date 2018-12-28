@@ -60,6 +60,11 @@
         <item name="android:padding">5dp</item>
     </style>
 
+    <style name="EnjoySharingGeneralButtonStyle" parent="android:Widget.Button">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
     <style name="EnjoySharingTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="EnjoySharingTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

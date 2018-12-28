@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row_card_send_request"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="130dp"
     android:gravity="center|start|end"
     android:paddingTop="10dp">
 
@@ -41,65 +41,91 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtUserRecivedRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textColor="@color/baseColor"
+                    android:textSize="16dp" />
+
+                <TextView
                     android:id="@+id/txtRecivedRequest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/imgUserCardHome"
                     android:layout_alignStart="@+id/txtUserCardHome"
                     android:layout_weight="1"
-                    android:singleLine="false"
-                    android:text="L'utente pinco pallo ha chiesto di partecipare all'evento boh boh"
+                    android:singleLine="true"
+                    android:text="@string/txtRequestRecived"
                     android:textAlignment="textStart"
                     android:textSize="16dp" />
 
+                <TextView
+                    android:id="@+id/txtTitleRecivedRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/txtUserCardHome"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textColor="@color/baseColor"
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtConfirmDeclineRequest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16dp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnConfirmRequest"
+                        style="@style/EnjoySharingGeneralButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_radial_border"
+                        android:drawableLeft="@drawable/ic_confirm_request"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/txtConfirmRequest"
+                        android:textAlignment="center" />
+
+                    <Button
+                        android:id="@+id/btnDeclineRequest"
+                        style="@style/EnjoySharingGeneralButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_radial_border"
+                        android:drawableLeft="@drawable/ic_decline_request"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/txtDeclineRequest"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtConfirmDeclineRequest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="16dp"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnConfirmRequest"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_radial_border"
-                android:drawableLeft="@drawable/ic_confirm_request"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:text="@string/txtConfirmRequest"
-                android:textAlignment="center" />
-
-            <Button
-                android:id="@+id/btnDeclineRequest"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_radial_border"
-                android:drawableLeft="@drawable/ic_decline_request"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:text="@string/txtDeclineRequest"
-                android:textAlignment="center" />
         </LinearLayout>
 
         <RelativeLayout

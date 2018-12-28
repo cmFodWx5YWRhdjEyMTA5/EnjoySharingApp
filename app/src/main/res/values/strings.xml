@@ -19,6 +19,7 @@
 
     <string name="action_settings">Settings</string>
 
+    <string name="txtRequestRecived">ha chiesto di partecipare all\'evento</string>
     <string name="txtRequestPartecipate">Partecipa</string>
     <string name="txtRequestPartecipateReverse">Annulla richiesta</string>
     <string name="txtRequestPartecipateReversed">Richiesta annullata</string>
