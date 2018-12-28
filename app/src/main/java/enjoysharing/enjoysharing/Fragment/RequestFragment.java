@@ -31,13 +31,14 @@ public class RequestFragment extends FragmentBase {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_request, container, false);
         business = new BusinessBase(activity);
+        CreateFragments();
+        CreateNavigationElements();
         return v;
     }
     @Override
     public void StartFragment()
     {
-        CreateFragments();
-        CreateNavigationElements();
+        nav_menu_request.setSelectedItemId(R.id.nav_recived_request_home);
     }
     // Used to create Navigation Elements
     protected void CreateNavigationElements()
@@ -45,7 +46,6 @@ public class RequestFragment extends FragmentBase {
         nav_menu_request = (BottomNavigationView) v.findViewById(R.id.nav_request);
         nav_menu_request.setOnNavigationItemSelectedListener(tabSelected);
         HideIcons();
-        nav_menu_request.setSelectedItemId(R.id.nav_recived_request_home);
     }
     // Used to hide icons on tabs
     protected void HideIcons()
