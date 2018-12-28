@@ -18,7 +18,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import java.io.Serializable;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.R;
 
@@ -50,6 +54,22 @@ public class BaseActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
+    }
+    // Used to open activity and pass Card
+    protected void SwipeOpenActivity(Context context, Class cl, CardBase card)
+    {
+        OpenActivity(context,cl,card);
+        overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
+    }
+    // Switch Activity and pass Card
+    protected void OpenActivity(Context context, Class cl, CardBase card)
+    {
+        Intent intent = new Intent(context, cl);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("CardPassed", card);
+        startActivity(intent);
+        overridePendingTransition(0,0);
+        //finish();
     }
     // Enter in Activity with swipe from left to right
     protected void SwipeOpenActivity(Context context, Class cl)
@@ -99,31 +119,36 @@ public class BaseActivity extends AppCompatActivity {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
+        // ATTENZIONE
+        // All'apertura dell'activity main, il tab home non viene caricato subito, quindi non avrei il mFormView
+        // In questo caso lascio quello di default
+        final FrameLayout frame = formView == null ? mFormView : formView;
+        final View progress = progressView == null ? mProgressView : progressView;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            formView.setVisibility(show ? View.GONE : View.VISIBLE);
-            formView.animate().setDuration(shortAnimTime).alpha(
+            frame.setVisibility(show ? View.GONE : View.VISIBLE);
+            frame.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    formView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    frame.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
+            progress.setVisibility(show ? View.VISIBLE : View.GONE);
+            progress.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    progress.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            formView.setVisibility(show ? View.GONE : View.VISIBLE);
+            progress.setVisibility(show ? View.VISIBLE : View.GONE);
+            frame.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

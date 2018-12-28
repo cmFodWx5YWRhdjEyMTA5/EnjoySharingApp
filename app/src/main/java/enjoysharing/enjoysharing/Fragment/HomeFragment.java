@@ -2,10 +2,12 @@ package enjoysharing.enjoysharing.Fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,7 +20,8 @@ import enjoysharing.enjoysharing.R;
 public class HomeFragment extends FragmentBase {
 
     protected TableLayout tableHomeCards;
-
+    // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
+    // quindi la funzionalità la metto in un metodo a parte!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,8 +29,18 @@ public class HomeFragment extends FragmentBase {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         tableHomeCards = (TableLayout) v.findViewById(R.id.tableHomeCards);
         business = new BusinessBase(activity);
-        FillHomeCards();
+        setFormView((FrameLayout) v.findViewById(R.id.main_frame_home));
         return v;
+    }
+    @Override
+    protected void ShowProgress(boolean state)
+    {
+        activity.showProgress(state, formView, progressView);
+    }
+    @Override
+    public void StartFragment()
+    {
+        FillHomeCards();
     }
 
     protected CardCollection homeCards;
@@ -82,7 +95,7 @@ public class HomeFragment extends FragmentBase {
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
             txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardSendRequest);
+            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());

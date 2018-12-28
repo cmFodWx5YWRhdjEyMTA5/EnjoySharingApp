@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +11,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import enjoysharing.enjoysharing.Fragment.FragmentBase;
+import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
 import enjoysharing.enjoysharing.Fragment.RequestFragment;
 import enjoysharing.enjoysharing.Fragment.ViewPagerAdapter;
 import enjoysharing.enjoysharing.R;
@@ -29,6 +30,7 @@ public class HomeActivity extends BaseActivity {
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
     protected RequestFragment requestFragment;
+    protected MyEventsFragment myEventsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +48,22 @@ public class HomeActivity extends BaseActivity {
         setupViewPager(viewPager);
 
         FillUserData();
+        // Set default page (HOME)
+        viewPager.setCurrentItem(0);
+        CallStartFragment(0);
     }
     // Used to create fragments
     protected void CreateFragments()
     {
         homeFragment = new HomeFragment();
         homeFragment.SetActivity(HomeActivity.this);
+        homeFragment.setProgressView(mProgressView);
         requestFragment = new RequestFragment();
         requestFragment.SetActivity(HomeActivity.this);
+        myEventsFragment = new MyEventsFragment();
+        myEventsFragment.SetActivity(HomeActivity.this);
+        myEventsFragment.setCurrentUser(user);
+        myEventsFragment.setProgressView(mProgressView);
     }
     // Used to create menu elements
     protected void CreateMenuElements()
@@ -90,6 +100,8 @@ public class HomeActivity extends BaseActivity {
 
                 nav_menu_home.getMenu().getItem(position).setChecked(true);
                 prevMenuItem = nav_menu_home.getMenu().getItem(position);
+                // Call start fragment when selected
+                CallStartFragment(position);
             }
 
             @Override
@@ -98,12 +110,18 @@ public class HomeActivity extends BaseActivity {
             }
         });
     }
+    // Used to call StartFragment of current fragment
+    protected void CallStartFragment(int position)
+    {
+        ((ViewPagerAdapter)viewPager.getAdapter()).List().get(position).StartFragment();
+    }
     // Used to set view pager for swipe touch screen
     protected void setupViewPager(ViewPager viewPager)
     {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(homeFragment);
         adapter.AddFragment(requestFragment);
+        adapter.AddFragment(myEventsFragment);
         viewPager.setAdapter(adapter);
     }
     // Used when user click in tab menu
@@ -120,13 +138,13 @@ public class HomeActivity extends BaseActivity {
                     viewPager.setCurrentItem(1);
                     break;
                 case R.id.nav_menu_events:
-                    // TODO
+                    viewPager.setCurrentItem(2);
                     break;
                 case R.id.nav_menu_notification:
                     // TODO
                     break;
             }
-            return false;
+            return true;
         }
 
     };

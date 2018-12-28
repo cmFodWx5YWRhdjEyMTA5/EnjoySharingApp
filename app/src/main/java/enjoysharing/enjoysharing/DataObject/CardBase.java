@@ -1,13 +1,16 @@
 package enjoysharing.enjoysharing.DataObject;
 
 import org.json.JSONObject;
+import java.io.Serializable;
 
-public class CardBase {
+public class CardBase implements Serializable {
 
     protected String username;
     protected String title;
     protected String content;
     protected byte[] userImage;
+    protected int requestNumber;
+    protected int maxRequest;
 
     public String getUsername() {
         return username;
@@ -23,6 +26,22 @@ public class CardBase {
 
     public byte[] getUserImage() {
         return userImage;
+    }
+
+    public int getRequestNumber() {
+        return requestNumber;
+    }
+
+    public void setRequestNumber(int requestNumber) {
+        this.requestNumber = requestNumber;
+    }
+
+    public int getMaxRequest() {
+        return maxRequest;
+    }
+
+    public void setMaxRequest(int maxRequest) {
+        this.maxRequest = maxRequest;
     }
 
     // Constructor simple

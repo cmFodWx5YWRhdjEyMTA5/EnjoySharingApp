@@ -109,7 +109,7 @@ public class SearchActivity extends BaseActivity {
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
+            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardMyEvent);
             // Set width based on screen percentage
             txtUserCardHome.setWidth(txtUserTitleWidth);
             txtUserCardHome.setText(card.getUsername());

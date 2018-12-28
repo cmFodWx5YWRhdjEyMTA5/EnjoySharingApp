@@ -4,18 +4,37 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.R;
 
 public class FragmentBase extends Fragment {
 
+    protected CurrentUser user;
     protected BaseActivity activity;
     protected BusinessBase business;
     // Used to call server with requests
     protected FragmentRequestTask mTask = null;
     // Used to checkk if request success
     protected boolean requestSuccess;
+
+    protected View progressView;
+    protected FrameLayout formView;
+
+    public void setProgressView(View progressView) {
+        this.progressView = progressView;
+    }
+
+    public void setFormView(FrameLayout formView) {
+        this.formView = formView;
+    }
+
+    public void setCurrentUser(CurrentUser user) {
+        this.user = user;
+    }
 
     public void SetActivity(BaseActivity activity) {
         this.activity = activity;
@@ -25,6 +44,8 @@ public class FragmentBase extends Fragment {
     {
         activity.showProgress(state);
     }
+    // Used for functionality
+    public void StartFragment(){ }
     // Used for click on rows
     protected void onRowClick(View v)
     { }

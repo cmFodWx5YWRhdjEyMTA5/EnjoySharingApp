@@ -19,18 +19,8 @@ import enjoysharing.enjoysharing.R;
 public class RecivedRequestFragment extends FragmentBase {
 
     protected TableLayout tableRecivedRequests;
-
-    protected View progressView;
-    protected FrameLayout formView;
-
-    public void setProgressView(View progressView) {
-        this.progressView = progressView;
-    }
-
-    public void setFormView(FrameLayout formView) {
-        this.formView = formView;
-    }
-
+    // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
+    // quindi la funzionalità la metto in un metodo a parte!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,8 +28,12 @@ public class RecivedRequestFragment extends FragmentBase {
         View v = inflater.inflate(R.layout.fragment_recived_request, container, false);
         business = new BusinessBase(activity);
         tableRecivedRequests = (TableLayout) v.findViewById(R.id.tableRecivedRequests);
-        LoadRecivedRequests();
         return v;
+    }
+    @Override
+    public void StartFragment()
+    {
+        LoadRecivedRequests();
     }
 
     protected CardCollection recivedRequestCards;

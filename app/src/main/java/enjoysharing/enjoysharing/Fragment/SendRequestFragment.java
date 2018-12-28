@@ -1,6 +1,7 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +19,8 @@ import enjoysharing.enjoysharing.R;
 public class SendRequestFragment extends FragmentBase {
 
     protected TableLayout tableSendRequests;
-
-    protected View progressView;
-    protected FrameLayout formView;
-
-    public void setProgressView(View progressView) {
-        this.progressView = progressView;
-    }
-
-    public void setFormView(FrameLayout formView) {
-        this.formView = formView;
-    }
-
+    // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
+    // quindi la funzionalità la metto in un metodo a parte!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,8 +28,12 @@ public class SendRequestFragment extends FragmentBase {
         View v = inflater.inflate(R.layout.fragment_send_request, container, false);
         business = new BusinessBase(activity);
         tableSendRequests = (TableLayout) v.findViewById(R.id.tableSendRequests);
-        LoadSendRequests();
         return v;
+    }
+    @Override
+    public void StartFragment()
+    {
+        LoadSendRequests();
     }
 
     protected CardCollection sendRequestCards;
