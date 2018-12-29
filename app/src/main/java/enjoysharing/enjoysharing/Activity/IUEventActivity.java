@@ -16,6 +16,7 @@ import enjoysharing.enjoysharing.R;
 
 public class IUEventActivity extends BaseActivity {
 
+    protected EditText txtTitleIUEvent;
     protected Spinner genderIUEvent;
     protected ImageButton imgBtnGender;
     protected EditText txtContentIUEvent;
@@ -73,6 +74,7 @@ public class IUEventActivity extends BaseActivity {
             }
         });
 
+        txtTitleIUEvent = (EditText) findViewById(R.id.txtTitleIUEvent);
         txtContentIUEvent = (EditText) findViewById(R.id.txtContentIUEvent);
         // TODO
         // In case of UPDATE username will be fill based on event clicked
@@ -105,28 +107,36 @@ public class IUEventActivity extends BaseActivity {
         }
 
         // Reset errors.
+        txtTitleIUEvent.setError(null);
         txtContentIUEvent.setError(null);
         txtNumberPerson.setError(null);
         // Only for try
         int genderPosition = business.GetGenderIndex(genderIUEvent.getSelectedItem().toString());
 
         // Store values at the time of the login attempt.
+        String title = txtTitleIUEvent.getText().toString();
         String content = txtContentIUEvent.getText().toString();
         String numberPerson = txtNumberPerson.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
+        // Check for number of persons
+        if (TextUtils.isEmpty(numberPerson)) {
+            txtNumberPerson.setError(getString(R.string.error_field_required));
+            focusView = txtNumberPerson;
+            cancel = true;
+        }
         // Check for content
         if (TextUtils.isEmpty(content)) {
             txtContentIUEvent.setError(getString(R.string.error_field_required));
             focusView = txtContentIUEvent;
             cancel = true;
         }
-        // Check for number of persons
-        if (TextUtils.isEmpty(numberPerson)) {
-            txtNumberPerson.setError(getString(R.string.error_field_required));
-            focusView = txtNumberPerson;
+        // Check for title
+        if (TextUtils.isEmpty(title)) {
+            txtTitleIUEvent.setError(getString(R.string.error_field_required));
+            focusView = txtTitleIUEvent;
             cancel = true;
         }
         if (cancel) {
