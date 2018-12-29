@@ -26,13 +26,77 @@ public class CardCollection {
 
     public void FilterByTitle(String title)
     {
-        filtered = true;
-        cardsFiltered = new ArrayList<CardBase>();
-        for(CardBase card : cards)
+        List<CardBase> resultList = new ArrayList<CardBase>();
+        if(!filtered)
         {
-            if(card.getTitle().contains(title))
-                cardsFiltered.add(card);
+            filtered = true;
+            cardsFiltered = new ArrayList<CardBase>();
+            for(CardBase card : cards)
+            {
+                if(card.getTitle().contains(title))
+                    resultList.add(card);
+            }
         }
+        else
+        {
+            for(CardBase card : cardsFiltered)
+            {
+                if(card.getTitle().contains(title))
+                    resultList.add(card);
+            }
+        }
+        cardsFiltered = resultList;
+    }
+
+    public void FilterByNumberPerson(String personNumber)
+    {
+        int iPersonNumber =  -1;
+        if(!(personNumber == null || personNumber.equals("")))
+            iPersonNumber = Integer.parseInt(personNumber);
+        List<CardBase> resultList = new ArrayList<CardBase>();
+        if(!filtered)
+        {
+            filtered = true;
+            cardsFiltered = new ArrayList<CardBase>();
+            for(CardBase card : cards)
+            {
+                if(iPersonNumber == -1 || card.getRequestNumber() >= iPersonNumber)
+                    resultList.add(card);
+            }
+        }
+        else
+        {
+            for(CardBase card : cardsFiltered)
+            {
+                if(iPersonNumber == -1 || card.getRequestNumber() >= iPersonNumber)
+                    resultList.add(card);
+            }
+        }
+        cardsFiltered = resultList;
+    }
+
+    public void FilterByGender(int genderIndex)
+    {
+        List<CardBase> resultList = new ArrayList<CardBase>();
+        if(!filtered)
+        {
+            filtered = true;
+            cardsFiltered = new ArrayList<CardBase>();
+            for(CardBase card : cards)
+            {
+                if(genderIndex == -1 || card.getGenderIndex() == genderIndex)
+                    resultList.add(card);
+            }
+        }
+        else
+        {
+            for(CardBase card : cardsFiltered)
+            {
+                if(genderIndex == -1 || card.getGenderIndex() == genderIndex)
+                    resultList.add(card);
+            }
+        }
+        cardsFiltered = resultList;
     }
 
 }

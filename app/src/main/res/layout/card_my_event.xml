@@ -103,30 +103,34 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="5dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtNumberPerson"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_person_custom"
+                android:gravity="center_vertical"
+                android:text="1/5"
+                android:textSize="16dp" />
 
-                <ImageView
-                    android:id="@+id/imgPersonMyEvent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_add_request_custom" />
+            <ImageView
+                android:id="@+id/imgBtnGender"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@color/whiteTrasparent"
+                app:srcCompat="@drawable/ic_gender_svago" />
 
-                <TextView
-                    android:id="@+id/txtNumberPerson"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1/5"
-                    android:textSize="14dp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txtBlankInt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
 
         </LinearLayout>
 

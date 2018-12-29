@@ -48,6 +48,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void SetContext(Context context){ this.context = context; }
 
+    public CurrentUser GetUser() { return user; }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

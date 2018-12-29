@@ -29,18 +29,88 @@
                 app:popupTheme="@style/EnjoySharingTheme.PopupOverlay"
                 app:titleTextColor="@color/white" />
 
-            <EditText
-                android:id="@+id/txtSearch"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="false"
-                android:layout_centerVertical="false"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:ems="10"
-                android:hint="Cerca"
-                android:inputType="textPersonName" />
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txtSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="false"
+                        android:layout_centerVertical="false"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Cerca"
+                        android:inputType="textPersonName" />
+
+                    <ImageButton
+                        android:id="@+id/imgBtnFilters"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/transparentColor"
+                        app:srcCompat="@drawable/ic_filters_custom" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/barFilters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/baseColor"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/txtNumberPerson"
+                        android:layout_width="5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_person_search"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:textSize="18dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/imgBtnGender"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparentColor"
+                            app:srcCompat="@drawable/ic_gender_svago_search" />
+
+                        <Spinner
+                            android:id="@+id/genderIUEvent"
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:prompt="@string/choose_genders"
+                            android:visibility="invisible" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
 
         </RelativeLayout>
 

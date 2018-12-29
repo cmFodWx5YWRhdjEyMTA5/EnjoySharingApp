@@ -2,11 +2,13 @@ package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -64,11 +66,7 @@ public class MyEventsFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        myEventCards = new CardCollection();
-        myEventCards.Add(new CardMyEvent(user.getUsername(),"Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 5));
-        myEventCards.Add(new CardMyEvent(user.getUsername(),"Titolo 2","Contenuto di prova 2 caricato da codice",null, 6, 6));
-        myEventCards.Add(new CardMyEvent(user.getUsername(),"Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 4, 6));
-        myEventCards.Add(new CardMyEvent(user.getUsername(),"Titolo 4","Contenuto di prova 4 caricato da codice",null, 9, 10));
+        myEventCards = business.GetMyEventsCards();
     }
 
     @Override
@@ -109,6 +107,9 @@ public class MyEventsFragment extends FragmentBase {
                     // Open list requests
                 }
             });
+            ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v);

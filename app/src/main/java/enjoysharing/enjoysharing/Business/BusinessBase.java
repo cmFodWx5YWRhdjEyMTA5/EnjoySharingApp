@@ -1,21 +1,55 @@
 package enjoysharing.enjoysharing.Business;
 
-import android.app.Activity;
 import android.content.res.Configuration;
-import android.util.TypedValue;
 import android.widget.Button;
-import android.widget.TableLayout;
 
+import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
+import enjoysharing.enjoysharing.DataObject.CardHome;
+import enjoysharing.enjoysharing.DataObject.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.R;
 
 public class BusinessBase {
 
-    protected Activity activity;
+    protected BaseActivity activity;
 
-    public BusinessBase(Activity activity)
+    public BusinessBase(BaseActivity activity)
     {
         this.activity = activity;
+    }
+    // TODO
+    // Remove when call server is ok
+    public CardCollection GetHomeCards()
+    {
+        CardCollection cards = new CardCollection();
+        cards.Add(new CardHome("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardHome("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
+        cards.Add(new CardHome("Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
+        cards.Add(new CardHome("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        return cards;
+    }
+    // TODO
+    // Remove when call server is ok
+    public CardCollection GetMyEventsCards()
+    {
+        CardCollection cards = new CardCollection();
+        cards.Add(new CardMyEvent(activity.GetUser().getUsername(),"Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardMyEvent(activity.GetUser().getUsername(),"Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 6, 6));
+        cards.Add(new CardMyEvent(activity.GetUser().getUsername(),"Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 4, 6));
+        cards.Add(new CardMyEvent(activity.GetUser().getUsername(),"Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        return cards;
+    }
+    // TODO
+    // Remove when call server is ok
+    public CardCollection GetRequestCards()
+    {
+        CardCollection cards = new CardCollection();
+        cards.Add(new CardRequest("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardRequest("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
+        cards.Add(new CardRequest("Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
+        cards.Add(new CardRequest("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        return cards;
     }
     // Used to convert width based on percentage
     public int ConvertWidthBasedOnPerc(int perc)
@@ -38,5 +72,69 @@ public class BusinessBase {
             btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_request_partecipate_reverse,0,0,0);
         }
         btn.setHint(state?"1":"0");
+    }
+
+    public int GetGenderIconSearch(int index)
+    {
+        switch (index)
+        {
+            case 0: // Tutti
+                return R.drawable.ic_gender_all_search;
+            case 1: // Svago
+                return R.drawable.ic_gender_svago_search;
+            case 2: // Utilità
+                return R.drawable.ic_gender_utility_search;
+            case 3: // Intrattenimento
+                return R.drawable.ic_gender_intrattenimento_search;
+            case 4: // Lavoro
+                return R.drawable.ic_gender_business_search;
+            case 5: // Pranzo/Cena
+                return R.drawable.ic_gender_food_search;
+        }
+        return -1;
+    }
+
+    public int GetGenderIcon(int index)
+    {
+        switch (index)
+        {
+            case 0: // Svago
+                return R.drawable.ic_gender_svago;
+            case 1: // Utilità
+                return R.drawable.ic_gender_utility;
+            case 2: // Intrattenimento
+                return R.drawable.ic_gender_intrattenimento;
+            case 3: // Lavoro
+                return R.drawable.ic_gender_business;
+            case 4: // Pranzo/Cena
+                return R.drawable.ic_gender_food;
+        }
+        return -1;
+    }
+    public int GetGenderIndex(String item) { return GetSpinnerIndex(R.array.genders,item); }
+    public String GetGenderItem(int index) { return GetSpinnerItem(R.array.genders,index); }
+    public String[] GetGenderItems() { return GetSpinnerItems(R.array.genders); }
+
+    public int GetGenderSearchIndex(String item) { return GetSpinnerIndex(R.array.genders_search,item); }
+    public String[] GetGenderSearchItems() { return GetSpinnerItems(R.array.genders_search); }
+
+    public int GetSpinnerIndex(int arrayName, String item)
+    {
+        String[] items = activity.getBaseContext().getResources().getStringArray(arrayName);
+        for(int i=0;i<items.length;i++)
+            if(items[i].equals(item))
+                return i;
+        return -1;
+    }
+
+    public String GetSpinnerItem(int arrayName, int index)
+    {
+        String[] items = activity.getBaseContext().getResources().getStringArray(arrayName);
+        return items.length < index ? "" : items[index];
+    }
+
+    public String[] GetSpinnerItems(int arrayName)
+    {
+        return activity.getBaseContext().getResources().getStringArray(arrayName);
     }
 }

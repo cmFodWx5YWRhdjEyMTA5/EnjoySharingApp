@@ -62,11 +62,7 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        recivedRequestCards = new CardCollection();
-        recivedRequestCards.Add(new CardRequest("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null));
-        recivedRequestCards.Add(new CardRequest("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null));
-        recivedRequestCards.Add(new CardRequest("Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null));
-        recivedRequestCards.Add(new CardRequest("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null));
+        recivedRequestCards = business.GetRequestCards();
     }
 
     @Override

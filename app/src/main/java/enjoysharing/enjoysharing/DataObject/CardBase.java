@@ -9,6 +9,7 @@ public class CardBase implements Serializable {
     protected String title;
     protected String content;
     protected byte[] userImage;
+    protected int genderIndex;
     protected int requestNumber;
     protected int maxRequest;
 
@@ -44,12 +45,17 @@ public class CardBase implements Serializable {
         this.maxRequest = maxRequest;
     }
 
+    public int getGenderIndex() {
+        return genderIndex;
+    }
+
     // Constructor simple
-    public CardBase(String username, String title, String content, byte[] userImage) {
+    public CardBase(String username, String title, String content, byte[] userImage, int genderIndex) {
         this.username = username;
         this.title = title;
         this.content = content;
         this.userImage = userImage;
+        this.genderIndex = genderIndex;
     }
 
     // TODO

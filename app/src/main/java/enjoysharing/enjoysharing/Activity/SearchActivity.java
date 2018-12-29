@@ -2,13 +2,19 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.TooltipCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,9 +25,13 @@ import enjoysharing.enjoysharing.R;
 
 public class SearchActivity extends BaseActivity {
 
-    // TODO
-    // To delete when call server
-    protected String title;
+    protected EditText searchTo;
+    protected EditText txtNumberPerson;
+    protected LinearLayout barFilters;
+    protected Spinner genderIUEvent;
+    protected ImageButton imgBtnGender;
+    // Used when filter bar open
+    protected boolean useFilter = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +52,7 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
-        EditText searchTo = (EditText)findViewById(R.id.txtSearch);
+        searchTo = (EditText)findViewById(R.id.txtSearch);
         searchTo.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -56,7 +66,71 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                SearchCards(s.toString());
+                SearchCards();
+            }
+        });
+        txtNumberPerson = (EditText) findViewById(R.id.txtNumberPerson);
+        txtNumberPerson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                SearchCards();
+            }
+        });
+        ImageButton imgBtnFilters = (ImageButton) findViewById(R.id.imgBtnFilters);
+        barFilters = (LinearLayout) findViewById(R.id.barFilters);
+        imgBtnFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(barFilters.getVisibility() == View.GONE)
+                {
+                    useFilter = false;
+                    barFilters.setVisibility(View.VISIBLE);
+                }
+                else
+                    barFilters.setVisibility(View.GONE);
+            }
+        });
+
+        genderIUEvent = (Spinner) findViewById(R.id.genderIUEvent);
+        imgBtnGender = (ImageButton) findViewById(R.id.imgBtnGender);
+        // Adapter for textsize
+        String[] items = business.GetGenderSearchItems();
+        ArrayAdapter<String> widgetModeAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, items);
+        // Layout for list layout
+        widgetModeAdapter.setDropDownViewResource(R.layout.spinner_item_list);
+        genderIUEvent.setAdapter(widgetModeAdapter);
+        genderIUEvent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
+            {
+                imgBtnGender.setImageResource(business.GetGenderIconSearch(position));
+                if(useFilter)
+                    SearchCards();
+                else
+                    useFilter = true;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView)
+            {
+            }
+        });
+        // Open DDL on click
+        imgBtnGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genderIUEvent.performClick();
             }
         });
 
@@ -64,15 +138,11 @@ public class SearchActivity extends BaseActivity {
         mProgressView = findViewById(R.id.search_progress);
     }
 
-    // Search cards based on title
-    protected void SearchCards(String title)
+    protected void SearchCards()
     {
         if (mTask != null) {
             mTask.cancel(true);
         }
-        // TODO
-        // To delete when call server
-        this.title = title;
         showProgress(true);
         mTask = new RequestTask();
         mTask.execute((Void) null);
@@ -83,12 +153,11 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void DoInBackground()
     {
-        searchCards = new CardCollection();
-        searchCards.Add(new CardHome("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice",null));
-        searchCards.Add(new CardHome("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null));
-        searchCards.Add(new CardHome("Utente 3","Titolo 3","Contenuto di prova 3 caricato da codice",null));
-        searchCards.Add(new CardHome("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null));
-        searchCards.FilterByTitle(title);
+        searchCards = business.GetHomeCards();
+        searchCards.FilterByTitle(searchTo.getText().toString());
+        searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
+        // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
+        searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString())-1);
     }
 
     @Override
@@ -109,7 +178,7 @@ public class SearchActivity extends BaseActivity {
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardMyEvent);
+            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
             // Set width based on screen percentage
             txtUserCardHome.setWidth(txtUserTitleWidth);
             txtUserCardHome.setText(card.getUsername());
@@ -117,10 +186,15 @@ public class SearchActivity extends BaseActivity {
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
             txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardSendRequest);
+            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
+            TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
+            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {

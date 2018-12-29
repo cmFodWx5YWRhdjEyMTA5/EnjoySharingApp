@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_genders">Genere attività</string>
+    <string-array name="genders">
+        <item>Svago</item>
+        <item>Utilità</item>
+        <item>Intrattenimento</item>
+        <item>Lavoro</item>
+        <item>Pranzo/Cena</item>
+    </string-array>
+    <string-array name="genders_search">
+        <item>Tutti</item>
+        <item>Svago</item>
+        <item>Utilità</item>
+        <item>Intrattenimento</item>
+        <item>Lavoro</item>
+        <item>Pranzo/Cena</item>
+    </string-array>
+</resources>

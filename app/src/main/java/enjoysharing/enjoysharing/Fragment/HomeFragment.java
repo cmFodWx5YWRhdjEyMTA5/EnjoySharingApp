@@ -3,11 +3,14 @@ package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -63,11 +66,7 @@ public class HomeFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        homeCards = new CardCollection();
-        homeCards.Add(new CardHome("Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null));
-        homeCards.Add(new CardHome("Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null));
-        homeCards.Add(new CardHome("Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null));
-        homeCards.Add(new CardHome("Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null));
+        homeCards = business.GetHomeCards();
     }
 
     @Override
@@ -99,6 +98,11 @@ public class HomeFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
+            TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
+            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
