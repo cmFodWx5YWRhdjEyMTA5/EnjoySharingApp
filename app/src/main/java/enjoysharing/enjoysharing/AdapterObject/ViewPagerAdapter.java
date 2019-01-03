@@ -1,4 +1,4 @@
-package enjoysharing.enjoysharing.Fragment;
+package enjoysharing.enjoysharing.AdapterObject;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import enjoysharing.enjoysharing.Fragment.FragmentBase;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

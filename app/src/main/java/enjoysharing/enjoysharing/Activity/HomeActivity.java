@@ -11,14 +11,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import enjoysharing.enjoysharing.Fragment.FragmentBase;
 import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
 import enjoysharing.enjoysharing.Fragment.RequestFragment;
-import enjoysharing.enjoysharing.Fragment.ViewPagerAdapter;
+import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.R;
 import enjoysharing.enjoysharing.Fragment.HomeFragment;
 
@@ -172,6 +170,9 @@ public class HomeActivity extends BaseActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.nav_manage:
+                    OpenActivityNoFinish(context, SettingsActivity.class);
+                    break;
                 case R.id.nav_logout :
                     user.Clear();
                     user.SaveOnXMLFile();

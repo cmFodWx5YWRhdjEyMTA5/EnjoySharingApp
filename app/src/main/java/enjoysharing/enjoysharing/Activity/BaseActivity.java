@@ -94,6 +94,14 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(0,0);
         //finish();
     }
+    // Switch Activity without close current
+    protected void OpenActivityNoFinish(Context context, Class cl)
+    {
+        Intent intent = new Intent(context, cl);
+        startActivity(intent);
+        overridePendingTransition(0,0);
+        //finish();
+    }
     // Generally back to homepage
     @Override
     public void onBackPressed() {

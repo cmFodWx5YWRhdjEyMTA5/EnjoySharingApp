@@ -11,6 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label=""
+        android:launchMode="singleTop"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/EnjoySharingTheme">
@@ -32,10 +33,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="enjoysharing.enjoysharing.Activity.BaseActivity" />
         </activity>
-        <activity android:name=".Activity.SearchActivity"
+        <activity
+            android:name=".Activity.SearchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.IUEventActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.IUEventActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            >
+                <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
