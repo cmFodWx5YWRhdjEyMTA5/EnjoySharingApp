@@ -61,6 +61,7 @@ public class FragmentBase extends Fragment {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
+                    // Quando faccio swipe in alto refresho la pagina MA NON MOSTRO IL LOADING perchè ho il mio custom!
                     mSwipeRefreshLayout.setRefreshing(false);
                     StartFragment();
                 }
