@@ -54,7 +54,6 @@ public class BusinessBase {
     // Used to convert width based on percentage
     public int ConvertWidthBasedOnPerc(int perc)
     {
-        Configuration configuration = activity.getResources().getConfiguration();
         int screenWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
         return (screenWidth/100)*perc;
     }

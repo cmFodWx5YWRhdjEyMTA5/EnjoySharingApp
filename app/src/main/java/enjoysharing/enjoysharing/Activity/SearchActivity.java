@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import enjoysharing.enjoysharing.AdapterObject.ActivitySwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
@@ -207,6 +209,10 @@ public class SearchActivity extends BaseActivity {
                     onRowClick(v);
                 }
             });
+            // TEST SWIPE
+            /*ActivitySwipeDetector swipeListener = new ActivitySwipeDetector(SearchActivity.this);
+            swipeListener.SetOriginals(relLayout);
+            relLayout.setOnTouchListener(swipeListener);*/
             table.addView(row);
         }
     }

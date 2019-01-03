@@ -110,6 +110,9 @@ public class BaseActivity extends AppCompatActivity {
     // Used for click on rows
     protected void onRowClick(View v)
     { }
+    // Used for swipe rows (requests)
+    public void onRightSwipe(View v){ }
+    public void onLeftSwipe(View v){ }
     // Used for click on request partecipate
     // TODO
     // Manage click on request partecipate
