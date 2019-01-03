@@ -5,17 +5,24 @@
     tools:context="enjoysharing.enjoysharing.Fragment.HomeFragment"
     android:id="@+id/main_frame_home">
 
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TableLayout
-            android:id="@+id/tableHomeCards"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </TableLayout>
+                <TableLayout
+                    android:id="@+id/tableHomeCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-    </ScrollView>
+                </TableLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

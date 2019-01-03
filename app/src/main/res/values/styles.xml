@@ -16,6 +16,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="EnjoySharingProgressBarStyle" parent="@style/Widget.AppCompat.ProgressBar">
+        <item name="android:progressDrawable">@drawable/progress_bar_custom</item>
+    </style>
+
     <style name="EnjoySharingTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/textColor</item>

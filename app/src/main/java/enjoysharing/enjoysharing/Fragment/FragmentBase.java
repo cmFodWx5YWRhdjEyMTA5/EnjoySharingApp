@@ -1,10 +1,16 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TableLayout;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -16,6 +22,8 @@ public class FragmentBase extends Fragment {
     protected CurrentUser user;
     protected BaseActivity activity;
     protected BusinessBase business;
+    protected View vMain;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     // Used to call server with requests
     protected FragmentRequestTask mTask = null;
     // Used to checkk if request success
@@ -38,6 +46,27 @@ public class FragmentBase extends Fragment {
 
     public void SetActivity(BaseActivity activity) {
         this.activity = activity;
+    }
+
+    // Lo creo solo per il refresh
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        if(vMain == null)
+            vMain = inflater.inflate(R.layout.fragment_home, container, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) vMain.findViewById(R.id.swipeToRefresh);
+        if(mSwipeRefreshLayout != null)
+        {
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    StartFragment();
+                }
+            });
+        }
+        return vMain;
     }
     // Creo metodo per customizzarlo dove serve
     protected void ShowProgress(boolean state)

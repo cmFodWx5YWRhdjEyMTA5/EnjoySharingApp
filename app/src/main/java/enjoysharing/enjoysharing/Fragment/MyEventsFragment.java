@@ -1,23 +1,19 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
-import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.R;
 
 public class MyEventsFragment extends FragmentBase {
@@ -29,11 +25,12 @@ public class MyEventsFragment extends FragmentBase {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_my_events, container, false);
+        vMain = inflater.inflate(R.layout.fragment_my_events, container, false);
         business = new BusinessBase(activity);
-        tableCardsMyEvent = (TableLayout) v.findViewById(R.id.tableCardsMyEvent);
-        setFormView((FrameLayout) v.findViewById(R.id.main_frame_my_event));
-        return v;
+        tableCardsMyEvent = (TableLayout) vMain.findViewById(R.id.tableCardsMyEvent);
+        setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_my_event));
+        super.onCreateView(inflater,container,savedInstanceState);
+        return vMain;
     }
     @Override
     protected void ShowProgress(boolean state)

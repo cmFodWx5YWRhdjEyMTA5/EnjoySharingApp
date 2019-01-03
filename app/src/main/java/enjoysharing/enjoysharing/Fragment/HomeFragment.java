@@ -2,14 +2,12 @@ package enjoysharing.enjoysharing.Fragment;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -29,11 +27,12 @@ public class HomeFragment extends FragmentBase {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        tableHomeCards = (TableLayout) v.findViewById(R.id.tableHomeCards);
+        vMain = inflater.inflate(R.layout.fragment_home, container, false);
+        tableHomeCards = (TableLayout) vMain.findViewById(R.id.tableHomeCards);
         business = new BusinessBase(activity);
-        setFormView((FrameLayout) v.findViewById(R.id.main_frame_home));
-        return v;
+        setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_home));
+        super.onCreateView(inflater,container,savedInstanceState);
+        return vMain;
     }
     @Override
     protected void ShowProgress(boolean state)

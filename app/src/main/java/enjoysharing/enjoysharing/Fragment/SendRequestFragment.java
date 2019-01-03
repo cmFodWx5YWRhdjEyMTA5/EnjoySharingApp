@@ -1,13 +1,11 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -27,10 +25,11 @@ public class SendRequestFragment extends FragmentBase {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_send_request, container, false);
+        vMain = inflater.inflate(R.layout.fragment_send_request, container, false);
         business = new BusinessBase(activity);
-        tableSendRequests = (TableLayout) v.findViewById(R.id.tableSendRequests);
-        return v;
+        tableSendRequests = (TableLayout) vMain.findViewById(R.id.tableSendRequests);
+        super.onCreateView(inflater,container,savedInstanceState);
+        return vMain;
     }
     @Override
     public void StartFragment()

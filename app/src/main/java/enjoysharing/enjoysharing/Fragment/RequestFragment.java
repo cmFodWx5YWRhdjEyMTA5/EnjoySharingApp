@@ -2,7 +2,6 @@ package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
 
@@ -21,19 +19,17 @@ public class RequestFragment extends FragmentBase {
     // Request Fragments object
     protected RecivedRequestFragment recivedRequestFragment;
     protected SendRequestFragment sendRequestFragment;
-    // View principal
-    protected View v;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_request, container, false);
+        vMain = inflater.inflate(R.layout.fragment_request, container, false);
         business = new BusinessBase(activity);
         CreateFragments();
         CreateNavigationElements();
-        return v;
+        return vMain;
     }
     @Override
     public void StartFragment()
@@ -43,7 +39,7 @@ public class RequestFragment extends FragmentBase {
     // Used to create Navigation Elements
     protected void CreateNavigationElements()
     {
-        nav_menu_request = (BottomNavigationView) v.findViewById(R.id.nav_request);
+        nav_menu_request = (BottomNavigationView) vMain.findViewById(R.id.nav_request);
         nav_menu_request.setOnNavigationItemSelectedListener(tabSelected);
         HideIcons();
     }
@@ -62,12 +58,12 @@ public class RequestFragment extends FragmentBase {
     {
         recivedRequestFragment = new RecivedRequestFragment();
         recivedRequestFragment.SetActivity(activity);
-        recivedRequestFragment.setFormView((FrameLayout) v.findViewById(R.id.request_form));
-        recivedRequestFragment.setProgressView((View)v.findViewById(R.id.request_progress));
+        recivedRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
+        recivedRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
         sendRequestFragment = new SendRequestFragment();
         sendRequestFragment.SetActivity(activity);
-        sendRequestFragment.setFormView((FrameLayout) v.findViewById(R.id.request_form));
-        sendRequestFragment.setProgressView((View)v.findViewById(R.id.request_progress));
+        sendRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
+        sendRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
     }
     // Used when user click in tab menu request
     protected BottomNavigationView.OnNavigationItemSelectedListener tabSelected
