@@ -1,8 +1,10 @@
 package enjoysharing.enjoysharing.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.DataObject.CardBase;
+import enjoysharing.enjoysharing.DataObject.CardMyEvent;
 import enjoysharing.enjoysharing.R;
 
 public class IUEventActivity extends BaseActivity {
@@ -21,6 +25,7 @@ public class IUEventActivity extends BaseActivity {
     protected ImageButton imgBtnGender;
     protected EditText txtContentIUEvent;
     protected EditText txtNumberPerson;
+    protected TextView txtUserIUEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +81,8 @@ public class IUEventActivity extends BaseActivity {
 
         txtTitleIUEvent = (EditText) findViewById(R.id.txtTitleIUEvent);
         txtContentIUEvent = (EditText) findViewById(R.id.txtContentIUEvent);
-        // TODO
-        // In case of UPDATE username will be fill based on event clicked
-        TextView txtUserIUEvent = (TextView) findViewById(R.id.txtUserIUEvent);
+        // In case of update username remain because is MY EVENTS!
+        txtUserIUEvent = (TextView) findViewById(R.id.txtUserIUEvent);
         txtUserIUEvent.setText(user.getUsername());
 
         txtNumberPerson = (EditText) findViewById(R.id.txtNumberPerson);
@@ -90,6 +94,45 @@ public class IUEventActivity extends BaseActivity {
                 SaveEvent();
             }
         });
+        // Check if is in Update
+        LoadMyEventDetails();
+    }
+    // Used to load details of MY EVENT if present
+    protected void LoadMyEventDetails()
+    {
+        Intent i = getIntent();
+        CardBase cardBase = (CardBase)i.getSerializableExtra("CardPassed");
+        if(cardBase != null && cardBase instanceof CardMyEvent)
+        {
+            CardMyEvent card = (CardMyEvent) cardBase;
+            isUpdate = true;
+            txtTitleIUEvent.setText(card.getTitle());
+            txtContentIUEvent.setText(card.getContent());
+            txtNumberPerson.setText(""+card.getMaxRequest());
+            genderIUEvent.setSelection(card.getGenderIndex());
+            txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        if(event.getRawX() <= txtNumberPerson.getTotalPaddingLeft()) {
+                            // your action for drawable click event
+                            // TODO
+                            // Open list of persons
+                            int i = 0;
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if(!isUpdate)
+            SwipeCloseActivity(IUEventActivity.this,HomeActivity.class);
+        else
+            super.StandardOnBackPressed();
     }
     // Used to store information event
     protected void SaveEvent()
@@ -157,6 +200,6 @@ public class IUEventActivity extends BaseActivity {
     protected void OnRequestPostExecute()
     {
         if(requestSuccess)
-            SwipeCloseActivity(IUEventActivity.this,HomeActivity.class);
+            onBackPressed();
     }
 }

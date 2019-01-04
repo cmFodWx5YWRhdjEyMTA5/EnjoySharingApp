@@ -23,6 +23,15 @@ public class CardCollection {
     public List<CardBase> List() { return filtered ? cardsFiltered : cards; }
     public void Clear() { cards.clear(); }
     public void Add(CardBase card) { cards.add(card); }
+    public CardBase GetCard(int idCard)
+    {
+        for(CardBase card : cards)
+        {
+            if(card.getIdCard() == idCard)
+                return card;
+        }
+        return null;
+    }
 
     public void FilterByTitle(String title)
     {

@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class CardBase implements Serializable {
 
+    protected int idCard;
     protected String username;
     protected String title;
     protected String content;
@@ -12,6 +13,10 @@ public class CardBase implements Serializable {
     protected int genderIndex;
     protected int requestNumber;
     protected int maxRequest;
+
+    public int getIdCard() {
+        return idCard;
+    }
 
     public String getUsername() {
         return username;
@@ -50,7 +55,8 @@ public class CardBase implements Serializable {
     }
 
     // Constructor simple
-    public CardBase(String username, String title, String content, byte[] userImage, int genderIndex) {
+    public CardBase(int idCard, String username, String title, String content, byte[] userImage, int genderIndex) {
+        this.idCard = idCard;
         this.username = username;
         this.title = title;
         this.content = content;

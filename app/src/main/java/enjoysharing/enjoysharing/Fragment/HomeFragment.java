@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import enjoysharing.enjoysharing.Activity.HomeDetailActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
@@ -81,7 +82,7 @@ public class HomeFragment extends FragmentBase {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
-            CardHome card = (CardHome)cards.List().get(i);
+            final CardHome card = (CardHome)cards.List().get(i);
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -102,6 +103,7 @@ public class HomeFragment extends FragmentBase {
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
@@ -109,12 +111,23 @@ public class HomeFragment extends FragmentBase {
                     onRequestPartecipate(v);
                 }
             });
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v);
+                    onRowClick(v, card.getIdCard());
                 }
             });
             table.addView(row);
+        }
+    }
+
+    @Override
+    protected void onRowClick(View v, int rowId)
+    {
+        CardHome card = (CardHome) homeCards.GetCard(rowId);
+        if(card != null)
+        {
+            OpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
         }
     }
 

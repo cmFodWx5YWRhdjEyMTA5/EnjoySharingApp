@@ -1,5 +1,7 @@
 package enjoysharing.enjoysharing.Fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.widget.TableLayout;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.R;
 
@@ -69,6 +72,12 @@ public class FragmentBase extends Fragment {
         }
         return vMain;
     }
+    // Switch Activity
+    protected void OpenActivity(Context context, Class cl, CardBase card)
+    {
+        activity.OpenActivity(context, cl, card);
+        //finish();
+    }
     // Creo metodo per customizzarlo dove serve
     protected void ShowProgress(boolean state)
     {
@@ -78,6 +87,9 @@ public class FragmentBase extends Fragment {
     public void StartFragment(){ }
     // Used for click on rows
     protected void onRowClick(View v)
+    { }
+    // Used for click on rows
+    protected void onRowClick(View v, int rowId)
     { }
     // Used for click on request partecipate
     // TODO

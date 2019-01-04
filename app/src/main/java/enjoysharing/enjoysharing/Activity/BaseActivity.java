@@ -13,14 +13,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-
-import java.io.Serializable;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
@@ -45,6 +41,8 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean finishOnPostExecute = false;
     // Used to checkk if request success
     public boolean requestSuccess;
+    // Used to understand if is update
+    protected boolean isUpdate = false;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -64,10 +62,10 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
     }
     // Switch Activity and pass Card
-    protected void OpenActivity(Context context, Class cl, CardBase card)
+    public void OpenActivity(Context context, Class cl, CardBase card)
     {
         Intent intent = new Intent(context, cl);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("CardPassed", card);
         startActivity(intent);
         overridePendingTransition(0,0);
@@ -107,8 +105,13 @@ public class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         OpenActivity(context, HomeActivity.class);
     }
+    // Used to close current activity as standard
+    protected void StandardOnBackPressed() { super.onBackPressed(); }
     // Used for click on rows
     protected void onRowClick(View v)
+    { }
+    // Used for click on rows
+    protected void onRowClick(View v, int rowId)
     { }
     // Used for swipe rows (requests)
     public void onRightSwipe(View v){ }

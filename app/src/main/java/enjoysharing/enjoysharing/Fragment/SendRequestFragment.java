@@ -11,8 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import enjoysharing.enjoysharing.Activity.HomeDetailActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
+import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.R;
 
@@ -79,7 +82,7 @@ public class SendRequestFragment extends FragmentBase {
         table.removeAllViews();
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<cards.List().size(); i++) {
-            CardRequest card = (CardRequest)cards.List().get(i);
+            final CardRequest card = (CardRequest)cards.List().get(i);
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_send, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -105,7 +108,7 @@ public class SendRequestFragment extends FragmentBase {
             });
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v);
+                    onRowClick(v, card.getIdCard());
                 }
             });
             table.addView(row);
@@ -116,11 +119,17 @@ public class SendRequestFragment extends FragmentBase {
     // Manage click on request partecipate
     protected void onRequestPartecipate(View v)
     {
-        Button btn = (Button)v;
-        btn.setEnabled(false);
-        btn.setText(R.string.txtRequestPartecipateReversed);
-        btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
-        btn.setHint("0");
+        business.DisableRequestButton((Button)v);
+    }
+
+    @Override
+    protected void onRowClick(View v, int rowId)
+    {
+        CardRequest card = (CardRequest) sendRequestCards.GetCard(rowId);
+        if(card != null)
+        {
+            OpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
+        }
     }
 
 }

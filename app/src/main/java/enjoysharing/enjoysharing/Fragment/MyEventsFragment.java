@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import enjoysharing.enjoysharing.Activity.IUEventActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
@@ -80,7 +82,7 @@ public class MyEventsFragment extends FragmentBase {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
-            CardMyEvent card = (CardMyEvent)cards.List().get(i);
+            final CardMyEvent card = (CardMyEvent)cards.List().get(i);
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_my_event, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -109,10 +111,20 @@ public class MyEventsFragment extends FragmentBase {
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v);
+                    onRowClick(v, card.getIdCard());
                 }
             });
             table.addView(row);
+        }
+    }
+
+    @Override
+    protected void onRowClick(View v, int rowId)
+    {
+        CardMyEvent card = (CardMyEvent) myEventCards.GetCard(rowId);
+        if(card != null)
+        {
+            OpenActivity(activity.getBaseContext(), IUEventActivity.class, card);
         }
     }
 
