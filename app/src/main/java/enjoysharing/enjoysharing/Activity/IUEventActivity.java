@@ -130,9 +130,12 @@ public class IUEventActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if(!isUpdate)
-            SwipeCloseActivity(IUEventActivity.this,HomeActivity.class);
+            SwipeUpCloseActivity(IUEventActivity.this,HomeActivity.class);
         else
+        {
             super.StandardOnBackPressed();
+            overridePendingTransition(0, R.anim.activity_exit_to_top);
+        }
     }
     // Used to store information event
     protected void SaveEvent()

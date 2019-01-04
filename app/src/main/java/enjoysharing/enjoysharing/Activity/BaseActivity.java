@@ -71,17 +71,29 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(0,0);
         //finish();
     }
-    // Enter in Activity with swipe from left to right
+    // Enter in Activity with swipe from Up to Down
+    public void SwipeDownOpenActivity(Context context, Class cl, CardBase card)
+    {
+        OpenActivity(context,cl, card);
+        overridePendingTransition(R.anim.activity_enter_from_top, 0);
+    }
+    // Enter in Activity with swipe from right to left
     protected void SwipeOpenActivity(Context context, Class cl)
     {
         OpenActivity(context,cl);
         overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
     }
-    // Back to Activity with swipe from right to left
+    // Back to Activity with swipe from left to right
     protected void SwipeCloseActivity(Context context, Class cl)
     {
         OpenActivity(context,cl);
         overridePendingTransition(R.anim.activity_enter_from_left, R.anim.activity_exit_to_right);
+    }
+    // Back to Activity with swipe from Down to Up
+    protected void SwipeUpCloseActivity(Context context, Class cl)
+    {
+        OpenActivity(context,cl);
+        overridePendingTransition(0, R.anim.activity_exit_to_top);
     }
     // Switch Activity
     protected void OpenActivity(Context context, Class cl)

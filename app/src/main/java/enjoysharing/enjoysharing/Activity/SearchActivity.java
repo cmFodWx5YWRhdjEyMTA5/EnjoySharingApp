@@ -140,6 +140,11 @@ public class SearchActivity extends BaseActivity {
         mProgressView = findViewById(R.id.search_progress);
     }
 
+    @Override
+    public void onBackPressed() {
+        SwipeCloseActivity(SearchActivity.this,HomeActivity.class);
+    }
+
     protected void SearchCards()
     {
         if (mTask != null) {
@@ -176,7 +181,7 @@ public class SearchActivity extends BaseActivity {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
-            CardHome card = (CardHome)cards.List().get(i);
+            final CardHome card = (CardHome)cards.List().get(i);
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -197,6 +202,7 @@ public class SearchActivity extends BaseActivity {
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
@@ -204,9 +210,10 @@ public class SearchActivity extends BaseActivity {
                     onRequestPartecipate(v);
                 }
             });
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v);
+                    onRowClick(v, card.getIdCard());
                 }
             });
             // TEST SWIPE
@@ -214,6 +221,16 @@ public class SearchActivity extends BaseActivity {
             swipeListener.SetOriginals(relLayout);
             relLayout.setOnTouchListener(swipeListener);*/
             table.addView(row);
+        }
+    }
+
+    @Override
+    protected void onRowClick(View v, int rowId)
+    {
+        CardHome card = (CardHome) searchCards.GetCard(rowId);
+        if(card != null)
+        {
+            SwipeDownOpenActivity(this, HomeDetailActivity.class, card);
         }
     }
 }

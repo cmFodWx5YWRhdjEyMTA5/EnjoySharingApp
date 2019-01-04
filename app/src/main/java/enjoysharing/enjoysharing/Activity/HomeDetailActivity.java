@@ -144,5 +144,6 @@ public class HomeDetailActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.StandardOnBackPressed();
+        overridePendingTransition(0, R.anim.activity_exit_to_top);
     }
 }

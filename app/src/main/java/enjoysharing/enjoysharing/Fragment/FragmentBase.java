@@ -72,6 +72,11 @@ public class FragmentBase extends Fragment {
         }
         return vMain;
     }
+    // Enter in Activity with swipe from Up to Down
+    protected void SwipeDownOpenActivity(Context context, Class cl, CardBase card)
+    {
+        activity.SwipeDownOpenActivity(context, cl, card);
+    }
     // Switch Activity
     protected void OpenActivity(Context context, Class cl, CardBase card)
     {

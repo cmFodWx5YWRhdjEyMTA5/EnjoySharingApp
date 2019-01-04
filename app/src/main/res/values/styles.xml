@@ -4,6 +4,7 @@
     <style name="EnjoySharingTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="colorPrimary">@color/baseColor</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

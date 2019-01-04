@@ -127,7 +127,7 @@ public class HomeFragment extends FragmentBase {
         CardHome card = (CardHome) homeCards.GetCard(rowId);
         if(card != null)
         {
-            OpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
+            SwipeDownOpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
         }
     }
 

@@ -128,7 +128,7 @@ public class SendRequestFragment extends FragmentBase {
         CardRequest card = (CardRequest) sendRequestCards.GetCard(rowId);
         if(card != null)
         {
-            OpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
+            SwipeDownOpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
         }
     }
 

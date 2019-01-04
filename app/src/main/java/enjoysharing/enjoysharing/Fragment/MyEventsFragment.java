@@ -124,7 +124,7 @@ public class MyEventsFragment extends FragmentBase {
         CardMyEvent card = (CardMyEvent) myEventCards.GetCard(rowId);
         if(card != null)
         {
-            OpenActivity(activity.getBaseContext(), IUEventActivity.class, card);
+            SwipeDownOpenActivity(activity.getBaseContext(), IUEventActivity.class, card);
         }
     }
 
