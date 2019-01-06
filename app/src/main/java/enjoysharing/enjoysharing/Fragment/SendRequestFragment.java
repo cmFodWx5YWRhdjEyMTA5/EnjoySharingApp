@@ -12,10 +12,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import enjoysharing.enjoysharing.Activity.HomeDetailActivity;
+import enjoysharing.enjoysharing.Activity.CardDetailActivity;
+import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.R;
 
@@ -96,6 +96,12 @@ public class SendRequestFragment extends FragmentBase {
             txtTitleCardSendRequest.setText(card.getTitle());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);
+                }
+            });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
@@ -128,7 +134,7 @@ public class SendRequestFragment extends FragmentBase {
         CardRequest card = (CardRequest) sendRequestCards.GetCard(rowId);
         if(card != null)
         {
-            SwipeDownOpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
+            SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
         }
     }
 

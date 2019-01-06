@@ -14,7 +14,7 @@ import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.R;
 
-public class HomeDetailActivity extends BaseActivity {
+public class CardDetailActivity extends BaseActivity {
 
     protected boolean isSendRequest = false;
     protected TextView txtTitleHomeDetail;
@@ -26,11 +26,11 @@ public class HomeDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SetContext(HomeDetailActivity.this);
+        SetContext(CardDetailActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_detail);
+        setContentView(R.layout.activity_card_detail);
 
-        business = new BusinessBase(HomeDetailActivity.this);
+        business = new BusinessBase(CardDetailActivity.this);
 
         // Toolbar user for back button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_homedetail);
@@ -75,7 +75,7 @@ public class HomeDetailActivity extends BaseActivity {
         CardBase cardBase = (CardBase)i.getSerializableExtra("CardPassed");
         if(cardBase != null && cardBase instanceof CardHome)
         {
-            CardHome card = (CardHome) cardBase;
+            final CardHome card = (CardHome) cardBase;
             txtUserHomeDetail.setText(card.getUsername());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
@@ -84,14 +84,10 @@ public class HomeDetailActivity extends BaseActivity {
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        if(event.getRawX() <= txtNumberPerson.getTotalPaddingLeft()) {
-                            // your action for drawable click event
-                            // TODO
-                            // Open list of persons
-                            int i = 0;
-                            return true;
-                        }
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // Open list of persons
+                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
+                        return true;
                     }
                     return false;
                 }
@@ -106,7 +102,7 @@ public class HomeDetailActivity extends BaseActivity {
         if(cardBase != null && cardBase instanceof CardRequest)
         {
             isSendRequest = true;
-            CardRequest card = (CardRequest) cardBase;
+            final CardRequest card = (CardRequest) cardBase;
             txtUserHomeDetail.setText(card.getUsername());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
@@ -116,14 +112,10 @@ public class HomeDetailActivity extends BaseActivity {
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        if(event.getRawX() <= txtNumberPerson.getTotalPaddingLeft()) {
-                            // your action for drawable click event
-                            // TODO
-                            // Open list of persons
-                            int i = 0;
-                            return true;
-                        }
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // Open list of persons
+                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, true);
+                        return true;
                     }
                     return false;
                 }

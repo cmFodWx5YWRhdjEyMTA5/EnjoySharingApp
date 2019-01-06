@@ -46,7 +46,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.HomeActivity" />
         </activity>
-        <activity android:name=".Activity.HomeDetailActivity"></activity>
+        <activity android:name=".Activity.CardDetailActivity" />
+        <activity android:name=".Activity.RequestListActivity"></activity>
     </application>
 
 </manifest>

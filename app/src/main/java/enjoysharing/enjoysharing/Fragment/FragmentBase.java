@@ -72,6 +72,10 @@ public class FragmentBase extends Fragment {
         }
         return vMain;
     }
+    protected void OpenRequestList(Context context, Class cl, CardBase card, boolean canManageList)
+    {
+        activity.OpenRequestList(context, cl, card, canManageList);
+    }
     // Enter in Activity with swipe from Up to Down
     protected void SwipeDownOpenActivity(Context context, Class cl, CardBase card)
     {

@@ -1,6 +1,5 @@
 package enjoysharing.enjoysharing.Fragment;
 
-
 import android.os.Bundle;
 import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
@@ -13,7 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import enjoysharing.enjoysharing.Activity.HomeDetailActivity;
+import enjoysharing.enjoysharing.Activity.CardDetailActivity;
+import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
@@ -98,8 +98,14 @@ public class HomeFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
-            TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
+            final TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);
+                }
+            });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
@@ -127,7 +133,7 @@ public class HomeFragment extends FragmentBase {
         CardHome card = (CardHome) homeCards.GetCard(rowId);
         if(card != null)
         {
-            SwipeDownOpenActivity(activity.getBaseContext(), HomeDetailActivity.class, card);
+            SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
         }
     }
 

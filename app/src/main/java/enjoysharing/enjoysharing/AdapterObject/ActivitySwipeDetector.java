@@ -3,23 +3,42 @@ package enjoysharing.enjoysharing.AdapterObject;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableRow;
-
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 
 public class ActivitySwipeDetector implements View.OnTouchListener {
 
     private BaseActivity activity;
     private int originalWidth, originalMarginLeft, originalMarginRight;
-    private boolean rightOk = false, leftOk = false;  // True if left/right swipe finish (move 200/400)
-    static final int MIN_DISTANCE = 100;
+    private boolean rightOk = false, leftOk = false;  // True if left/right swipe finish (move 100/200)
+    static final int MIN_DISTANCE = 50, MAX_MARING_LEFT = 60, MAX_MARGIN_RIGHT = 100;
     private float downX, downY, upX, upY;
     private float deltaXRightSum, deltaXLeftSum;
+    protected boolean canManageList;
 
-    public void SetOriginals(View v) {
+    public void SetOriginals(View v, boolean canManageList) {
         TableRow.LayoutParams originalMargins = (TableRow.LayoutParams)v.getLayoutParams();
         originalWidth = v.getWidth();  // 0
         originalMarginLeft = originalMargins.leftMargin;  // 0
         originalMarginRight = originalMargins.rightMargin;  // 0
+        this.canManageList = canManageList;
+    }
+
+    public void SetAccepted(View v)
+    {
+        leftOk = true;
+        rightOk = false;
+        if(originalWidth == 0)
+            originalWidth = v.getWidth();
+        ResetWidth(v);
+    }
+
+    public void SetDecined(View v)
+    {
+        leftOk = false;
+        rightOk = true;
+        if(originalWidth == 0)
+            originalWidth = v.getWidth();
+        ResetWidth(v);
     }
 
     public ActivitySwipeDetector(BaseActivity activity){
@@ -32,7 +51,7 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
             originalWidth = v.getWidth();
         deltaX = -deltaX;
         TableRow.LayoutParams params = (TableRow.LayoutParams)v.getLayoutParams();
-        int limit = leftOk ? 400 : 200;
+        int limit = leftOk ? MAX_MARING_LEFT+100 : MAX_MARING_LEFT;
         if(!rightOk)
         {
             deltaXRightSum += deltaX;
@@ -44,21 +63,21 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
                 if(rightMargin <= 0) rightMargin = 0;
             }
             if(rightMargin == 0){
-                leftMargin = (int)(params.leftMargin+(deltaXRightSum-(limit-200)));
+                leftMargin = (int)(params.leftMargin+(deltaXRightSum-(limit-100)));
             }
             int w = (int) (v.getWidth()-deltaXRightSum);
             if(leftOk)
             {
-                if(deltaXRightSum < 200)
+                if(deltaXRightSum < MAX_MARING_LEFT)
                     w = (int) (v.getWidth()+deltaXRightSum);
                 else
-                    w = (int) (v.getWidth()-(deltaXRightSum-200));
+                    w = (int) (v.getWidth()-(deltaXRightSum-MAX_MARING_LEFT));
             }
             if(deltaXRightSum >= limit) {
-                activity.onRightSwipe(v);
+                activity.onRightSwipe(v,leftOk);
                 rightOk = true;
                 leftOk = false;
-                leftMargin = 200;
+                leftMargin = MAX_MARING_LEFT;
             }
             params.setMargins(leftMargin, params.topMargin, rightMargin, params.bottomMargin);
             params.width = w;
@@ -70,7 +89,7 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
         if(originalWidth == 0)
             originalWidth = v.getWidth();
         TableRow.LayoutParams params = (TableRow.LayoutParams)v.getLayoutParams();
-        int limit = rightOk ? 400 : 200;
+        int limit = rightOk ? MAX_MARGIN_RIGHT+100 : MAX_MARGIN_RIGHT;
         if(!leftOk)
         {
             deltaXLeftSum += deltaX;
@@ -84,21 +103,21 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
                 }
             }
             if(leftMargin == 0){
-                rightMargin = (int)(params.rightMargin+(deltaXLeftSum-(limit-200)));
+                rightMargin = (int)(params.rightMargin+(deltaXLeftSum-(limit-MAX_MARGIN_RIGHT)));
             }
             int w = (int) (v.getWidth()-deltaXLeftSum);
             if(rightOk)
             {
-                if(deltaXLeftSum < 200)
+                if(deltaXLeftSum < MAX_MARGIN_RIGHT)
                     w = (int) (v.getWidth()+deltaXLeftSum);
                 else
-                    w = (int) (v.getWidth()-(deltaXLeftSum-200));
+                    w = (int) (v.getWidth()-(deltaXLeftSum-MAX_MARGIN_RIGHT));
             }
             if(deltaXLeftSum >= limit) {
-                activity.onLeftSwipe(v);
+                activity.onLeftSwipe(v,rightOk);
                 leftOk = true;
                 rightOk = false;
-                rightMargin = 200;
+                rightMargin = MAX_MARGIN_RIGHT;
             }
             params.setMargins(leftMargin, params.topMargin, rightMargin, params.bottomMargin);
             params.width = w;
@@ -112,15 +131,16 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
 
     protected void ResetWidth(View v) {
         TableRow.LayoutParams params = (TableRow.LayoutParams)v.getLayoutParams();
-        int marginL = rightOk ? originalMarginLeft + 200 : originalMarginLeft;
-        int marginR = leftOk ? originalMarginRight + 200 : originalMarginRight;
-        int w = rightOk || leftOk ? originalWidth - 200 : originalWidth;
+        int marginL = rightOk ? originalMarginLeft + MAX_MARING_LEFT : originalMarginLeft;
+        int marginR = leftOk ? originalMarginRight + MAX_MARGIN_RIGHT : originalMarginRight;
+        int w = rightOk || leftOk ? originalWidth - 100 : originalWidth;
         params.setMargins(marginL, params.topMargin, marginR, params.bottomMargin);
         params.width = w;
         v.setLayoutParams(params);
     }
 
     public boolean onTouch(View v, MotionEvent event) {
+        if(!canManageList) return false;
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN: {
                 downX = event.getX();
@@ -140,7 +160,7 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
                     if(Math.abs(deltaX) > MIN_DISTANCE){
                         // left or right
                         if(deltaX < 0) { this.onRightSwipe(deltaX,v); return true; }
-                        if(deltaX > 0) { this.onLeftSwipe(deltaX,v); return true; }
+                        if(deltaX > 0 && activity.BeforeSwipe()) { this.onLeftSwipe(deltaX,v); return true; }
                     }
                     else {
                         return false; // We don't consume the event

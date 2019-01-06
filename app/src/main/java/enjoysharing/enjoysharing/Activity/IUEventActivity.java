@@ -104,7 +104,7 @@ public class IUEventActivity extends BaseActivity {
         CardBase cardBase = (CardBase)i.getSerializableExtra("CardPassed");
         if(cardBase != null && cardBase instanceof CardMyEvent)
         {
-            CardMyEvent card = (CardMyEvent) cardBase;
+            final CardMyEvent card = (CardMyEvent) cardBase;
             isUpdate = true;
             txtTitleIUEvent.setText(card.getTitle());
             txtContentIUEvent.setText(card.getContent());
@@ -115,10 +115,8 @@ public class IUEventActivity extends BaseActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_UP) {
                         if(event.getRawX() <= txtNumberPerson.getTotalPaddingLeft()) {
-                            // your action for drawable click event
-                            // TODO
                             // Open list of persons
-                            int i = 0;
+                            OpenRequestList(IUEventActivity.this,RequestListActivity.class, card, true);
                             return true;
                         }
                     }
@@ -156,10 +154,8 @@ public class IUEventActivity extends BaseActivity {
         txtTitleIUEvent.setError(null);
         txtContentIUEvent.setError(null);
         txtNumberPerson.setError(null);
-        // Only for try
-        int genderPosition = business.GetGenderIndex(genderIUEvent.getSelectedItem().toString());
 
-        // Store values at the time of the login attempt.
+        // Store values to check
         String title = txtTitleIUEvent.getText().toString();
         String content = txtContentIUEvent.getText().toString();
         String numberPerson = txtNumberPerson.getText().toString();

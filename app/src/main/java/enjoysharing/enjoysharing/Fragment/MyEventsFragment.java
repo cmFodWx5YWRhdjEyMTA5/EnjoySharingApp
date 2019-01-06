@@ -13,6 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import enjoysharing.enjoysharing.Activity.IUEventActivity;
+import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
@@ -102,8 +103,8 @@ public class MyEventsFragment extends FragmentBase {
             txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
             txtNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // TODO
-                    // Open list requests
+                    // Open list of persons
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, true);
                 }
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);

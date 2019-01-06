@@ -19,7 +19,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import enjoysharing.enjoysharing.AdapterObject.ActivitySwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
@@ -230,7 +229,7 @@ public class SearchActivity extends BaseActivity {
         CardHome card = (CardHome) searchCards.GetCard(rowId);
         if(card != null)
         {
-            SwipeDownOpenActivity(this, HomeDetailActivity.class, card);
+            SwipeDownOpenActivity(this, CardDetailActivity.class, card);
         }
     }
 }

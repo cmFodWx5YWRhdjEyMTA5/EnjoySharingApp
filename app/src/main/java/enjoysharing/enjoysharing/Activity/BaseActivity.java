@@ -36,7 +36,7 @@ public class BaseActivity extends AppCompatActivity {
     protected RequestTask mTask = null;
     // Used to switch visibility on progress bar and main form
     protected View mProgressView;
-    protected FrameLayout mFormView;
+    protected View mFormView;
     // Used to call finish method on post execute request
     protected boolean finishOnPostExecute = false;
     // Used to checkk if request success
@@ -77,6 +77,12 @@ public class BaseActivity extends AppCompatActivity {
         OpenActivity(context,cl, card);
         overridePendingTransition(R.anim.activity_enter_from_top, 0);
     }
+    // Enter in Activity with swipe from right to left without finish current activity
+    public void SwipeOpenActivityNoFinish(Context context, Class cl)
+    {
+        OpenActivityNoFinish(context,cl);
+        overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
+    }
     // Enter in Activity with swipe from right to left
     protected void SwipeOpenActivity(Context context, Class cl)
     {
@@ -112,6 +118,17 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(0,0);
         //finish();
     }
+    // Used to open ListOfRequest
+    public void OpenRequestList(Context context, Class cl, CardBase cardPassed, boolean canManageList)
+    {
+        // SwipeOpenActivityNoFinish
+        // OpenActivityNoFinish + pass value + transition
+        Intent intent = new Intent(context, cl);
+        intent.putExtra("canManageList",canManageList);
+        intent.putExtra("cardPassed",cardPassed);
+        startActivity(intent);
+        overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
+    }
     // Generally back to homepage
     @Override
     public void onBackPressed() {
@@ -126,8 +143,9 @@ public class BaseActivity extends AppCompatActivity {
     protected void onRowClick(View v, int rowId)
     { }
     // Used for swipe rows (requests)
-    public void onRightSwipe(View v){ }
-    public void onLeftSwipe(View v){ }
+    public boolean BeforeSwipe() { return true; }
+    public void onRightSwipe(View v, boolean wasLeft){ }
+    public void onLeftSwipe(View v, boolean wasRight){ }
     // Used for click on request partecipate
     // TODO
     // Manage click on request partecipate
@@ -143,14 +161,14 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show, final FrameLayout formView, final View progressView) {
+    public void showProgress(final boolean show, final View formView, final View progressView) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         // ATTENZIONE
         // All'apertura dell'activity main, il tab home non viene caricato subito, quindi non avrei il mFormView
         // In questo caso lascio quello di default
-        final FrameLayout frame = formView == null ? mFormView : formView;
+        final View frame = formView == null ? mFormView : formView;
         final View progress = progressView == null ? mProgressView : progressView;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);

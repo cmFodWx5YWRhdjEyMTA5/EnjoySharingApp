@@ -4,10 +4,15 @@ import android.content.res.Configuration;
 import android.widget.Button;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
+import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecivedCollection;
+import enjoysharing.enjoysharing.DataObject.RequestUser;
+import enjoysharing.enjoysharing.DataObject.User;
+import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;
 
 public class BusinessBase {
@@ -20,14 +25,28 @@ public class BusinessBase {
     }
     // TODO
     // Remove when call server is ok
+    public UserCollection GetRequestList()
+    {
+        UserCollection users = new UserCollection();
+        int idCard = 0;
+        users.Add(new RequestUser(idCard++,"Utente 1",1));
+        users.Add(new RequestUser(idCard++,"Utente 2",0));
+        users.Add(new RequestUser(idCard++,"Utente 3",1));
+        users.Add(new RequestUser(idCard++,"Utente 4",2));
+        users.Add(new RequestUser(idCard++,"Utente 5",2));
+        users.Add(new RequestUser(idCard++,"Utente 6",0));
+        return users;
+    }
+    // TODO
+    // Remove when call server is ok
     public CardCollection GetHomeCards()
     {
         CardCollection cards = new CardCollection();
-        int idCard = 0;
-        cards.Add(new CardHome(idCard++,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
-        cards.Add(new CardHome(idCard++,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
-        cards.Add(new CardHome(idCard++,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
-        cards.Add(new CardHome(idCard++,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        int idCard = 0, idEvent = 0;
+        cards.Add(new CardHome(idCard++, idEvent++,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardHome(idCard++, idEvent++,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
+        cards.Add(new CardHome(idCard++, idEvent++,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
+        cards.Add(new CardHome(idCard++, idEvent++,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
     // TODO
@@ -35,11 +54,11 @@ public class BusinessBase {
     public CardCollection GetMyEventsCards()
     {
         CardCollection cards = new CardCollection();
-        int idCard = 0;
-        cards.Add(new CardMyEvent(idCard++,activity.GetUser().getUsername(),"Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
-        cards.Add(new CardMyEvent(idCard++,activity.GetUser().getUsername(),"Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 6, 6));
-        cards.Add(new CardMyEvent(idCard++,activity.GetUser().getUsername(),"Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 4, 6));
-        cards.Add(new CardMyEvent(idCard++,activity.GetUser().getUsername(),"Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        int idCard = 0, idEvent = 0;
+        cards.Add(new CardMyEvent(idCard++, idEvent++,activity.GetUser().getUsername(),"Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardMyEvent(idCard++, idEvent++,activity.GetUser().getUsername(),"Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 6, 6));
+        cards.Add(new CardMyEvent(idCard++, idEvent++,activity.GetUser().getUsername(),"Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 4, 6));
+        cards.Add(new CardMyEvent(idCard++, idEvent++,activity.GetUser().getUsername(),"Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
     // TODO
@@ -48,10 +67,10 @@ public class BusinessBase {
     {
         CardCollection cards = new CardCollection();
         int idCard = 0;
-        cards.Add(new CardRequest(idCard++,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
-        cards.Add(new CardRequest(idCard++,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
-        cards.Add(new CardRequest(idCard++,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
-        cards.Add(new CardRequest(idCard++,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        cards.Add(new CardRequest(idCard++, 1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardRequest(idCard++, 1,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
+        cards.Add(new CardRequest(idCard++, 2,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
+        cards.Add(new CardRequest(idCard++, 1,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
     // Used to convert width based on percentage
@@ -146,5 +165,15 @@ public class BusinessBase {
     public String[] GetSpinnerItems(int arrayName)
     {
         return activity.getBaseContext().getResources().getStringArray(arrayName);
+    }
+
+    public CardRequestRecivedCollection GetGroupedCards(CardCollection cards)
+    {
+        CardRequestRecivedCollection resultCards = new CardRequestRecivedCollection();
+        for(CardBase c : cards.List())
+        {
+            resultCards.Add(c);
+        }
+        return resultCards;
     }
 }

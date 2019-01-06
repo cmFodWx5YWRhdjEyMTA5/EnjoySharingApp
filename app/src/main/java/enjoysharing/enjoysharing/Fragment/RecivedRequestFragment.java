@@ -9,9 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import enjoysharing.enjoysharing.Activity.CardDetailActivity;
+import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecivedCollection;
 import enjoysharing.enjoysharing.R;
 
 public class RecivedRequestFragment extends FragmentBase {
@@ -35,7 +40,8 @@ public class RecivedRequestFragment extends FragmentBase {
         LoadRecivedRequests();
     }
 
-    protected CardCollection recivedRequestCards;
+    protected CardRequestRecivedCollection recivedRequestCards;
+    protected CardCollection cardCollection;
 
     @Override
     protected void ShowProgress(boolean state)
@@ -48,7 +54,7 @@ public class RecivedRequestFragment extends FragmentBase {
     {
 
         if (mTask != null) {
-            recivedRequestCards = new CardCollection();
+            recivedRequestCards = new CardRequestRecivedCollection();
             DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
             return;
         }
@@ -61,7 +67,8 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        recivedRequestCards = business.GetRequestCards();
+        cardCollection = business.GetRequestCards();
+        recivedRequestCards = business.GetGroupedCards(cardCollection);
     }
 
     @Override
@@ -72,32 +79,40 @@ public class RecivedRequestFragment extends FragmentBase {
     }
 
     // Used by requests tabs
-    protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
+    protected void DrawCardsOnTable(CardRequestRecivedCollection cards, TableLayout table)
     {
         table.removeAllViews();
-        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(100);
         for (int i=0; i<cards.List().size(); i++) {
-            CardRequest card = (CardRequest)cards.List().get(i);
+            final CardRequestRecived card = (CardRequestRecived)cards.List().get(i);
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
             TextView txtUserRecivedRequest = (TextView)relLayout.findViewById(R.id.txtUserRecivedRequest);
             txtUserRecivedRequest.setWidth(txtUserTitleWidth);
-            txtUserRecivedRequest.setText(card.getUsername());
+            txtUserRecivedRequest.setText(card.getUsernames());
             txtUserRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // TODO
-                    // Open user detail
+                    // Open list of persons
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getIdCardEvent()), true);
                 }
             });
+            TextView txtRecivedRequest = (TextView)relLayout.findViewById(R.id.txtRecivedRequest);
+            // Set width based on screen percentage
+            txtRecivedRequest.setWidth(txtUserTitleWidth);
+            if(card.IsMultiUsers()) txtRecivedRequest.setText(R.string.txtMultiRequestRecived);
             TextView txtTitleRecivedRequest = (TextView)relLayout.findViewById(R.id.txtTitleRecivedRequest);
             // Set width based on screen percentage
             txtTitleRecivedRequest.setWidth(txtUserTitleWidth);
             txtTitleRecivedRequest.setText(card.getTitle());
             txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // TODO
                     // Open event detail
+                    CardRequest cardReq = (CardRequest) cardCollection.GetCard(card.getIdCardEvent());
+                    if(cardReq != null)
+                    {
+                        SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, cardReq);
+                    }
                 }
             });
             final Button btnConfirmRequest = (Button)relLayout.findViewById(R.id.btnConfirmRequest);
@@ -128,7 +143,7 @@ public class RecivedRequestFragment extends FragmentBase {
     {
         // Server call
         onRequestActionClick(btnConfirmRequest, btnDeclineRequest);
-        txtConfirmDeclineRequest.setText("Richiesta accettata");
+        txtConfirmDeclineRequest.setText(R.string.txtConfirmedRequest);
         txtConfirmDeclineRequest.setVisibility(View.VISIBLE);
     }
     // Used to decline request
@@ -138,7 +153,7 @@ public class RecivedRequestFragment extends FragmentBase {
     {
         // Server call
         onRequestActionClick(btnConfirmRequest, btnDeclineRequest);
-        txtConfirmDeclineRequest.setText("Richiesta rifiutata");
+        txtConfirmDeclineRequest.setText(R.string.txtDeclinedRequest);
         txtConfirmDeclineRequest.setVisibility(View.VISIBLE);
     }
     // Used to disable buttons
