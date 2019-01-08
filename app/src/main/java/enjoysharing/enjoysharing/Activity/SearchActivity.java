@@ -215,10 +215,6 @@ public class SearchActivity extends BaseActivity {
                     onRowClick(v, card.getIdCard());
                 }
             });
-            // TEST SWIPE
-            /*ActivitySwipeDetector swipeListener = new ActivitySwipeDetector(SearchActivity.this);
-            swipeListener.SetOriginals(relLayout);
-            relLayout.setOnTouchListener(swipeListener);*/
             table.addView(row);
         }
     }

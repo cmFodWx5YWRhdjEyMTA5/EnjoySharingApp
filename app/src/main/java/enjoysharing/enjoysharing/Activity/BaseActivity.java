@@ -145,7 +145,7 @@ public class BaseActivity extends AppCompatActivity {
     // Used for swipe rows (requests)
     public boolean BeforeSwipe() { return true; }
     public void onRightSwipe(View v, boolean wasLeft){ }
-    public void onLeftSwipe(View v, boolean wasRight){ }
+    public void onLeftSwipe(View v){ }
     // Used for click on request partecipate
     // TODO
     // Manage click on request partecipate

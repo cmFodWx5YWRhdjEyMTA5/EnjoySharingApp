@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EnjoySharing.iml" filepath="$PROJECT_DIR$/EnjoySharing.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circularimageview/circularimageview.iml" filepath="$PROJECT_DIR$/circularimageview/circularimageview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circularimageview-example/circularimageview-example.iml" filepath="$PROJECT_DIR$/circularimageview-example/circularimageview-example.iml" />
     </modules>
   </component>
 </project>
