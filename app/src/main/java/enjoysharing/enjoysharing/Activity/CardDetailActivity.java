@@ -12,6 +12,7 @@ import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
 import enjoysharing.enjoysharing.R;
 
 public class CardDetailActivity extends BaseActivity {
@@ -63,10 +64,14 @@ public class CardDetailActivity extends BaseActivity {
                 onRequestPartecipate(v);
             }
         });
+        // ATTENZIONE
+        // Lasciare questo ordine di chiamate per il buon funzionamento!
         // Check if is home event
         LoadHomeEventDetails();
         // Check if is send request event
         LoadRequestEventDetails();
+        // Check if is recived request event
+        LoadRequestRecivedEventDetails();
     }
     // Used to load details of HOME EVENT if present
     protected void LoadHomeEventDetails()
@@ -93,8 +98,35 @@ public class CardDetailActivity extends BaseActivity {
                 }
             });
         }
+    }// Used to load details of REQUEST EVENT RECIVED if present
+    protected void LoadRequestRecivedEventDetails()
+    {
+        Intent i = getIntent();
+        CardBase cardBase = (CardBase)i.getSerializableExtra("CardPassed");
+        if(cardBase != null && cardBase instanceof CardRequestRecived)
+        {
+            isSendRequest = false;
+            final CardRequestRecived card = (CardRequestRecived) cardBase;
+            txtUserHomeDetail.setText(card.getUsername());
+            txtTitleHomeDetail.setText(card.getTitle());
+            txtContentHomeDetail.setText(card.getContent());
+            txtNumberPerson.setText(card.getRequestNumber()+"/"+card.getMaxRequest());
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            btnPartecipateRequest.setVisibility(View.INVISIBLE);
+            txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // Open list of persons
+                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, true);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
-    // Used to load details of REQUEST EVENT if present
+    // Used to load details of REQUEST EVENT SENT if present
     protected void LoadRequestEventDetails()
     {
         Intent i = getIntent();
@@ -114,7 +146,7 @@ public class CardDetailActivity extends BaseActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN) {
                         // Open list of persons
-                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, true);
+                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
                         return true;
                     }
                     return false;

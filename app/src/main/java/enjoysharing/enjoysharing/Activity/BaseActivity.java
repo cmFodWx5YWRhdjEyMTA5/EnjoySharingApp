@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
@@ -55,6 +54,15 @@ public class BaseActivity extends AppCompatActivity {
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
     }
+    // Used when go back to an activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        OnReloadActivity();
+    }
+    // Used when activity reloaded
+    protected void OnReloadActivity()
+    { }
     // Used to open activity and pass Card
     protected void SwipeOpenActivity(Context context, Class cl, CardBase card)
     {
@@ -67,7 +75,7 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(context, cl);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("CardPassed", card);
-        startActivity(intent);
+        startActivityForResult(intent,1);
         overridePendingTransition(0,0);
         //finish();
     }
@@ -114,7 +122,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void OpenActivityNoFinish(Context context, Class cl)
     {
         Intent intent = new Intent(context, cl);
-        startActivity(intent);
+        startActivityForResult(intent,1);
         overridePendingTransition(0,0);
         //finish();
     }
@@ -126,9 +134,10 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(context, cl);
         intent.putExtra("canManageList",canManageList);
         intent.putExtra("cardPassed",cardPassed);
-        startActivity(intent);
+        startActivityForResult(intent,1);
         overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
     }
+
     // Generally back to homepage
     @Override
     public void onBackPressed() {

@@ -81,7 +81,6 @@
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_person_custom"
                         android:gravity="center_vertical"
-                        android:text="1/5"
                         android:textSize="16dp" />
 
                     <ImageView

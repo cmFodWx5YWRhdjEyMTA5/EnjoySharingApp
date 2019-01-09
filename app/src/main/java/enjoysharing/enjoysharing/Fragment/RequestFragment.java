@@ -19,6 +19,7 @@ public class RequestFragment extends FragmentBase {
     // Request Fragments object
     protected RecivedRequestFragment recivedRequestFragment;
     protected SendRequestFragment sendRequestFragment;
+    protected FragmentBase currentFragment;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -35,6 +36,10 @@ public class RequestFragment extends FragmentBase {
     public void StartFragment()
     {
         nav_menu_request.setSelectedItemId(R.id.nav_recived_request_home);
+    }
+    public void ReloadCurrentTab()
+    {
+        SetFragment(currentFragment);
     }
     // Used to create Navigation Elements
     protected void CreateNavigationElements()
@@ -86,6 +91,7 @@ public class RequestFragment extends FragmentBase {
 
     protected void SetFragment(FragmentBase fragment)
     {
+        currentFragment = fragment;
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.request_form, fragment);
         transaction.commit();

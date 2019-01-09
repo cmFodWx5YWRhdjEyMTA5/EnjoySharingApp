@@ -29,6 +29,7 @@ public class HomeActivity extends BaseActivity {
     protected HomeFragment homeFragment;
     protected RequestFragment requestFragment;
     protected MyEventsFragment myEventsFragment;
+    protected int currentMenuPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,16 @@ public class HomeActivity extends BaseActivity {
         // Set default page (HOME)
         viewPager.setCurrentItem(0);
         CallStartFragment(0);
+    }
+    // Used when activity reloaded
+    @Override
+    protected void OnReloadActivity()
+    {
+        // Nel caso del tab Richieste devo ricaricare il subtab!
+        if(currentMenuPosition != 1)
+            CallStartFragment(currentMenuPosition);
+        else
+            requestFragment.ReloadCurrentTab();
     }
     // Used to create fragments
     protected void CreateFragments()
@@ -111,6 +122,7 @@ public class HomeActivity extends BaseActivity {
     // Used to call StartFragment of current fragment
     protected void CallStartFragment(int position)
     {
+        currentMenuPosition = position;
         ((ViewPagerAdapter)viewPager.getAdapter()).List().get(position).StartFragment();
     }
     // Used to set view pager for swipe touch screen
