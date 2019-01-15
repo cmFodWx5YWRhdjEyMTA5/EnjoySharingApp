@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EnjoySharing.iml" filepath="$PROJECT_DIR$/EnjoySharing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EnjoySharingApp.iml" filepath="$PROJECT_DIR$/EnjoySharingApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
