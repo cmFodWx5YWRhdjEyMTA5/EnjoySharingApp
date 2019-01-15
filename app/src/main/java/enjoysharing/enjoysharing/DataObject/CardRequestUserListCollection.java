@@ -3,41 +3,41 @@ package enjoysharing.enjoysharing.DataObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardRequestRecivedCollection {
+public class CardRequestUserListCollection {
 
-    protected List<CardRequestRecived> cards;
+    protected List<CardRequestUserList> cards;
 
     // Simple constructor
-    public CardRequestRecivedCollection()
+    public CardRequestUserListCollection()
     {
-        cards = new ArrayList<CardRequestRecived>();
+        cards = new ArrayList<CardRequestUserList>();
     }
 
-    public List<CardRequestRecived> List() { return cards; }
+    public List<CardRequestUserList> List() { return cards; }
     public void Clear() { cards.clear(); }
     public void Add(int idEvent, int idCardEvent, String username, String title)
     {
-        CardRequestRecived card = GetCard(idEvent);
+        CardRequestUserList card = GetCard(idEvent);
         if(card != null) card.AddUsername(username);
         else
         {
-            card = new CardRequestRecived(idEvent, idCardEvent, username, title);
+            card = new CardRequestUserList(idEvent, idCardEvent, username, title);
             cards.add(card);
         }
     }
     public void Add(CardBase card)
     {
-        CardRequestRecived cardFound = GetCard(card.getIdEvent());
+        CardRequestUserList cardFound = GetCard(card.getIdEvent());
         if(cardFound != null) cardFound.AddUsername(card.getUsername());
         else
         {
-            cardFound = new CardRequestRecived(card.getIdEvent(), card.getIdCard(), card.getUsername(), card.getTitle());
+            cardFound = new CardRequestUserList(card.getIdEvent(), card.getIdCard(), card.getUsername(), card.getTitle());
             cards.add(cardFound);
         }
     }
-    public CardRequestRecived GetCard(int idEvent)
+    public CardRequestUserList GetCard(int idEvent)
     {
-        for(CardRequestRecived card : cards)
+        for(CardRequestUserList card : cards)
         {
             if(card.getIdEvent() == idEvent)
                 return card;

@@ -1,6 +1,5 @@
 package enjoysharing.enjoysharing.Business;
 
-import android.content.res.Configuration;
 import android.widget.Button;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
@@ -9,9 +8,9 @@ import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecivedCollection;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.CardRequestUserListCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
-import enjoysharing.enjoysharing.DataObject.User;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;
 
@@ -71,6 +70,18 @@ public class BusinessBase {
         cards.Add(new CardRequest(idCard++, 1,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
         cards.Add(new CardRequest(idCard++, 2,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
         cards.Add(new CardRequest(idCard++, 1,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        return cards;
+    }
+    // TODO
+    // Remove when call server is ok
+    public CardCollection GetRequestRecivedCards()
+    {
+        CardCollection cards = new CardCollection();
+        int idCard = 0;
+        cards.Add(new CardRequestRecived(idCard++, 1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
+        cards.Add(new CardRequestRecived(idCard++, 1,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
+        cards.Add(new CardRequestRecived(idCard++, 2,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
+        cards.Add(new CardRequestRecived(idCard++, 1,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
     // Used to convert width based on percentage
@@ -167,9 +178,9 @@ public class BusinessBase {
         return activity.getBaseContext().getResources().getStringArray(arrayName);
     }
 
-    public CardRequestRecivedCollection GetGroupedCards(CardCollection cards)
+    public CardRequestUserListCollection GetGroupedCards(CardCollection cards)
     {
-        CardRequestRecivedCollection resultCards = new CardRequestRecivedCollection();
+        CardRequestUserListCollection resultCards = new CardRequestUserListCollection();
         for(CardBase c : cards.List())
         {
             resultCards.Add(c);

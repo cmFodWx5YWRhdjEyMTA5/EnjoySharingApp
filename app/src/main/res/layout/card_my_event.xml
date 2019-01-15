@@ -89,7 +89,6 @@
                 android:maxLines="3"
                 android:minLines="2"
                 android:singleLine="false"
-                android:text="Qui ci va un contenuto che per ora è un contenuto provvisorio molto molto molto lungo giusto per vedere come viene il layout, altrimenti risulta su una sola linea e sminchia tutto, stiamo a vedere va!"
                 android:textAlignment="textStart"
                 android:textSize="16dp" />
 
@@ -114,7 +113,6 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_person_custom"
                 android:gravity="center_vertical"
-                android:text="1/5"
                 android:textSize="16dp" />
 
             <ImageView

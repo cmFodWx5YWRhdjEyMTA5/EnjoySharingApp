@@ -198,6 +198,12 @@ public class SearchActivity extends BaseActivity {
             txtContentCardHome.setText(card.getContent());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(SearchActivity.this,RequestListActivity.class, card, false);
+                }
+            });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
@@ -215,10 +221,6 @@ public class SearchActivity extends BaseActivity {
                     onRowClick(v, card.getIdCard());
                 }
             });
-            // TEST SWIPE
-            /*ActivitySwipeDetector swipeListener = new ActivitySwipeDetector(SearchActivity.this);
-            swipeListener.SetOriginals(relLayout);
-            relLayout.setOnTouchListener(swipeListener);*/
             table.addView(row);
         }
     }

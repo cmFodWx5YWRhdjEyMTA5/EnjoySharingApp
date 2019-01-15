@@ -7,15 +7,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
-import enjoysharing.enjoysharing.AdapterObject.ActivitySwipeDetector;
+
+import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
@@ -26,7 +25,6 @@ public class RequestListActivity extends BaseActivity {
 
     protected EditText txtSearch;
     protected TableLayout tblRequestList;
-    protected List<ActivitySwipeDetector> adapterList;
     protected boolean canManageList;
     protected CardBase cardPassed;
 
@@ -123,7 +121,6 @@ public class RequestListActivity extends BaseActivity {
     {
         SetRequestInfo();
         tblRequestList.removeAllViews();
-        adapterList = new ArrayList();
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<users.List().size(); i++) {
             final RequestUser user = (RequestUser)users.List().get(i);
@@ -135,43 +132,23 @@ public class RequestListActivity extends BaseActivity {
             txtUsername.setWidth(txtUserTitleWidth);
             txtUsername.setText(user.getUsername());
 
+            ImageView imgUser = (ImageView) linLayout.findViewById(R.id.imgUser);
+
+            CardSwipeDetector swipeListener = new CardSwipeDetector(RequestListActivity.this, imgUser, row);
+            if(user.isAccepted()) swipeListener.SetAccepted();
+            if(user.isDeclined()) swipeListener.SetDecined();
+            swipeListener.CanManageList(canManageList);
+            linLayout.setOnTouchListener(swipeListener);
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v, user.getIdUser());
-                }
-            });
-            // TEST SWIPE
-            ActivitySwipeDetector swipeListener = new ActivitySwipeDetector(RequestListActivity.this);
-            swipeListener.SetOriginals(linLayout, canManageList && (cardPassed.getRequestNumber() < cardPassed.getMaxRequest()));
-            adapterList.add(swipeListener);
-
-            ViewTreeObserver observer = linLayout.getViewTreeObserver();
-
-            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                @Override
-                public void onGlobalLayout() {
-                    linLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    // Do what you need with yourView here...
-
-                    // Setto dopo perchè altrimenti mi sminchia tutte le righe
-                    for (int i=0; i<users.List().size(); i++) {
-                        final RequestUser user = (RequestUser)users.List().get(i);
-                        TableRow row = (TableRow) tblRequestList.getChildAt(i);
-                        LinearLayout linLayout = (LinearLayout)row.getChildAt(0);
-
-                        ActivitySwipeDetector swipeListener = adapterList.get(i);
-                        if(user.isAccepted()) swipeListener.SetAccepted(linLayout);
-                        if(user.isDeclined()) swipeListener.SetDecined(linLayout);
-                        linLayout.setOnTouchListener(swipeListener);
-                    }
                 }
             });
 
             tblRequestList.addView(row);
         }
     }
-    // Used when refuse request
     @Override
     public boolean BeforeSwipe()
     { return cardPassed.getRequestNumber() < cardPassed.getMaxRequest(); }
@@ -186,7 +163,7 @@ public class RequestListActivity extends BaseActivity {
     }
     // Used when accept request
     @Override
-    public void onLeftSwipe(View v, boolean wasRight)
+    public void onLeftSwipe(View v)
     {
         cardPassed.setRequestNumber(cardPassed.getRequestNumber()+1);
         SetRequestInfo();

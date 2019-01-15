@@ -9,14 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecivedCollection;
+import enjoysharing.enjoysharing.DataObject.CardRequestUserList;
+import enjoysharing.enjoysharing.DataObject.CardRequestUserListCollection;
 import enjoysharing.enjoysharing.R;
 
 public class RecivedRequestFragment extends FragmentBase {
@@ -40,7 +39,7 @@ public class RecivedRequestFragment extends FragmentBase {
         LoadRecivedRequests();
     }
 
-    protected CardRequestRecivedCollection recivedRequestCards;
+    protected CardRequestUserListCollection recivedRequestCards;
     protected CardCollection cardCollection;
 
     @Override
@@ -54,7 +53,7 @@ public class RecivedRequestFragment extends FragmentBase {
     {
 
         if (mTask != null) {
-            recivedRequestCards = new CardRequestRecivedCollection();
+            recivedRequestCards = new CardRequestUserListCollection();
             DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
             return;
         }
@@ -67,7 +66,7 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        cardCollection = business.GetRequestCards();
+        cardCollection = business.GetRequestRecivedCards();
         recivedRequestCards = business.GetGroupedCards(cardCollection);
     }
 
@@ -79,12 +78,12 @@ public class RecivedRequestFragment extends FragmentBase {
     }
 
     // Used by requests tabs
-    protected void DrawCardsOnTable(CardRequestRecivedCollection cards, TableLayout table)
+    protected void DrawCardsOnTable(CardRequestUserListCollection cards, TableLayout table)
     {
         table.removeAllViews();
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(100);
         for (int i=0; i<cards.List().size(); i++) {
-            final CardRequestRecived card = (CardRequestRecived)cards.List().get(i);
+            final CardRequestUserList card = (CardRequestUserList)cards.List().get(i);
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -108,7 +107,7 @@ public class RecivedRequestFragment extends FragmentBase {
             txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open event detail
-                    CardRequest cardReq = (CardRequest) cardCollection.GetCard(card.getIdCardEvent());
+                    CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getIdCardEvent());
                     if(cardReq != null)
                     {
                         SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, cardReq);
