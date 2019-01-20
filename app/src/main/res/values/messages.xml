@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="error_invalid_email">Indirizzo email non valido</string>
+    <string name="error_invalid_password">Password troppo corta</string>
+    <string name="error_incorrect_password">Password non corretta</string>
+    <string name="error_field_required">Campo obbligatorio</string>
+    <string name="permission_rationale">"Per usare il completamento automatico è richiesto
+    l'accesso ai contatti."
+    </string>
+
+
+
+</resources>

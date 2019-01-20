@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Request Received-->
     <!-- Login -->
     <string name="txtTitle">Enjoy Sharing</string>
     <string name="txtBoxEmail">Email</string>
@@ -26,10 +27,22 @@
     <string name="txtContentCardMyEvent">Contenuto</string>
 
     <!-- Request Received-->
-    <string name="txtRecivedRequest">Ha chiesto di partecipare all'evento</string>
+    <string name="txtRecivedRequest">ha chiesto di partecipare all\evento</string>
+    <string name="txtMultiRequestRecived">hanno chiesto di partecipare all\evento</string>
+    <!-- Aggiungere hanno chiesto-->
     <string name="btnConfirmRequest">Accetta Tutti</string>
     <string name="btnDeclineRequest">Rifiuta Tutti</string>
 
     <!-- Request Send-->
     <string name="btnPartecipateSendRequest">Annulla Richiesta</string>
+
+    <string name="txtRequestPartecipate">Partecipa</string>
+    <string name="txtRequestPartecipateReverse">Annulla richiesta</string>
+    <string name="txtRequestPartecipateReversed">Richiesta annullata</string>
+    <string name="txtConfirmRequest">Accetta Tutti</string>
+    <string name="txtDeclineRequest">Rifiuta Tutti</string>
+    <string name="txtConfirmedRequest">Tutte le richieste accettate</string>
+    <string name="txtDeclinedRequest">Tutte le richieste rifiutate</string>
+    <string name="txtBoxEmail">Email</string>
+
 </resources>
