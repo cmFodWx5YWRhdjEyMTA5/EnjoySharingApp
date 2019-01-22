@@ -3,6 +3,7 @@ package enjoysharing.enjoysharing.Activity;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
@@ -52,6 +53,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         // Set up the login form.
         String email = user.getEmail();
         String pw = user.getPassword();
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txtBoxEmail);
         mEmailView.setText(email);
         populateAutoComplete();
@@ -81,6 +83,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mProgressView = findViewById(R.id.login_progress);
 
         business = new BusinessJSON(LoginActivity.this);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Set up the login form.
+        String email = user.getEmail();
+        String pw = user.getPassword();
 
         if(email != null && email != "" && pw != null && pw != "")
             Login();
