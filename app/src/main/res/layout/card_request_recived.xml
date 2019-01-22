@@ -42,7 +42,7 @@
                 android:layout_alignStart="@+id/txtUserCardMyEvent"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="@string/txtRequestRecived"
+                android:text="@string/txtRecivedRequest"
                 android:textAlignment="textStart"
                 android:textSize="16dp" />
 
