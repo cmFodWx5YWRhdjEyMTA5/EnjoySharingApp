@@ -29,7 +29,7 @@ public class BusinessCallService {
     protected boolean executePost = false;
     protected boolean executeGet = false;
     // Questa variabile la uso per le esecuzioni a server spento!
-    protected boolean simulateCall = true;
+    protected boolean simulateCall = false;
 
     public BusinessCallService(String serviceURL, String servletName,ParameterCollection params,CurrentUser user, boolean executePost,boolean executeGet)
     {
