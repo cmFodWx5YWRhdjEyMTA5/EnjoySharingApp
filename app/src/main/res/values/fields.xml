@@ -1,35 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Login -->
-    <string name="txtTitle">Enjoy Sharing</string>
-    <string name="txtBoxEmail">Email</string>
-    <string name="txtBoxPassword">Password</string>
-    <string name="btnRegister">Registrati</string>
-    <string name="btnLogin">Connettiti</string>
-
-    <!-- Card Detail -->
-    <string name="txtTitleHomeDetail">Titolo Evento</string>
-    <string name="txtContentHomeDetail">Descrizione Evento</string>
-    <string name="btnPartecipateRequest">Partecipa</string>
-
-    <!-- Iuevent -->
-    <string name="txtTitleIUEvent">Titolo Evento</string>
-    <string name="txtContentIUEvent">Descrizione Evento</string>
-
-    <!-- Request List -->
-    <string name="txtSearch">Cerca</string>
-
-    <!-- Card Home-->
-    <string name="txtContentCardHome">Contenuto</string>
-
-    <!-- My Event-->
-    <string name="txtContentCardMyEvent">Contenuto</string>
-
-    <!-- Request Received-->
-    <string name="txtRecivedRequest">Ha chiesto di partecipare all'evento</string>
-    <string name="btnConfirmRequest">Accetta Tutti</string>
-    <string name="btnDeclineRequest">Rifiuta Tutti</string>
-
-    <!-- Request Send-->
-    <string name="btnPartecipateSendRequest">Annulla Richiesta</string>
 </resources>

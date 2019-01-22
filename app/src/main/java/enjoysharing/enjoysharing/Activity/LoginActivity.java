@@ -24,6 +24,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
+import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -77,6 +80,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mFormView = findViewById(R.id.login_form_layout);
         mProgressView = findViewById(R.id.login_progress);
 
+        business = new BusinessJSON(LoginActivity.this);
+
         if(email != null && email != "" && pw != null && pw != "")
             Login();
     }
@@ -85,7 +90,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     {
         if(attemptLogin())
         {
-            user.setUsername("Pippo");
+            if(retObj.getMessage() != null)
+            {
+                ParameterCollection params = business.GetUserInfo(retObj.getMessage());
+                user.setUsername(params.Get("username").toString());
+            }
+            else
+                user.setUsername("Utente");
             user.setEmail(mEmailView.getText().toString());
             user.setPassword(mPasswordView.getText().toString());
             user.SaveOnXMLFile();
@@ -184,10 +195,17 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mTask = new RequestTask();
+            mTask = new RequestTask(false, true, "UserServlet");
             finishOnPostExecute = true;
-            mTask.execute((Void) null);
-            return true;
+            try
+            {
+                return mTask.execute().get();
+            }
+            catch (Exception e)
+            {
+                retObj.setStateResponse(false);
+                return false;
+            }
         }
     }
 

@@ -17,8 +17,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
+import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 
 public class BaseActivity extends AppCompatActivity {
@@ -42,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
     public boolean requestSuccess;
     // Used to understand if is update
     protected boolean isUpdate = false;
+    // Used to retrieve result from service call
+    protected JSONServiceResponseOBJ retObj;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -227,38 +232,48 @@ public class BaseActivity extends AppCompatActivity {
         // To use Parameter Collection as input
     protected class RequestTask extends AsyncTask<Void, Void, Boolean> {
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                // TODO
-                // Create get/post request with params based on parameter collection input
-                // Simulate network access.
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return false;
-            }
+        protected BusinessCallService businessCallService;
+        protected ParameterCollection params;
+        protected String servletName;
 
-            DoInBackground();
+        public RequestTask()
+        {
+            params = new ParameterCollection();
+            retObj = new JSONServiceResponseOBJ();
+        }
 
-            /*for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }*/
-            return true;
+        public RequestTask(boolean executePost, boolean executeGet, String servletName)
+        {
+            params = new ParameterCollection();
+            retObj = new JSONServiceResponseOBJ();
+            this.servletName = servletName;
+            businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,params,user,executePost,executeGet);
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            requestSuccess = success;
+        protected Boolean doInBackground(Void... params) {
+            try
+            {
+                if(businessCallService!=null)
+                {
+                    businessCallService.Call();
+                    retObj = businessCallService.retObj;
+                }
+                DoInBackground();
+            } catch (Exception e)
+            { return false; }
+            return businessCallService!=null ? retObj.isOkResponse() : true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean result) {
+            requestSuccess = result;
 
             mTask = null;
             OnRequestPostExecute();
             showProgress(false);
 
-            if (success && finishOnPostExecute) {
+            if (requestSuccess && finishOnPostExecute) {
                 finish();
             }
         }

@@ -95,7 +95,7 @@ public class RequestListActivity extends BaseActivity {
     protected UserCollection users;
 
     @Override
-    protected void DoInBackground()
+    public void DoInBackground()
     {
         users = business.GetRequestList();
         users.FilterByUsername(txtSearch.getText().toString());

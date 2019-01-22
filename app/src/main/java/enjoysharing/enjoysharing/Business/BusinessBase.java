@@ -10,6 +10,7 @@ import enjoysharing.enjoysharing.DataObject.CardMyEvent;
 import enjoysharing.enjoysharing.DataObject.CardRequest;
 import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
 import enjoysharing.enjoysharing.DataObject.CardRequestUserListCollection;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;
@@ -186,5 +187,10 @@ public class BusinessBase {
             resultCards.Add(c);
         }
         return resultCards;
+    }
+
+    // Used by BusinessJSON
+    public ParameterCollection GetUserInfo(String message) {
+        return null;
     }
 }

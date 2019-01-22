@@ -3,7 +3,7 @@ package enjoysharing.enjoysharing.DataObject;
 public class JSONServiceResponseOBJ {
 
     private boolean stateResponse;
-    private String returnMessage;
+    private String message;
 
     public boolean isOkResponse() {
         return stateResponse;
@@ -14,11 +14,11 @@ public class JSONServiceResponseOBJ {
     }
 
     public String getMessage() {
-        return returnMessage;
+        return message;
     }
 
     public void setMessage(String message) {
-        returnMessage = message;
+        message = message;
     }
 
 }

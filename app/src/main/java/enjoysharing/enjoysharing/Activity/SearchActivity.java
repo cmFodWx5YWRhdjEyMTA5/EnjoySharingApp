@@ -157,7 +157,7 @@ public class SearchActivity extends BaseActivity {
     protected CardCollection searchCards;
 
     @Override
-    protected void DoInBackground()
+    public void DoInBackground()
     {
         searchCards = business.GetHomeCards();
         searchCards.FilterByTitle(searchTo.getText().toString());

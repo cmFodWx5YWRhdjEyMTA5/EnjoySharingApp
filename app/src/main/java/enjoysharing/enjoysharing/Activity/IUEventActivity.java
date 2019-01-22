@@ -191,7 +191,7 @@ public class IUEventActivity extends BaseActivity {
     // TODO
     // Do request call ONLY FOR UPDATE
     @Override
-    protected void DoInBackground()
+    public void DoInBackground()
     { }
     // TODO
     // Used to fill fields ONLY FOR UPDATE
