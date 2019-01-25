@@ -109,7 +109,7 @@ public class IUEventActivity extends BaseActivity {
             txtTitleIUEvent.setText(card.getTitle());
             txtContentIUEvent.setText(card.getContent());
             txtNumberPerson.setText(""+card.getMaxRequest());
-            genderIUEvent.setSelection(card.getGenderIndex());
+            genderIUEvent.setSelection(card.getGenderEventId());
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

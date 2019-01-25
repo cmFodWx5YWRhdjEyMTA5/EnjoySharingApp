@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -28,7 +30,6 @@ public class RecivedRequestFragment extends FragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_recived_request, container, false);
-        business = new BusinessBase(activity);
         tableRecivedRequests = (TableLayout) vMain.findViewById(R.id.tableRecivedRequests);
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
@@ -36,6 +37,7 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     public void StartFragment()
     {
+        business = new BusinessBase(activity);
         LoadRecivedRequests();
     }
 
@@ -57,9 +59,9 @@ public class RecivedRequestFragment extends FragmentBase {
             DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
             return;
         }
-        ShowProgress(true);
+        //ShowProgress(true);
         mTask = new FragmentRequestTask();
-        mTask.execute((Void) null);
+        mTask.execute();
     }
     // TODO
     // Server call
@@ -73,8 +75,14 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
+        if(requestSuccess && activity.retObj.isOkResponse())
+        {
+            if(recivedRequestCards != null)
+                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
+        }
+        else
+            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     // Used by requests tabs
@@ -93,7 +101,7 @@ public class RecivedRequestFragment extends FragmentBase {
             txtUserRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
-                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getIdCardEvent()), true);
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getCardId()), true);
                 }
             });
             TextView txtRecivedRequest = (TextView)relLayout.findViewById(R.id.txtRecivedRequest);
@@ -107,7 +115,7 @@ public class RecivedRequestFragment extends FragmentBase {
             txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open event detail
-                    CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getIdCardEvent());
+                    CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getCardId());
                     if(cardReq != null)
                     {
                         SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, cardReq);

@@ -8,12 +8,21 @@ public class CurrentUser {
 
     protected Activity activity;
 
+    protected int userId;
     protected String username;
     protected String email;
     protected String password;
 
     public CurrentUser(Activity activity) {
         this.activity = activity;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

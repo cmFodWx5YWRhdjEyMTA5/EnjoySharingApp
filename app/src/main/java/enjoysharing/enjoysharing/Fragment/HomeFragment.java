@@ -12,9 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.R;
@@ -30,7 +33,6 @@ public class HomeFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_home, container, false);
         tableHomeCards = (TableLayout) vMain.findViewById(R.id.tableHomeCards);
-        business = new BusinessBase(activity);
         setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_home));
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
@@ -43,6 +45,7 @@ public class HomeFragment extends FragmentBase {
     @Override
     public void StartFragment()
     {
+        business = new BusinessBase(activity);
         FillHomeCards();
     }
 
@@ -57,23 +60,41 @@ public class HomeFragment extends FragmentBase {
             DrawCardsOnTable(homeCards,tableHomeCards);
             return;
         }
-        ShowProgress(true);
-        mTask = new FragmentRequestTask();
-        mTask.execute((Void) null);
+        //ShowProgress(true);
+        mTask = new FragmentRequestTask(false, true, "EventServlet");
+        mTask.AddParameter("RequestType","H");
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
     }
     // TODO
     // Server call
     @Override
     protected void DoInBackground()
     {
-        homeCards = business.GetHomeCards();
+        if(activity.simulateCall)
+            homeCards = business.GetHomeCards(null);
+        else
+            homeCards = new BusinessJSON(activity).GetHomeCards(activity.retObj.getMessage());
     }
 
     @Override
     protected void OnRequestPostExecute()
     {
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(homeCards,tableHomeCards);
+        if(requestSuccess && activity.retObj.isOkResponse())
+        {
+            if(homeCards != null)
+                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                DrawCardsOnTable(homeCards,tableHomeCards);
+        }
+        else
+            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
@@ -89,7 +110,7 @@ public class HomeFragment extends FragmentBase {
             TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
             // Set width based on screen percentage
             txtUserCardHome.setWidth(txtUserTitleWidth);
-            txtUserCardHome.setText(card.getUsername());
+            txtUserCardHome.setText(card.getUserName());
             TextView txtTitleCardHome = (TextView)relLayout.findViewById(R.id.txtTitleCardHome);
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
@@ -99,7 +120,7 @@ public class HomeFragment extends FragmentBase {
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
             final TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
-            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             txtNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -107,8 +128,8 @@ public class HomeFragment extends FragmentBase {
                 }
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
@@ -120,7 +141,7 @@ public class HomeFragment extends FragmentBase {
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getIdCard());
+                    onRowClick(v, card.getCardId());
                 }
             });
             table.addView(row);

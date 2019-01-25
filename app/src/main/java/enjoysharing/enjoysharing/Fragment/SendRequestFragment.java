@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
@@ -29,7 +30,6 @@ public class SendRequestFragment extends FragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_send_request, container, false);
-        business = new BusinessBase(activity);
         tableSendRequests = (TableLayout) vMain.findViewById(R.id.tableSendRequests);
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
@@ -37,6 +37,7 @@ public class SendRequestFragment extends FragmentBase {
     @Override
     public void StartFragment()
     {
+        business = new BusinessBase(activity);
         LoadSendRequests();
     }
 
@@ -57,9 +58,9 @@ public class SendRequestFragment extends FragmentBase {
             DrawCardsOnTable(sendRequestCards,tableSendRequests);
             return;
         }
-        ShowProgress(true);
+        //ShowProgress(true);
         mTask = new FragmentRequestTask();
-        mTask.execute((Void) null);
+        mTask.execute();
     }
     // TODO
     // Server call
@@ -72,8 +73,14 @@ public class SendRequestFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(sendRequestCards,tableSendRequests);
+        if(requestSuccess && activity.retObj.isOkResponse())
+        {
+            if(sendRequestCards != null)
+                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                DrawCardsOnTable(sendRequestCards,tableSendRequests);
+        }
+        else
+            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     // Used by requests tabs
@@ -89,13 +96,13 @@ public class SendRequestFragment extends FragmentBase {
             TextView txtUserCardSendRequest = (TextView)relLayout.findViewById(R.id.txtUserCardSendRequest);
             // Set width based on screen percentage
             txtUserCardSendRequest.setWidth(txtUserTitleWidth);
-            txtUserCardSendRequest.setText(card.getUsername());
+            txtUserCardSendRequest.setText(card.getUserName());
             TextView txtTitleCardSendRequest = (TextView)relLayout.findViewById(R.id.txtTitleCardSendRequest);
             // Set width based on screen percentage
             txtTitleCardSendRequest.setWidth(txtUserTitleWidth);
             txtTitleCardSendRequest.setText(card.getTitle());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
-            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             txtNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -103,8 +110,8 @@ public class SendRequestFragment extends FragmentBase {
                 }
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
             Button btnPartecipateSendRequest = (Button)relLayout.findViewById(R.id.btnPartecipateSendRequest);
             business.SetButtonRequest(btnPartecipateSendRequest,false);
             btnPartecipateSendRequest.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +121,7 @@ public class SendRequestFragment extends FragmentBase {
             });
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getIdCard());
+                    onRowClick(v, card.getCardId());
                 }
             });
             table.addView(row);

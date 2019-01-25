@@ -12,8 +12,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
+import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 
 public class FragmentBase extends Fragment {
@@ -125,27 +128,54 @@ public class FragmentBase extends Fragment {
     // To use Parameter Collection as input
     protected class FragmentRequestTask extends AsyncTask<Void, Void, Boolean> {
 
+        protected BusinessCallService businessCallService;
+        protected ParameterCollection params;
+        protected String servletName;
+
+        public void AddParameter(String name, Object value)
+        {
+            params.Add(name, value);
+        }
+
+        public FragmentRequestTask()
+        {
+            ShowProgress(true);
+            params = new ParameterCollection();
+            activity.retObj = new JSONServiceResponseOBJ();
+            businessCallService = null;
+        }
+
+        public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName)
+        {
+            ShowProgress(true);
+            params = new ParameterCollection();
+            activity.retObj = new JSONServiceResponseOBJ();
+            this.servletName = servletName;
+            businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
+            businessCallService.simulateCall = activity.simulateCall;
+        }
+
         @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                // TODO
-                // Create get/post request with params based on parameter collection input
-                // Simulate network access.
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            DoInBackground();
-
-            /*for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+        protected Boolean doInBackground(Void... pars) {
+            try
+            {
+                if(businessCallService!=null)
+                {
+                    businessCallService.SetParams(params);
+                    businessCallService.Call();
+                    activity.retObj = businessCallService.retObj;
                 }
-            }*/
-            return true;
+                else
+                {
+                    activity.retObj.setStateResponse(true);
+                }
+                DoInBackground();
+            } catch (Exception e)
+            {
+                activity.retObj.setMessage("GeneralError");
+                activity.retObj.setStateResponse(false);
+            }
+            return businessCallService!=null ? activity.retObj.isOkResponse() : true;
         }
 
         @Override

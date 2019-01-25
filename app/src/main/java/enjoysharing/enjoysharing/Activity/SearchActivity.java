@@ -151,7 +151,7 @@ public class SearchActivity extends BaseActivity {
         }
         showProgress(true);
         mTask = new RequestTask();
-        mTask.execute((Void) null);
+        mTask.execute();
     }
 
     protected CardCollection searchCards;
@@ -159,7 +159,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void DoInBackground()
     {
-        searchCards = business.GetHomeCards();
+        searchCards = business.GetHomeCards(null);
         searchCards.FilterByTitle(searchTo.getText().toString());
         searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
         // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
@@ -187,7 +187,7 @@ public class SearchActivity extends BaseActivity {
             TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
             // Set width based on screen percentage
             txtUserCardHome.setWidth(txtUserTitleWidth);
-            txtUserCardHome.setText(card.getUsername());
+            txtUserCardHome.setText(card.getUserName());
             TextView txtTitleCardHome = (TextView)relLayout.findViewById(R.id.txtTitleCardHome);
             // Set width based on screen percentage
             txtTitleCardHome.setWidth(txtUserTitleWidth);
@@ -197,7 +197,7 @@ public class SearchActivity extends BaseActivity {
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
-            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             txtNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -205,8 +205,8 @@ public class SearchActivity extends BaseActivity {
                 }
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);
@@ -218,7 +218,7 @@ public class SearchActivity extends BaseActivity {
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getIdCard());
+                    onRowClick(v, card.getCardId());
                 }
             });
             table.addView(row);

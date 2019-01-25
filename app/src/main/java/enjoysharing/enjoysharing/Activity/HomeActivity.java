@@ -66,9 +66,11 @@ public class HomeActivity extends BaseActivity {
     {
         homeFragment = new HomeFragment();
         homeFragment.SetActivity(HomeActivity.this);
+        homeFragment.setCurrentUser(user);
         homeFragment.setProgressView(mProgressView);
         requestFragment = new RequestFragment();
         requestFragment.SetActivity(HomeActivity.this);
+        requestFragment.setCurrentUser(user);
         myEventsFragment = new MyEventsFragment();
         myEventsFragment.SetActivity(HomeActivity.this);
         myEventsFragment.setCurrentUser(user);

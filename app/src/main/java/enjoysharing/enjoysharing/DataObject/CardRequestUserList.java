@@ -3,34 +3,38 @@ package enjoysharing.enjoysharing.DataObject;
 
 public class CardRequestUserList {
 
-    protected int idEvent;
-    protected int idCardEvent;
-    protected String usernames;
-    protected String title;
-    protected int userNumber = 0, MAX_USERS = 2;
+    protected int EventId;
+    protected int CardId;
+    protected String UserIdList;
+    protected String Usernames;
+    protected String Title;
+    protected int UserNumber = 0, MAX_USERS = 2;
 
-    public int getIdEvent() { return idEvent; }
-    public int getIdCardEvent() { return idCardEvent; }
-    public String getUsernames() { return usernames; }
-    public String getTitle() { return title; }
+    public int getEventId() { return EventId; }
+    public int getCardId() { return CardId; }
+    public String getUserIdList() { return UserIdList; }
+    public String getUsernames() { return Usernames; }
+    public String getTitle() { return Title; }
 
-    public void AddUsername(String username)
+    public void AddUser(int UserId, String Username)
     {
-        usernames = usernames.replace(" e ",", ");
-        if(userNumber < MAX_USERS) usernames += " e "+username;
-        else usernames += " e altri";
-        userNumber++;
+        Usernames = Usernames.replace(" e ",", ");
+        if(UserNumber < MAX_USERS) Usernames += " e "+Username;
+        else Usernames += " e altri";
+        UserIdList += "," + UserId;
+        UserNumber++;
     }
 
-    public boolean IsMultiUsers() { return userNumber > 1; }
+    public boolean IsMultiUsers() { return UserNumber > 1; }
 
-    public CardRequestUserList(int idEvent, int idCardEvent, String username, String title)
+    public CardRequestUserList(int EventId, int CardId, int UserId, String Username, String Title)
     {
-        this.idEvent = idEvent;
-        this.idCardEvent = idCardEvent;
-        this.usernames = username;
-        this.title = title;
-        userNumber = 1;
+        this.EventId = EventId;
+        this.CardId = CardId;
+        this.UserIdList = UserId + "";
+        this.Usernames = Username;
+        this.Title = Title;
+        UserNumber = 1;
     }
 
 }

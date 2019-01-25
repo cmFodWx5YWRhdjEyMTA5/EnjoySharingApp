@@ -81,11 +81,11 @@ public class CardDetailActivity extends BaseActivity {
         if(cardBase != null && cardBase instanceof CardHome)
         {
             final CardHome card = (CardHome) cardBase;
-            txtUserHomeDetail.setText(card.getUsername());
+            txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
-            txtNumberPerson.setText(card.getRequestNumber()+"/"+card.getMaxRequest());
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -107,11 +107,11 @@ public class CardDetailActivity extends BaseActivity {
         {
             isSendRequest = false;
             final CardRequestRecived card = (CardRequestRecived) cardBase;
-            txtUserHomeDetail.setText(card.getUsername());
+            txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
-            txtNumberPerson.setText(card.getRequestNumber()+"/"+card.getMaxRequest());
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             btnPartecipateRequest.setVisibility(View.INVISIBLE);
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -135,11 +135,11 @@ public class CardDetailActivity extends BaseActivity {
         {
             isSendRequest = true;
             final CardRequest card = (CardRequest) cardBase;
-            txtUserHomeDetail.setText(card.getUsername());
+            txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
-            txtNumberPerson.setText(card.getRequestNumber()+"/"+card.getMaxRequest());
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
+            txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             business.SetButtonRequest(btnPartecipateRequest,false);
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override

@@ -63,10 +63,12 @@ public class RequestFragment extends FragmentBase {
     {
         recivedRequestFragment = new RecivedRequestFragment();
         recivedRequestFragment.SetActivity(activity);
+        recivedRequestFragment.setCurrentUser(user);
         recivedRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
         recivedRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
         sendRequestFragment = new SendRequestFragment();
         sendRequestFragment.SetActivity(activity);
+        sendRequestFragment.setCurrentUser(user);
         sendRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
         sendRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
     }

@@ -15,23 +15,23 @@ public class CardRequestUserListCollection {
 
     public List<CardRequestUserList> List() { return cards; }
     public void Clear() { cards.clear(); }
-    public void Add(int idEvent, int idCardEvent, String username, String title)
+    public void Add(int idEvent, int idCardEvent, int userId, String username, String title)
     {
         CardRequestUserList card = GetCard(idEvent);
-        if(card != null) card.AddUsername(username);
+        if(card != null) card.AddUser(userId, username);
         else
         {
-            card = new CardRequestUserList(idEvent, idCardEvent, username, title);
+            card = new CardRequestUserList(idEvent, idCardEvent, userId, username, title);
             cards.add(card);
         }
     }
     public void Add(CardBase card)
     {
-        CardRequestUserList cardFound = GetCard(card.getIdEvent());
-        if(cardFound != null) cardFound.AddUsername(card.getUsername());
+        CardRequestUserList cardFound = GetCard(card.getEventId());
+        if(cardFound != null) cardFound.AddUser(card.getUserId(), card.getUserName());
         else
         {
-            cardFound = new CardRequestUserList(card.getIdEvent(), card.getIdCard(), card.getUsername(), card.getTitle());
+            cardFound = new CardRequestUserList(card.getEventId(), card.getCardId(), card.getUserId(), card.getUserName(), card.getTitle());
             cards.add(cardFound);
         }
     }
@@ -39,7 +39,7 @@ public class CardRequestUserListCollection {
     {
         for(CardRequestUserList card : cards)
         {
-            if(card.getIdEvent() == idEvent)
+            if(card.getEventId() == idEvent)
                 return card;
         }
         return null;

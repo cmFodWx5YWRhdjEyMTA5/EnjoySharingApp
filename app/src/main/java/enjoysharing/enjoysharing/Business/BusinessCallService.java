@@ -29,13 +29,16 @@ public class BusinessCallService {
     protected boolean executePost = false;
     protected boolean executeGet = false;
     // Questa variabile la uso per le esecuzioni a server spento!
-    protected boolean simulateCall = false;
+    // Di default è true ma in realtà viene valorizzata con quella dell'Activity!
+    public boolean simulateCall = true;
 
-    public BusinessCallService(String serviceURL, String servletName,ParameterCollection params,CurrentUser user, boolean executePost,boolean executeGet)
+    public void SetParams(ParameterCollection params) { this.params = params; }
+
+    public BusinessCallService(String serviceURL, String servletName,CurrentUser user, boolean executePost,boolean executeGet)
     {
         this.serviceURL = serviceURL;
         this.servletName = servletName;
-        this.params = params;
+        this.params = new ParameterCollection();
         this.user = user;
         this.executePost = executePost;
         this.executeGet = executeGet;
@@ -79,7 +82,11 @@ public class BusinessCallService {
             if(executeGet && !simulateCall)
                 CallGet();
         } catch (Exception e)
-        { return false; }
+        {
+            retObj.setMessage("GeneralError");
+            retObj.setStateResponse(false);
+        }
+        retObj.setStateResponse(true);
         return true;
     }
 

@@ -5,69 +5,80 @@ import java.io.Serializable;
 
 public class CardBase implements Serializable {
 
-    protected int idCard;
-    protected int idEvent;
-    protected String username;
-    protected String title;
-    protected String content;
-    protected byte[] userImage;
-    protected int genderIndex;
-    protected int requestNumber;
-    protected int maxRequest;
+    protected String CardType;
+    protected int CardId;
+    protected int EventId;
+    protected int UserId;
+    protected String UserName;
+    protected String Title;
+    protected String Content;
+    protected byte[] UserImage;
+    protected int GenderEventId;
+    protected int AcceptedRequest;
+    protected int MaxRequest;
 
-    public int getIdCard() {
-        return idCard;
+    public String getCardType() {
+        return CardType;
     }
 
-    public int getIdEvent() {
-        return idEvent;
+    public int getCardId() {
+        return CardId;
     }
 
-    public String getUsername() {
-        return username;
+    public int getEventId() {
+        return EventId;
+    }
+
+    public int getUserId() {
+        return UserId;
+    }
+
+    public String getUserName() {
+        return UserName;
     }
 
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public String getContent() {
-        return content;
+        return Content;
     }
 
     public byte[] getUserImage() {
-        return userImage;
+        return UserImage;
     }
 
-    public int getRequestNumber() {
-        return requestNumber;
+    public int getAcceptedRequest() {
+        return AcceptedRequest;
     }
 
-    public void setRequestNumber(int requestNumber) {
-        this.requestNumber = requestNumber;
+    public void setAcceptedRequest(int AcceptedRequest) {
+        this.AcceptedRequest = AcceptedRequest;
     }
 
     public int getMaxRequest() {
-        return maxRequest;
+        return MaxRequest;
     }
 
-    public void setMaxRequest(int maxRequest) {
-        this.maxRequest = maxRequest;
+    public void setMaxRequest(int MaxRequest) {
+        this.MaxRequest = MaxRequest;
     }
 
-    public int getGenderIndex() {
-        return genderIndex;
+    public int getGenderEventId() {
+        return GenderEventId;
     }
 
     // Constructor simple
-    public CardBase(int idCard, int idEvent, String username, String title, String content, byte[] userImage, int genderIndex) {
-        this.idCard = idCard;
-        this.idEvent = idEvent;
-        this.username = username;
-        this.title = title;
-        this.content = content;
-        this.userImage = userImage;
-        this.genderIndex = genderIndex;
+    public CardBase(int CardId, int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId) {
+        this.CardId = CardId;
+        this.EventId = EventId;
+        this.UserId = UserId;
+        this.UserName = UserName;
+        this.Title = Title;
+        this.Content = Content;
+        this.UserImage = UserImage;
+        this.GenderEventId = GenderEventId;
     }
 
     // TODO

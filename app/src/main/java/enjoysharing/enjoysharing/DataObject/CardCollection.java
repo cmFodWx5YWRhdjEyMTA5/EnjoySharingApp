@@ -1,7 +1,5 @@
 package enjoysharing.enjoysharing.DataObject;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class CardCollection {
     {
         for(CardBase card : cards)
         {
-            if(card.getIdCard() == idCard)
+            if(card.getCardId() == idCard)
                 return card;
         }
         return null;
@@ -69,7 +67,7 @@ public class CardCollection {
             cardsFiltered = new ArrayList<CardBase>();
             for(CardBase card : cards)
             {
-                if(iPersonNumber == -1 || card.getRequestNumber() >= iPersonNumber)
+                if(iPersonNumber == -1 || card.getAcceptedRequest() >= iPersonNumber)
                     resultList.add(card);
             }
         }
@@ -77,7 +75,7 @@ public class CardCollection {
         {
             for(CardBase card : cardsFiltered)
             {
-                if(iPersonNumber == -1 || card.getRequestNumber() >= iPersonNumber)
+                if(iPersonNumber == -1 || card.getAcceptedRequest() >= iPersonNumber)
                     resultList.add(card);
             }
         }
@@ -93,7 +91,7 @@ public class CardCollection {
             cardsFiltered = new ArrayList<CardBase>();
             for(CardBase card : cards)
             {
-                if(genderIndex == -1 || card.getGenderIndex() == genderIndex)
+                if(genderIndex == -1 || card.getGenderEventId() == genderIndex)
                     resultList.add(card);
             }
         }
@@ -101,7 +99,7 @@ public class CardCollection {
         {
             for(CardBase card : cardsFiltered)
             {
-                if(genderIndex == -1 || card.getGenderIndex() == genderIndex)
+                if(genderIndex == -1 || card.getGenderEventId() == genderIndex)
                     resultList.add(card);
             }
         }

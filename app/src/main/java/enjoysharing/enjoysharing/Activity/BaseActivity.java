@@ -46,7 +46,9 @@ public class BaseActivity extends AppCompatActivity {
     // Used to understand if is update
     protected boolean isUpdate = false;
     // Used to retrieve result from service call
-    protected JSONServiceResponseOBJ retObj;
+    public JSONServiceResponseOBJ retObj;
+    // Questa variabile la uso per le esecuzioni a server spento!
+    public boolean simulateCall = true;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -236,32 +238,49 @@ public class BaseActivity extends AppCompatActivity {
         protected ParameterCollection params;
         protected String servletName;
 
+        public void AddParameter(String name, Object value)
+        {
+            params.Add(name, value);
+        }
+
         public RequestTask()
         {
+            showProgress(true);
             params = new ParameterCollection();
             retObj = new JSONServiceResponseOBJ();
+            businessCallService = null;
         }
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName)
         {
+            showProgress(true);
             params = new ParameterCollection();
             retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
-            businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,params,user,executePost,executeGet);
+            businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
+            businessCallService.simulateCall = simulateCall;
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... pars) {
             try
             {
                 if(businessCallService!=null)
                 {
+                    businessCallService.SetParams(params);
                     businessCallService.Call();
                     retObj = businessCallService.retObj;
                 }
+                else
+                {
+                    retObj.setStateResponse(true);
+                }
                 DoInBackground();
             } catch (Exception e)
-            { return false; }
+            {
+                retObj.setMessage("GeneralError");
+                retObj.setStateResponse(false);
+            }
             return businessCallService!=null ? retObj.isOkResponse() : true;
         }
 

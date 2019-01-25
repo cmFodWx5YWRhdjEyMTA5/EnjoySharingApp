@@ -70,7 +70,6 @@
                 tools:layout_editor_absoluteY="495dp" />
 
             <LinearLayout
-                android:id="@+id/form_request_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -89,18 +88,27 @@
                     android:hint="Cerca"
                     android:inputType="textPersonName" />
 
-                <ScrollView
+                <LinearLayout
+                    android:id="@+id/form_request_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TableLayout
-                        android:id="@+id/tblRequestList"
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
-                    </TableLayout>
-                </ScrollView>
+                        <TableLayout
+                            android:id="@+id/tblRequestList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </TableLayout>
+                    </ScrollView>
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -113,7 +113,7 @@ public class RequestListActivity extends BaseActivity {
     {
         TextView txtMaxRequest = (TextView)findViewById(R.id.txtMaxRequest);
         TextView txtNumberPerson = (TextView)findViewById(R.id.txtNumberPerson);
-        txtNumberPerson.setText(""+cardPassed.getRequestNumber());
+        txtNumberPerson.setText(""+cardPassed.getAcceptedRequest());
         txtMaxRequest.setText("/"+cardPassed.getMaxRequest());
     }
 
@@ -151,13 +151,13 @@ public class RequestListActivity extends BaseActivity {
     }
     @Override
     public boolean BeforeSwipe()
-    { return cardPassed.getRequestNumber() < cardPassed.getMaxRequest(); }
+    { return cardPassed.getAcceptedRequest() < cardPassed.getMaxRequest(); }
     @Override
     public void onRightSwipe(View v, boolean wasLeft)
     {
         if(wasLeft)
         {
-            cardPassed.setRequestNumber(cardPassed.getRequestNumber()-1);
+            cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()-1);
         }
         SetRequestInfo();
     }
@@ -165,7 +165,7 @@ public class RequestListActivity extends BaseActivity {
     @Override
     public void onLeftSwipe(View v)
     {
-        cardPassed.setRequestNumber(cardPassed.getRequestNumber()+1);
+        cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()+1);
         SetRequestInfo();
     }
 

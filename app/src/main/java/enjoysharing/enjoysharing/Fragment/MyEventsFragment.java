@@ -11,10 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import enjoysharing.enjoysharing.Activity.IUEventActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
 import enjoysharing.enjoysharing.R;
@@ -29,7 +31,6 @@ public class MyEventsFragment extends FragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_my_events, container, false);
-        business = new BusinessBase(activity);
         tableCardsMyEvent = (TableLayout) vMain.findViewById(R.id.tableCardsMyEvent);
         setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_my_event));
         super.onCreateView(inflater,container,savedInstanceState);
@@ -43,6 +44,7 @@ public class MyEventsFragment extends FragmentBase {
     @Override
     public void StartFragment()
     {
+        business = new BusinessBase(activity);
         LoadMyEvents();
     }
 
@@ -57,23 +59,41 @@ public class MyEventsFragment extends FragmentBase {
             DrawCardsOnTable(myEventCards,tableCardsMyEvent);
             return;
         }
-        ShowProgress(true);
-        mTask = new FragmentRequestTask();
-        mTask.execute((Void) null);
+        //ShowProgress(true);
+        mTask = new FragmentRequestTask(false, true, "EventServlet");
+        mTask.AddParameter("RequestType","M");
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
     }
     // TODO
     // Server call
     @Override
     protected void DoInBackground()
     {
-        myEventCards = business.GetMyEventsCards();
+        if(activity.simulateCall)
+            myEventCards = business.GetMyEventsCards(null);
+        else
+            myEventCards = new BusinessJSON(activity).GetMyEventsCards(activity.retObj.getMessage());
     }
 
     @Override
     protected void OnRequestPostExecute()
     {
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(myEventCards,tableCardsMyEvent);
+        if(requestSuccess && activity.retObj.isOkResponse())
+        {
+            if(myEventCards != null)
+                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                DrawCardsOnTable(myEventCards,tableCardsMyEvent);
+        }
+        else
+            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     // Used by requests tabs
@@ -90,7 +110,7 @@ public class MyEventsFragment extends FragmentBase {
             TextView txtUserCardMyEvent = (TextView)relLayout.findViewById(R.id.txtUserCardMyEvent);
             // Set width based on screen percentage
             txtUserCardMyEvent.setWidth(txtUserTitleWidth);
-            txtUserCardMyEvent.setText(card.getUsername());
+            txtUserCardMyEvent.setText(card.getUserName());
             TextView txtTitleCardMyEvent = (TextView)relLayout.findViewById(R.id.txtTitleCardMyEvent);
             // Set width based on screen percentage
             txtTitleCardMyEvent.setWidth(txtUserTitleWidth);
@@ -100,7 +120,7 @@ public class MyEventsFragment extends FragmentBase {
             txtContentCardMyEvent.setWidth(((LinearLayout)txtContentCardMyEvent.getParent()).getWidth()-parentTollerancePX);
             txtContentCardMyEvent.setText(card.getContent());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
-            txtNumberPerson.setText(card.getRequestNumber() + "/" + card.getMaxRequest());
+            txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             txtNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -108,11 +128,11 @@ public class MyEventsFragment extends FragmentBase {
                 }
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
-            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderIndex()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderIndex()));
+            imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getIdCard());
+                    onRowClick(v, card.getCardId());
                 }
             });
             table.addView(row);

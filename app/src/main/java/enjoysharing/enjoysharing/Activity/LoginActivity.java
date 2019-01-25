@@ -98,21 +98,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     {
         if(attemptLogin())
         {
-            if(retObj.getMessage() != null)
-            {
-                ParameterCollection params = business.GetUserInfo(retObj.getMessage());
-                user.setUsername(params.Get("username").toString());
-            }
-            else
-                user.setUsername("Utente");
-            user.setEmail(mEmailView.getText().toString());
-            user.setPassword(mPasswordView.getText().toString());
-            user.SaveOnXMLFile();
-            SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
+            CallLogin();
         }
         else
         {
-            Toast.makeText(LoginActivity.this,retObj.getMessage(),Toast.LENGTH_SHORT).show();
+            user.Clear();
+            user.SaveOnXMLFile();
         }
     }
 
@@ -180,12 +171,19 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
+        else
+            // Check for a valid password, if the user entered one.
+            if (!isPasswordValid(password)) {
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -203,21 +201,53 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             // form field with an error.
             focusView.requestFocus();
             return false;
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mTask = new RequestTask(false, true, "UserServlet");
-            finishOnPostExecute = true;
-            try
+        }
+        return true;
+    }
+
+    protected boolean CallLogin()
+    {
+        // First get email and password from edittext
+        user.setEmail(mEmailView.getText().toString());
+        user.setPassword(mPasswordView.getText().toString());
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        //showProgress(true);
+        mTask = new RequestTask(false, true, "UserServlet");
+        finishOnPostExecute = true;
+        try
+        {
+            mTask.execute();
+            return true;
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            return false;
+        }
+    }
+    @Override
+    protected void OnRequestPostExecute()
+    {
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            if(retObj.getMessage() != null)
             {
-                return mTask.execute().get();
+                ParameterCollection params = business.GetUserInfo(retObj.getMessage());
+                user.setUserId(Integer.parseInt(params.Get("UserId").toString()));
+                user.setUsername(params.Get("UserName").toString());
             }
-            catch (Exception e)
-            {
-                retObj.setStateResponse(false);
-                return false;
-            }
+            else
+                user.setUsername("Utente");
+            user.SaveOnXMLFile();
+            SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
+        }
+        else
+        {
+            user.Clear();
+            user.SaveOnXMLFile();
+            String message = retObj.getMessage();
+            Toast.makeText(LoginActivity.this,message == ""?"UserError":message,Toast.LENGTH_SHORT).show();
         }
     }
 
