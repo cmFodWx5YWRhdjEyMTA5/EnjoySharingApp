@@ -61,15 +61,6 @@ public class BaseActivity extends AppCompatActivity {
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
     }
-    // Used when go back to an activity
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        OnReloadActivity();
-    }
-    // Used when activity reloaded
-    protected void OnReloadActivity()
-    { }
     // Used to open activity and pass Card
     protected void SwipeOpenActivity(Context context, Class cl, CardBase card)
     {
