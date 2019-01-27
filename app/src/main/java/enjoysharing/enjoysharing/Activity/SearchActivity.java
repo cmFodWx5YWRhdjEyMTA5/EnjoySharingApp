@@ -218,7 +218,7 @@ public class SearchActivity extends BaseActivity {
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getCardId());
+                    onRowClick(v, card.getEventId());
                 }
             });
             table.addView(row);
@@ -226,9 +226,9 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
-    protected void onRowClick(View v, int rowId)
+    protected void onRowClick(View v, int EventId)
     {
-        CardHome card = (CardHome) searchCards.GetCard(rowId);
+        CardHome card = (CardHome) searchCards.GetCard(EventId);
         if(card != null)
         {
             SwipeDownOpenActivity(this, CardDetailActivity.class, card);

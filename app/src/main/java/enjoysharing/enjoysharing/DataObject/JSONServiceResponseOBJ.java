@@ -18,7 +18,7 @@ public class JSONServiceResponseOBJ {
     }
 
     public void setMessage(String message) {
-        message = message;
+        this.message = message;
     }
 
 }

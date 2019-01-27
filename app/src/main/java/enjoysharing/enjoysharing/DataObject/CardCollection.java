@@ -21,11 +21,11 @@ public class CardCollection {
     public List<CardBase> List() { return filtered ? cardsFiltered : cards; }
     public void Clear() { cards.clear(); }
     public void Add(CardBase card) { cards.add(card); }
-    public CardBase GetCard(int idCard)
+    public CardBase GetCard(int EventId)
     {
         for(CardBase card : cards)
         {
-            if(card.getCardId() == idCard)
+            if(card.getEventId() == EventId)
                 return card;
         }
         return null;

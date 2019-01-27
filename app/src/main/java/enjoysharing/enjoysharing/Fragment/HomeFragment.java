@@ -141,7 +141,7 @@ public class HomeFragment extends FragmentBase {
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getCardId());
+                    onRowClick(v, card.getEventId());
                 }
             });
             table.addView(row);
@@ -149,9 +149,9 @@ public class HomeFragment extends FragmentBase {
     }
 
     @Override
-    protected void onRowClick(View v, int rowId)
+    protected void onRowClick(View v, int EventId)
     {
-        CardHome card = (CardHome) homeCards.GetCard(rowId);
+        CardHome card = (CardHome) homeCards.GetCard(EventId);
         if(card != null)
         {
             SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);

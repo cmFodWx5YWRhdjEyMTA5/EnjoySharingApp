@@ -6,7 +6,6 @@ import java.io.Serializable;
 public class CardBase implements Serializable {
 
     protected String CardType;
-    protected int CardId;
     protected int EventId;
     protected int UserId;
     protected String UserName;
@@ -19,10 +18,6 @@ public class CardBase implements Serializable {
 
     public String getCardType() {
         return CardType;
-    }
-
-    public int getCardId() {
-        return CardId;
     }
 
     public int getEventId() {
@@ -70,8 +65,7 @@ public class CardBase implements Serializable {
     }
 
     // Constructor simple
-    public CardBase(int CardId, int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId) {
-        this.CardId = CardId;
+    public CardBase(int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId) {
         this.EventId = EventId;
         this.UserId = UserId;
         this.UserName = UserName;

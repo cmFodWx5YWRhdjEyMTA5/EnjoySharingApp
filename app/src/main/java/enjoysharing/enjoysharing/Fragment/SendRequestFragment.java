@@ -121,7 +121,7 @@ public class SendRequestFragment extends FragmentBase {
             });
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getCardId());
+                    onRowClick(v, card.getEventId());
                 }
             });
             table.addView(row);

@@ -49,9 +49,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        business = new BusinessJSON(LoginActivity.this);
         // Set up the login form.
         String email = user.getEmail();
-        String pw = user.getPassword();
+        String pw = business.decrypt(user.getPassword());
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txtBoxEmail);
         mEmailView.setText(email);
@@ -79,8 +81,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         mFormView = findViewById(R.id.login_form_layout);
         mProgressView = findViewById(R.id.login_progress);
-
-        business = new BusinessJSON(LoginActivity.this);
     }
 
     @Override
@@ -209,7 +209,9 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     {
         // First get email and password from edittext
         user.setEmail(mEmailView.getText().toString());
-        user.setPassword(mPasswordView.getText().toString());
+        // Crypto la password!
+        user.setPassword(business.encrypt(mPasswordView.getText().toString()));
+        //user.setPassword(mPasswordView.getText().toString());
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         //showProgress(true);

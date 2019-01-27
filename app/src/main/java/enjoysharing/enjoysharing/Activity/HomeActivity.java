@@ -1,5 +1,6 @@
 package enjoysharing.enjoysharing.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -53,8 +54,8 @@ public class HomeActivity extends BaseActivity {
     }
     // Used when activity reloaded
     @Override
-    protected void OnReloadActivity()
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         // Nel caso del tab Richieste devo ricaricare il subtab!
         if(currentMenuPosition != 1)
             CallStartFragment(currentMenuPosition);
@@ -174,7 +175,7 @@ public class HomeActivity extends BaseActivity {
         imgBtnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SwipeOpenActivity(context, IUEventActivity.class);
+                SwipeOpenActivityNoFinish(context, IUEventActivity.class);
             }
         });
     }

@@ -101,7 +101,7 @@ public class RecivedRequestFragment extends FragmentBase {
             txtUserRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
-                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getCardId()), true);
+                    OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getEventId()), true);
                 }
             });
             TextView txtRecivedRequest = (TextView)relLayout.findViewById(R.id.txtRecivedRequest);
@@ -115,7 +115,7 @@ public class RecivedRequestFragment extends FragmentBase {
             txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open event detail
-                    CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getCardId());
+                    CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getEventId());
                     if(cardReq != null)
                     {
                         SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, cardReq);

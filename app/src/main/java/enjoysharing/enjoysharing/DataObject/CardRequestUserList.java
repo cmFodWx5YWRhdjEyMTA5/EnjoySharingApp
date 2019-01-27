@@ -4,14 +4,12 @@ package enjoysharing.enjoysharing.DataObject;
 public class CardRequestUserList {
 
     protected int EventId;
-    protected int CardId;
     protected String UserIdList;
     protected String Usernames;
     protected String Title;
     protected int UserNumber = 0, MAX_USERS = 2;
 
     public int getEventId() { return EventId; }
-    public int getCardId() { return CardId; }
     public String getUserIdList() { return UserIdList; }
     public String getUsernames() { return Usernames; }
     public String getTitle() { return Title; }
@@ -27,10 +25,9 @@ public class CardRequestUserList {
 
     public boolean IsMultiUsers() { return UserNumber > 1; }
 
-    public CardRequestUserList(int EventId, int CardId, int UserId, String Username, String Title)
+    public CardRequestUserList(int EventId, int UserId, String Username, String Title)
     {
         this.EventId = EventId;
-        this.CardId = CardId;
         this.UserIdList = UserId + "";
         this.Usernames = Username;
         this.Title = Title;

@@ -132,7 +132,7 @@ public class MyEventsFragment extends FragmentBase {
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, card.getCardId());
+                    onRowClick(v, card.getEventId());
                 }
             });
             table.addView(row);

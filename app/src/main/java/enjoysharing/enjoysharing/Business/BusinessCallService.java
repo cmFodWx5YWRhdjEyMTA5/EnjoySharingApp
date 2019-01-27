@@ -86,7 +86,6 @@ public class BusinessCallService {
             retObj.setMessage("GeneralError");
             retObj.setStateResponse(false);
         }
-        retObj.setStateResponse(true);
         return true;
     }
 
@@ -99,18 +98,20 @@ public class BusinessCallService {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(timeout);
             urlConnection.setConnectTimeout(timeout);
-            urlConnection.setRequestMethod("GET");
+            //urlConnection.setRequestMethod("GET");
             urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
+            //urlConnection.setDoOutput(true);
             int responseCode=urlConnection.getResponseCode();
             checkResponse(responseCode);
 
         } catch (MalformedURLException ex) {
             Log.e("MalformedURL error",ex.getMessage());
+            retObj.setMessage("GeneralError");
             retObj.setStateResponse(false);
             //Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Log.e("IOException error",ex.getMessage());
+            retObj.setMessage("GeneralError");
             retObj.setStateResponse(false);
             //Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -119,6 +120,7 @@ public class BusinessCallService {
                     urlConnection.disconnect();
                 } catch (Exception ex) {
                     Log.e("Close connection error", ex.getMessage());
+                    retObj.setMessage("GeneralError");
                     retObj.setStateResponse(false);
                     //Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
                 }
@@ -149,6 +151,7 @@ public class BusinessCallService {
             checkResponse(responseCode);
         } catch (Exception e) {
             Log.e("Close connection error",e.getMessage());
+            retObj.setMessage("GeneralError");
             retObj.setStateResponse(false);
         } finally {
             if (urlConnection != null) {
@@ -156,6 +159,7 @@ public class BusinessCallService {
                     urlConnection.disconnect();
                 } catch (Exception ex) {
                     Log.e("Close connection error", ex.getMessage());
+                    retObj.setMessage("GeneralError");
                     retObj.setStateResponse(false);
                     //Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
                 }
@@ -181,12 +185,14 @@ public class BusinessCallService {
                     break;
                 default:
                     Log.e("Service status",""+responseCode);
+                    retObj.setMessage("GeneralError");
                     retObj.setStateResponse(false);
                     break;
             }
         }
         catch (Exception e) {
             Log.e("Close connection error",e.getMessage());
+            retObj.setMessage("GeneralError");
             retObj.setStateResponse(false);
         }
     }

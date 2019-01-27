@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
@@ -26,6 +32,7 @@ public class IUEventActivity extends BaseActivity {
     protected EditText txtContentIUEvent;
     protected EditText txtNumberPerson;
     protected TextView txtUserIUEvent;
+    protected int EventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class IUEventActivity extends BaseActivity {
                 SaveEvent();
             }
         });
+        EventId = 0;
         // Check if is in Update
         LoadMyEventDetails();
     }
@@ -106,6 +114,7 @@ public class IUEventActivity extends BaseActivity {
         {
             final CardMyEvent card = (CardMyEvent) cardBase;
             isUpdate = true;
+            EventId = card.getEventId();
             txtTitleIUEvent.setText(card.getTitle());
             txtContentIUEvent.setText(card.getContent());
             txtNumberPerson.setText(""+card.getMaxRequest());
@@ -141,8 +150,25 @@ public class IUEventActivity extends BaseActivity {
         if(CheckInformations())
         {
             showProgress(true);
-            mTask = new RequestTask();
-            mTask.execute((Void) null);
+            mTask = new RequestTask(true, false, "EventServlet");
+            mTask.AddParameter("RequestType",isUpdate?"UE":"NE");
+            mTask.AddParameter("EventId",EventId);
+            mTask.AddParameter("Title",txtTitleIUEvent.getText());
+            mTask.AddParameter("Description",txtContentIUEvent.getText());
+            mTask.AddParameter("MaxRequests",txtNumberPerson.getText());
+            mTask.AddParameter("GenderEventId",genderIUEvent.getSelectedItemId());
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String date = df.format(Calendar.getInstance().getTime());
+            mTask.AddParameter("DateEvent",date);
+            try
+            {
+                mTask.execute();
+            }
+            catch (Exception e)
+            {
+                retObj.setStateResponse(false);
+                retObj.setMessage("GeneralError");
+            }
         }
     }
     private boolean CheckInformations() {
@@ -198,7 +224,9 @@ public class IUEventActivity extends BaseActivity {
     @Override
     protected void OnRequestPostExecute()
     {
-        if(requestSuccess)
+        if(requestSuccess && retObj.isOkResponse())
             onBackPressed();
+        else
+            Toast.makeText(IUEventActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
