@@ -129,7 +129,7 @@ public class HomeFragment extends FragmentBase {
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()-1));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,true);

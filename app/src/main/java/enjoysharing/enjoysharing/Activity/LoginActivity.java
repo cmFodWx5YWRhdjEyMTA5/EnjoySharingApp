@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
@@ -81,6 +83,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         mFormView = findViewById(R.id.login_form_layout);
         mProgressView = findViewById(R.id.login_progress);
+        mFormView.requestFocus();
     }
 
     @Override
@@ -173,7 +176,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
+            mPasswordView.setError(getString(R.string.error_password_required));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -187,7 +190,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError(getString(R.string.error_email_required));
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
@@ -254,12 +257,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+        return EMAIL_REGEX.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 

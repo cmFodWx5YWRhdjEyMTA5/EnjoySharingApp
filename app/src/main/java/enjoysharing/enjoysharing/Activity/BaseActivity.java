@@ -107,6 +107,20 @@ public class BaseActivity extends AppCompatActivity {
         OpenActivity(context,cl);
         overridePendingTransition(0, R.anim.activity_exit_to_top);
     }
+    // Back to Activity with swipe from Down to Up when called from startActivityForResult
+    protected void SwipeUpCloseActivityFromResult(Context context, Class cl)
+    {
+        //setResult(Activity.RESULT_OK, intent);
+        finish();
+        overridePendingTransition(0, R.anim.activity_exit_to_top);
+    }
+    // Back to Activity with swipe from left to right when called from startActivityForResult
+    protected void SwipeRightCloseActivityFromResult(Context context, Class cl)
+    {
+        //setResult(Activity.RESULT_OK, intent);
+        finish();
+        overridePendingTransition(0, R.anim.activity_exit_to_right);
+    }
     // Switch Activity
     protected void OpenActivity(Context context, Class cl)
     {

@@ -33,6 +33,7 @@ public class IUEventActivity extends BaseActivity {
     protected EditText txtNumberPerson;
     protected TextView txtUserIUEvent;
     protected int EventId;
+    protected int isMyEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class IUEventActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
             {
-                imgBtnGender.setImageResource(business.GetGenderIcon(position));
+                imgBtnGender.setImageResource(business.GetGenderIcon(position+1));
             }
 
             @Override
@@ -104,6 +105,7 @@ public class IUEventActivity extends BaseActivity {
         EventId = 0;
         // Check if is in Update
         LoadMyEventDetails();
+        mFormView.requestFocus();
     }
     // Used to load details of MY EVENT if present
     protected void LoadMyEventDetails()
@@ -118,7 +120,7 @@ public class IUEventActivity extends BaseActivity {
             txtTitleIUEvent.setText(card.getTitle());
             txtContentIUEvent.setText(card.getContent());
             txtNumberPerson.setText(""+card.getMaxRequest());
-            genderIUEvent.setSelection(card.getGenderEventId());
+            genderIUEvent.setSelection(card.getGenderEventId()-1);
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -137,7 +139,7 @@ public class IUEventActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if(!isUpdate)
-            SwipeUpCloseActivity(IUEventActivity.this,HomeActivity.class);
+            SwipeRightCloseActivityFromResult(IUEventActivity.this,HomeActivity.class);
         else
         {
             super.StandardOnBackPressed();
@@ -154,9 +156,9 @@ public class IUEventActivity extends BaseActivity {
             mTask.AddParameter("RequestType",isUpdate?"UE":"NE");
             mTask.AddParameter("EventId",EventId);
             mTask.AddParameter("Title",txtTitleIUEvent.getText());
-            mTask.AddParameter("Description",txtContentIUEvent.getText());
-            mTask.AddParameter("MaxRequests",txtNumberPerson.getText());
-            mTask.AddParameter("GenderEventId",genderIUEvent.getSelectedItemId());
+            mTask.AddParameter("Content",txtContentIUEvent.getText());
+            mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
+            mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString())+1);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String date = df.format(Calendar.getInstance().getTime());
             mTask.AddParameter("DateEvent",date);
@@ -191,19 +193,19 @@ public class IUEventActivity extends BaseActivity {
 
         // Check for number of persons
         if (TextUtils.isEmpty(numberPerson)) {
-            txtNumberPerson.setError(getString(R.string.error_field_required));
+            txtNumberPerson.setError(getString(R.string.error_maxrequest_required));
             focusView = txtNumberPerson;
             cancel = true;
         }
         // Check for content
         if (TextUtils.isEmpty(content)) {
-            txtContentIUEvent.setError(getString(R.string.error_field_required));
+            txtContentIUEvent.setError(getString(R.string.error_content_required));
             focusView = txtContentIUEvent;
             cancel = true;
         }
         // Check for title
         if (TextUtils.isEmpty(title)) {
-            txtTitleIUEvent.setError(getString(R.string.error_field_required));
+            txtTitleIUEvent.setError(getString(R.string.error_title_required));
             focusView = txtTitleIUEvent;
             cancel = true;
         }

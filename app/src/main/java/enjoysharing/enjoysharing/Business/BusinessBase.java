@@ -158,15 +158,15 @@ public class BusinessBase {
     {
         switch (index)
         {
-            case 0: // Svago
+            case 1: // Svago
                 return R.drawable.ic_gender_svago;
-            case 1: // Utilità
+            case 2: // Utilità
                 return R.drawable.ic_gender_utility;
-            case 2: // Intrattenimento
+            case 3: // Intrattenimento
                 return R.drawable.ic_gender_intrattenimento;
-            case 3: // Lavoro
+            case 4: // Lavoro
                 return R.drawable.ic_gender_business;
-            case 4: // Pranzo/Cena
+            case 5: // Pranzo/Cena
                 return R.drawable.ic_gender_food;
         }
         return -1;

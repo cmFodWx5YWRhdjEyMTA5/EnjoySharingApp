@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="error_invalid_email">Indirizzo email non valido</string>
-    <string name="error_invalid_password">Password troppo corta</string>
+    <string name="error_invalid_password">La password deve avere almeno 4 caratteri</string>
     <string name="error_incorrect_password">Password non corretta</string>
-    <string name="error_field_required">Campo obbligatorio</string>
+    <string name="error_email_required">Inserire Email</string>
+    <string name="error_password_required">Inserire Password</string>
+    <string name="error_title_required">Inserire un titolo</string>
+    <string name="error_content_required">Inserire una descrizione</string>
+    <string name="error_maxrequest_required">Inserire un numero di partecipanti</string>
     <string name="permission_rationale">"Per usare il completamento automatico è richiesto
     l'accesso ai contatti."
     </string>

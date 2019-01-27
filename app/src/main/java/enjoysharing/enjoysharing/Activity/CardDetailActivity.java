@@ -72,6 +72,7 @@ public class CardDetailActivity extends BaseActivity {
         LoadRequestEventDetails();
         // Check if is recived request event
         LoadRequestRecivedEventDetails();
+        mFormView.requestFocus();
     }
     // Used to load details of HOME EVENT if present
     protected void LoadHomeEventDetails()

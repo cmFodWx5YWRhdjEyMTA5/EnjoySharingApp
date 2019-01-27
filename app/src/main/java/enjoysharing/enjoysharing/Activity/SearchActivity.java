@@ -18,8 +18,10 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.R;
@@ -137,6 +139,7 @@ public class SearchActivity extends BaseActivity {
 
         mFormView = findViewById(R.id.search_form);
         mProgressView = findViewById(R.id.search_progress);
+        mFormView.requestFocus();
     }
 
     @Override
@@ -150,7 +153,16 @@ public class SearchActivity extends BaseActivity {
             mTask.cancel(true);
         }
         showProgress(true);
-        mTask = new RequestTask();
+        mTask = new RequestTask(false, true, "EventServlet");
+        mTask.AddParameter("RequestType","S");
+        mTask.AddParameter("Title",searchTo.getText());
+        mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
+        mTask.AddParameter("GenderEventId",business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString()));
+        // TODO
+        // Quando implemento le date uso la data come filtro
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        String date = df.format(Calendar.getInstance().getTime());
+//        mTask.AddParameter("DateEvent",date);
         mTask.execute();
     }
 
@@ -159,19 +171,33 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void DoInBackground()
     {
-        searchCards = business.GetHomeCards(null);
-        searchCards.FilterByTitle(searchTo.getText().toString());
-        searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
-        // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
-        searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString())-1);
+        if(simulateCall)
+        {
+            searchCards = business.GetHomeCards(null);
+            searchCards.FilterByTitle(searchTo.getText().toString());
+            searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
+            // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
+            searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString())-1);
+        }
+        else
+            searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
     }
 
     @Override
     protected void OnRequestPostExecute()
     {
-        TableLayout searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(searchCards, searchTable);
+
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            if(searchCards != null)
+            {
+                TableLayout searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
+                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                DrawCardsOnTable(searchCards, searchTable);
+            }
+        }
+        else
+            Toast.makeText(SearchActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)

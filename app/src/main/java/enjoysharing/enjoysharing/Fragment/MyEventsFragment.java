@@ -129,7 +129,7 @@ public class MyEventsFragment extends FragmentBase {
             });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
+            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()-1));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v, card.getEventId());
