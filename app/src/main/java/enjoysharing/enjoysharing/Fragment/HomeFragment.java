@@ -132,7 +132,7 @@ public class HomeFragment extends FragmentBase {
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()-1));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
-            business.SetButtonRequest(btnPartecipateRequest,true);
+            business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v);

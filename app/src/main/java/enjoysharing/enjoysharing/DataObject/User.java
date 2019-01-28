@@ -2,33 +2,33 @@ package enjoysharing.enjoysharing.DataObject;
 
 public class User {
 
-    protected int idUser;
-    protected String username;
+    protected int UserId;
+    protected String UserName;
 
-    public int getIdUser() {
-        return idUser;
+    public int getUserId() {
+        return UserId;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setUserId(int UserId) {
+        this.UserId = UserId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return UserName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String UserName) {
+        this.UserName = UserName;
     }
 
     public void Clear() {
-        username = "";
+        UserName = "";
     }
 
-    public User(int idUser, String username)
+    public User(int UserId, String UserName)
     {
-        this.idUser = idUser;
-        this.username = username;
+        this.UserId = UserId;
+        this.UserName = UserName;
     }
 
 }

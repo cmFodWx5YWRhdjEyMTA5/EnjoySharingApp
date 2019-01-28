@@ -152,7 +152,7 @@ public class SearchActivity extends BaseActivity {
         if (mTask != null) {
             mTask.cancel(true);
         }
-        showProgress(true);
+        //showProgress(true);
         mTask = new RequestTask(false, true, "EventServlet");
         mTask.AddParameter("RequestType","S");
         mTask.AddParameter("Title",searchTo.getText());

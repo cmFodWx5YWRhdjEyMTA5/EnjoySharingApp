@@ -13,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardBase;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
@@ -27,6 +29,9 @@ public class RequestListActivity extends BaseActivity {
     protected TableLayout tblRequestList;
     protected boolean canManageList;
     protected CardBase cardPassed;
+    protected boolean PostCall;
+    protected boolean RequestStatus;
+    protected boolean WasLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +92,45 @@ public class RequestListActivity extends BaseActivity {
         if (mTask != null) {
             mTask.cancel(true);
         }
-        showProgress(true);
-        mTask = new RequestTask();
-        mTask.execute((Void) null);
+        PostCall = false;
+        //showProgress(true);
+        mTask = new RequestTask(false, true, "EventServlet");
+        mTask.AddParameter("RequestType","R");
+        mTask.AddParameter("EventId",cardPassed.getEventId());
+        mTask.AddParameter("UserName",txtSearch.getText());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
+    }
+
+    protected void SetRequestStatus(boolean Status, int UserId)  // true = accepted, false = refused
+    {
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+        PostCall = true;
+        RequestStatus = Status;
+        //showProgress(true);
+        mTask = new RequestTask(true, false, "EventServlet");
+        mTask.AddParameter("RequestType","R");
+        mTask.AddParameter("EventId",cardPassed.getEventId());
+        mTask.AddParameter("UserId",UserId);
+        mTask.AddParameter("Status",Status?1:3);  // 1 = Accepted, 3 = Refused
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
     }
 
     protected UserCollection users;
@@ -97,16 +138,55 @@ public class RequestListActivity extends BaseActivity {
     @Override
     public void DoInBackground()
     {
-        users = business.GetRequestList();
-        users.FilterByUsername(txtSearch.getText().toString());
+        if(!PostCall)
+        {
+            if(simulateCall)
+            {
+                users = business.GetRequestList(null);
+                users.FilterByUsername(txtSearch.getText().toString());
+            }
+            else
+                users = new BusinessJSON(RequestListActivity.this).GetRequestList(retObj.getMessage());
+        }
     }
 
     @Override
     protected void OnRequestPostExecute()
     {
-        tblRequestList = (TableLayout) findViewById(R.id.tblRequestList);
-        // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-        DrawCardsOnTable(users);
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            if(PostCall)
+            {
+                if(RequestStatus)  // Accept
+                {
+                    cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()+1);
+                    SetRequestInfo();
+                }
+                else   // Refuse
+                {
+                    if(WasLeft)
+                    {
+                        cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()-1);
+                    }
+                    SetRequestInfo();
+                }
+            }
+            else
+            {
+                if(users != null)
+                {
+                    tblRequestList = (TableLayout) findViewById(R.id.tblRequestList);
+                    // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                    DrawCardsOnTable(users);
+                }
+            }
+        }
+        else
+        {
+            // TODO
+            // METTERE QUI IL CAMBIO DEL BORDO DELL'IMMAGINE!
+            Toast.makeText(RequestListActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void SetRequestInfo()
@@ -130,7 +210,7 @@ public class RequestListActivity extends BaseActivity {
             TextView txtUsername = (TextView)linLayout.findViewById(R.id.txtUsername);
             // Set width based on screen percentage
             txtUsername.setWidth(txtUserTitleWidth);
-            txtUsername.setText(user.getUsername());
+            txtUsername.setText(user.getUserName());
 
             ImageView imgUser = (ImageView) linLayout.findViewById(R.id.imgUser);
 
@@ -138,11 +218,12 @@ public class RequestListActivity extends BaseActivity {
             if(user.isAccepted()) swipeListener.SetAccepted();
             if(user.isDeclined()) swipeListener.SetDecined();
             swipeListener.CanManageList(canManageList);
+            swipeListener.setUserId(user.getUserId());
             linLayout.setOnTouchListener(swipeListener);
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRowClick(v, user.getIdUser());
+                    onRowClick(v, user.getUserId());
                 }
             });
 
@@ -153,20 +234,16 @@ public class RequestListActivity extends BaseActivity {
     public boolean BeforeSwipe()
     { return cardPassed.getAcceptedRequest() < cardPassed.getMaxRequest(); }
     @Override
-    public void onRightSwipe(View v, boolean wasLeft)
+    public void onRightSwipe(View v, boolean wasLeft, int UserId)
     {
-        if(wasLeft)
-        {
-            cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()-1);
-        }
-        SetRequestInfo();
+        WasLeft = wasLeft;
+        SetRequestStatus(false, UserId);
     }
     // Used when accept request
     @Override
-    public void onLeftSwipe(View v)
+    public void onLeftSwipe(View v, int UserId)
     {
-        cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()+1);
-        SetRequestInfo();
+        SetRequestStatus(true, UserId);
     }
 
     @Override

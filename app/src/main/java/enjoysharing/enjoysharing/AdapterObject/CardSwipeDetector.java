@@ -16,10 +16,15 @@ public class CardSwipeDetector implements View.OnTouchListener {
     private BaseActivity activity;
     private ImageView image;
     private TableRow row;
-    private boolean swipeLeft, rightSwipeDone = false, leftSwipeDone = false;
+    private boolean swipeLeft, rightSwipeDone = false, leftSwipeDone = false, declineFinish = false, acceptFinish = false;
     static final int MIN_DISTANCE = 5, MAX_SWIPE_LEFT = 260, MAX_SWIPE_RIGHT = 300;
     private float downX, downY, upX, upY;
     protected boolean canManageList;
+    protected int UserId;
+
+    public void setUserId(int userId) {
+        UserId = userId;
+    }
 
     public void CanManageList(boolean canManageList) {
         this.canManageList = canManageList;
@@ -52,9 +57,7 @@ public class CardSwipeDetector implements View.OnTouchListener {
         SetBackground();
         if(deltaX > MAX_SWIPE_RIGHT) {
             deltaX = MAX_SWIPE_RIGHT;
-            if(!rightSwipeDone)
-                activity.onRightSwipe(v,leftSwipeDone);
-            SetDecined();
+            declineFinish = true;
         }
         GradientDrawable drawable = (GradientDrawable) row.getBackground();
         drawable.setGradientCenter(deltaX/row.getWidth(),0.5f);
@@ -66,9 +69,7 @@ public class CardSwipeDetector implements View.OnTouchListener {
         SetBackground();
         if(deltaX > MAX_SWIPE_LEFT) {
             deltaX = MAX_SWIPE_LEFT;
-            if(!leftSwipeDone)
-                activity.onLeftSwipe(v);
-            SetAccepted();
+            acceptFinish = true;
         }
         GradientDrawable drawable = (GradientDrawable) row.getBackground();
         drawable.setGradientCenter(1-(deltaX/row.getWidth()),0.5f);
@@ -123,10 +124,27 @@ public class CardSwipeDetector implements View.OnTouchListener {
                 return true;
             }
             default: {
+                CheckForAction(v);
                 SetBackground();
                 return true;
             }
         }
+    }
+
+    protected void CheckForAction(View v)
+    {
+        if(declineFinish) {
+            if (!rightSwipeDone)
+                activity.onRightSwipe(v, leftSwipeDone,UserId);
+            SetDecined();
+        }
+        if(acceptFinish) {
+            if (!leftSwipeDone)
+                activity.onLeftSwipe(v,UserId);
+            SetAccepted();
+        }
+        acceptFinish = false;
+        declineFinish = false;
     }
 
     protected void SetBackground()

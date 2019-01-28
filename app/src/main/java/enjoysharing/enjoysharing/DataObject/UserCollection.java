@@ -24,7 +24,7 @@ public class UserCollection {
     {
         for(User user : users)
         {
-            if(user.getIdUser() == idUser)
+            if(user.getUserId() == idUser)
                 return user;
         }
         return null;
@@ -39,7 +39,7 @@ public class UserCollection {
             usersFiltered = new ArrayList<User>();
             for(User card : users)
             {
-                if(card.getUsername().contains(username))
+                if(card.getUserName().contains(username))
                     resultList.add(card);
             }
         }
@@ -47,7 +47,7 @@ public class UserCollection {
         {
             for(User user : usersFiltered)
             {
-                if(user.getUsername().contains(username))
+                if(user.getUserName().contains(username))
                     resultList.add(user);
             }
         }
