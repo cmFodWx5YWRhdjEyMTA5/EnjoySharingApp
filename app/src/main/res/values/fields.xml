@@ -38,6 +38,7 @@
 
     <string name="txtRequestPartecipate">Partecipa</string>
     <string name="txtRequestPartecipateReverse">Annulla richiesta</string>
+    <string name="txtRequestPartecipateLoading">Solo un attimo</string>
     <string name="txtRequestPartecipateReversed">Richiesta annullata</string>
     <string name="txtConfirmRequest">Accetta Tutti</string>
     <string name="txtDeclineRequest">Rifiuta Tutti</string>

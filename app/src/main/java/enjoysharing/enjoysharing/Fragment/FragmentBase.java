@@ -30,6 +30,8 @@ public class FragmentBase extends Fragment {
     protected FragmentRequestTask mTask = null;
     // Used to checkk if request success
     protected boolean requestSuccess;
+    // Usata da alcuni fragment per distinguere Post da Get nel result
+    protected boolean PostCall;
 
     protected View progressView;
     protected FrameLayout formView;
@@ -101,7 +103,6 @@ public class FragmentBase extends Fragment {
     protected void onRowClick(View v, int rowId)
     { }
     // Used for click on request partecipate
-    // TODO
     // Manage click on request partecipate
     protected void onRequestPartecipate(View v)
     {
@@ -131,6 +132,7 @@ public class FragmentBase extends Fragment {
         protected BusinessCallService businessCallService;
         protected ParameterCollection params;
         protected String servletName;
+        protected boolean useShowProgress = true;
 
         public void AddParameter(String name, Object value)
         {
@@ -147,7 +149,20 @@ public class FragmentBase extends Fragment {
 
         public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName)
         {
-            ShowProgress(true);
+            if(useShowProgress)
+                ShowProgress(true);
+            params = new ParameterCollection();
+            activity.retObj = new JSONServiceResponseOBJ();
+            this.servletName = servletName;
+            businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
+            businessCallService.simulateCall = activity.simulateCall;
+        }
+
+        public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
+        {
+            if(useShowProgress)
+                ShowProgress(true);
+            this.useShowProgress = useShowProgress;
             params = new ParameterCollection();
             activity.retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
@@ -185,7 +200,8 @@ public class FragmentBase extends Fragment {
 
             mTask = null;
             OnRequestPostExecute();
-            ShowProgress(false);
+            if(useShowProgress)
+                ShowProgress(false);
         }
 
         @Override

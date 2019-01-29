@@ -64,6 +64,8 @@ public class CurrentUser {
     {
         Context context = activity.getApplicationContext();
         SharedPreferences sharedPref = context.getSharedPreferences("user",0);
+        String sUserId = sharedPref.getString("userId",null);
+        setUserId(sUserId == null?0:Integer.parseInt(sUserId));
         setUsername(sharedPref.getString("username",null));
         setEmail(sharedPref.getString("email",null));
         setPassword(sharedPref.getString("password",null));
@@ -74,6 +76,7 @@ public class CurrentUser {
         Context context = activity.getApplicationContext();
         SharedPreferences e = context.getSharedPreferences("user", 0);
         SharedPreferences.Editor ed=e.edit();
+        ed.putString("userId", String.valueOf(getUserId()));
         ed.putString("username", getUsername());
         ed.putString("email", getEmail());
         ed.putString("password", getPassword());

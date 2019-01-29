@@ -133,6 +133,20 @@ public class BusinessBase {
         btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
         btn.setHint("0");
     }
+    // Used when loading request
+    public void LoadingRequestButton(Button btn, boolean loading)
+    {
+        btn.setEnabled(!loading);
+        if(loading)
+        {
+            btn.setText(R.string.txtRequestPartecipateLoading);
+            btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
+        }
+        else
+        {
+            SetButtonRequest(btn,btn.getHint()=="1");
+        }
+    }
 
     public int GetGenderIconSearch(int index)
     {

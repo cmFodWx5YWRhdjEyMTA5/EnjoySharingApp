@@ -15,6 +15,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+
 import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
@@ -29,9 +32,10 @@ public class RequestListActivity extends BaseActivity {
     protected TableLayout tblRequestList;
     protected boolean canManageList;
     protected CardBase cardPassed;
-    protected boolean PostCall;
     protected boolean RequestStatus;
     protected boolean WasLeft;
+    protected int UserId;
+    protected HashMap<Integer, CardSwipeDetector> swipeListenerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +94,11 @@ public class RequestListActivity extends BaseActivity {
     protected void SearchUsers()
     {
         if (mTask != null) {
-            mTask.cancel(true);
+            return;
         }
         PostCall = false;
         //showProgress(true);
-        mTask = new RequestTask(false, true, "EventServlet");
+        mTask = new RequestTask(false, true, "RequestServlet");
         mTask.AddParameter("RequestType","R");
         mTask.AddParameter("EventId",cardPassed.getEventId());
         mTask.AddParameter("UserName",txtSearch.getText());
@@ -109,16 +113,18 @@ public class RequestListActivity extends BaseActivity {
         }
     }
 
-    protected void SetRequestStatus(boolean Status, int UserId)  // true = accepted, false = refused
+    protected void SetRequestStatus(boolean Status, boolean wasLeft, int UserId)  // true = accepted, false = refused
     {
         if (mTask != null) {
             mTask.cancel(true);
         }
         PostCall = true;
         RequestStatus = Status;
+        this.UserId = UserId;
+        WasLeft = wasLeft;
         //showProgress(true);
-        mTask = new RequestTask(true, false, "EventServlet");
-        mTask.AddParameter("RequestType","R");
+        mTask = new RequestTask(true, false, "RequestServlet",false);
+        mTask.AddParameter("RequestType","URS");
         mTask.AddParameter("EventId",cardPassed.getEventId());
         mTask.AddParameter("UserId",UserId);
         mTask.AddParameter("Status",Status?1:3);  // 1 = Accepted, 3 = Refused
@@ -161,6 +167,7 @@ public class RequestListActivity extends BaseActivity {
                 {
                     cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()+1);
                     SetRequestInfo();
+                    swipeListenerList.get(UserId).SetAccepted();
                 }
                 else   // Refuse
                 {
@@ -169,6 +176,7 @@ public class RequestListActivity extends BaseActivity {
                         cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()-1);
                     }
                     SetRequestInfo();
+                    swipeListenerList.get(UserId).SetDecined();
                 }
             }
             else
@@ -183,8 +191,6 @@ public class RequestListActivity extends BaseActivity {
         }
         else
         {
-            // TODO
-            // METTERE QUI IL CAMBIO DEL BORDO DELL'IMMAGINE!
             Toast.makeText(RequestListActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -201,6 +207,7 @@ public class RequestListActivity extends BaseActivity {
     {
         SetRequestInfo();
         tblRequestList.removeAllViews();
+        swipeListenerList = new HashMap<Integer,CardSwipeDetector>();
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<users.List().size(); i++) {
             final RequestUser user = (RequestUser)users.List().get(i);
@@ -221,6 +228,8 @@ public class RequestListActivity extends BaseActivity {
             swipeListener.setUserId(user.getUserId());
             linLayout.setOnTouchListener(swipeListener);
 
+            swipeListenerList.put(user.getUserId(),swipeListener);
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v, user.getUserId());
@@ -236,14 +245,13 @@ public class RequestListActivity extends BaseActivity {
     @Override
     public void onRightSwipe(View v, boolean wasLeft, int UserId)
     {
-        WasLeft = wasLeft;
-        SetRequestStatus(false, UserId);
+        SetRequestStatus(false, wasLeft, UserId);
     }
     // Used when accept request
     @Override
     public void onLeftSwipe(View v, int UserId)
     {
-        SetRequestStatus(true, UserId);
+        SetRequestStatus(true, false, UserId);
     }
 
     @Override

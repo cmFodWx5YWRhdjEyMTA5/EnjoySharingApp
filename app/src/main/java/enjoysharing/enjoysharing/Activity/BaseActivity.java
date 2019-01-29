@@ -49,6 +49,8 @@ public class BaseActivity extends AppCompatActivity {
     public JSONServiceResponseOBJ retObj;
     // Questa variabile la uso per le esecuzioni a server spento!
     public boolean simulateCall = true;
+    // Usata da alcune activity per distinguere Post da Get nel result
+    protected boolean PostCall;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -242,6 +244,7 @@ public class BaseActivity extends AppCompatActivity {
         protected BusinessCallService businessCallService;
         protected ParameterCollection params;
         protected String servletName;
+        protected boolean useShowProgress = true;
 
         public void AddParameter(String name, Object value)
         {
@@ -258,7 +261,20 @@ public class BaseActivity extends AppCompatActivity {
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName)
         {
-            showProgress(true);
+            if(useShowProgress)
+                showProgress(true);
+            params = new ParameterCollection();
+            retObj = new JSONServiceResponseOBJ();
+            this.servletName = servletName;
+            businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
+            businessCallService.simulateCall = simulateCall;
+        }
+
+        public RequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
+        {
+            if(useShowProgress)
+                showProgress(true);
+            this.useShowProgress = useShowProgress;
             params = new ParameterCollection();
             retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
@@ -295,7 +311,8 @@ public class BaseActivity extends AppCompatActivity {
 
             mTask = null;
             OnRequestPostExecute();
-            showProgress(false);
+            if(useShowProgress)
+                showProgress(false);
 
             if (requestSuccess && finishOnPostExecute) {
                 finish();

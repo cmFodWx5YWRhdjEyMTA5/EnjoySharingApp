@@ -19,7 +19,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
@@ -35,6 +34,8 @@ public class SearchActivity extends BaseActivity {
     protected ImageButton imgBtnGender;
     // Used when filter bar open
     protected boolean useFilter = true;
+    protected Button btn;
+    protected boolean stateRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,7 @@ public class SearchActivity extends BaseActivity {
             mTask.cancel(true);
         }
         //showProgress(true);
+        PostCall = false;
         mTask = new RequestTask(false, true, "EventServlet");
         mTask.AddParameter("RequestType","S");
         mTask.AddParameter("Title",searchTo.getText());
@@ -165,22 +167,48 @@ public class SearchActivity extends BaseActivity {
 //        mTask.AddParameter("DateEvent",date);
         mTask.execute();
     }
+    // Used to send or reverse request partecipate
+    protected void SendRequestPartecipate(Button btn, int EventId)
+    {
+        if (mTask != null) {
+            business.LoadingRequestButton(btn,false);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        this.btn = btn;
+        stateRequest = (this.btn.getHint() == "1");
+        mTask = new RequestTask(true, false, "RequestServlet", false);
+        mTask.AddParameter("RequestType",stateRequest?"NR":"DR");  // New Request or Delete Request
+        mTask.AddParameter("EventId",EventId);
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
+    }
 
     protected CardCollection searchCards;
 
     @Override
     public void DoInBackground()
     {
-        if(simulateCall)
+        if(!PostCall)
         {
-            searchCards = business.GetHomeCards(null);
-            searchCards.FilterByTitle(searchTo.getText().toString());
-            searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
-            // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
-            searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString())-1);
+            if (simulateCall) {
+                searchCards = business.GetHomeCards(null);
+                searchCards.FilterByTitle(searchTo.getText().toString());
+                searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
+                // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
+                searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString()) - 1);
+            } else
+                searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
         }
-        else
-            searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
     }
 
     @Override
@@ -189,15 +217,27 @@ public class SearchActivity extends BaseActivity {
 
         if(requestSuccess && retObj.isOkResponse())
         {
-            if(searchCards != null)
+            if(PostCall)
             {
-                TableLayout searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
-                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-                DrawCardsOnTable(searchCards, searchTable);
+                business.SetButtonRequest(btn,!stateRequest);
+                business.LoadingRequestButton(btn,false);
+            }
+            else
+            {
+                if(searchCards != null)
+                {
+                    TableLayout searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
+                    // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                    DrawCardsOnTable(searchCards, searchTable);
+                }
             }
         }
         else
-            Toast.makeText(SearchActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+        {
+            Toast.makeText(SearchActivity.this, retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            if(PostCall)
+                business.LoadingRequestButton(btn,false);
+        }
     }
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
@@ -238,7 +278,7 @@ public class SearchActivity extends BaseActivity {
             business.SetButtonRequest(btnPartecipateRequest,true);
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRequestPartecipate(v);
+                    onRequestPartecipate(v,card.getEventId());
                 }
             });
 
@@ -249,6 +289,12 @@ public class SearchActivity extends BaseActivity {
             });
             table.addView(row);
         }
+    }
+
+    protected void onRequestPartecipate(View v, int EventId)
+    {
+        business.LoadingRequestButton(((Button)v),true);
+        SendRequestPartecipate((Button)v,EventId);
     }
 
     @Override

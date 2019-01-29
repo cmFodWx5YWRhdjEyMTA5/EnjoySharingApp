@@ -25,6 +25,8 @@ import enjoysharing.enjoysharing.R;
 public class HomeFragment extends FragmentBase {
 
     protected TableLayout tableHomeCards;
+    protected Button btn;
+    protected boolean stateRequest;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -51,7 +53,6 @@ public class HomeFragment extends FragmentBase {
 
     protected CardCollection homeCards;
     // User to load home cards
-    // TODO
     // Fill cards by server call
     protected void FillHomeCards()
     {
@@ -61,6 +62,7 @@ public class HomeFragment extends FragmentBase {
             return;
         }
         //ShowProgress(true);
+        PostCall = false;
         mTask = new FragmentRequestTask(false, true, "EventServlet");
         mTask.AddParameter("RequestType","H");
         try
@@ -73,15 +75,42 @@ public class HomeFragment extends FragmentBase {
             activity.retObj.setMessage("GeneralError");
         }
     }
-    // TODO
+    // Used to send or reverse request partecipate
+    protected void SendRequestPartecipate(Button btn, int EventId)
+    {
+        if (mTask != null) {
+            business.LoadingRequestButton(btn,false);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        this.btn = btn;
+        stateRequest = (this.btn.getHint() == "1");
+        mTask = new FragmentRequestTask(true, false, "RequestServlet", false);
+        mTask.AddParameter("RequestType",stateRequest?"NR":"DR");  // New Request or Delete Request
+        mTask.AddParameter("EventId",EventId);
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
+    }
     // Server call
     @Override
     protected void DoInBackground()
     {
-        if(activity.simulateCall)
-            homeCards = business.GetHomeCards(null);
-        else
-            homeCards = new BusinessJSON(activity).GetHomeCards(activity.retObj.getMessage());
+        if(!PostCall)
+        {
+            if (activity.simulateCall)
+                homeCards = business.GetHomeCards(null);
+            else
+                homeCards = new BusinessJSON(activity).GetHomeCards(activity.retObj.getMessage());
+        }
     }
 
     @Override
@@ -89,12 +118,24 @@ public class HomeFragment extends FragmentBase {
     {
         if(requestSuccess && activity.retObj.isOkResponse())
         {
-            if(homeCards != null)
-                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-                DrawCardsOnTable(homeCards,tableHomeCards);
+            if(PostCall)
+            {
+                business.SetButtonRequest(btn,!stateRequest);
+                business.LoadingRequestButton(btn,false);
+            }
+            else
+            {
+                if (homeCards != null)
+                    // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                    DrawCardsOnTable(homeCards, tableHomeCards);
+            }
         }
         else
-            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+        {
+            Toast.makeText(activity, activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            if(PostCall)
+                business.LoadingRequestButton(btn,false);
+        }
     }
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
@@ -135,7 +176,7 @@ public class HomeFragment extends FragmentBase {
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRequestPartecipate(v);
+                    onRequestPartecipate(v,card.getEventId());
                 }
             });
 
@@ -146,6 +187,12 @@ public class HomeFragment extends FragmentBase {
             });
             table.addView(row);
         }
+    }
+
+    protected void onRequestPartecipate(View v, int EventId)
+    {
+        business.LoadingRequestButton(((Button)v),true);
+        SendRequestPartecipate((Button)v,EventId);
     }
 
     @Override

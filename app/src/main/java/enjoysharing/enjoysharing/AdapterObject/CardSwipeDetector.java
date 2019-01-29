@@ -59,6 +59,8 @@ public class CardSwipeDetector implements View.OnTouchListener {
             deltaX = MAX_SWIPE_RIGHT;
             declineFinish = true;
         }
+        else
+            declineFinish = false;
         GradientDrawable drawable = (GradientDrawable) row.getBackground();
         drawable.setGradientCenter(deltaX/row.getWidth(),0.5f);
         row.setBackground(drawable);
@@ -71,6 +73,8 @@ public class CardSwipeDetector implements View.OnTouchListener {
             deltaX = MAX_SWIPE_LEFT;
             acceptFinish = true;
         }
+        else
+            acceptFinish = false;
         GradientDrawable drawable = (GradientDrawable) row.getBackground();
         drawable.setGradientCenter(1-(deltaX/row.getWidth()),0.5f);
         row.setBackground(drawable);
@@ -136,12 +140,12 @@ public class CardSwipeDetector implements View.OnTouchListener {
         if(declineFinish) {
             if (!rightSwipeDone)
                 activity.onRightSwipe(v, leftSwipeDone,UserId);
-            SetDecined();
+            //SetDecined();
         }
         if(acceptFinish) {
             if (!leftSwipeDone)
                 activity.onLeftSwipe(v,UserId);
-            SetAccepted();
+            //SetAccepted();
         }
         acceptFinish = false;
         declineFinish = false;
