@@ -44,8 +44,7 @@ public class BusinessBase {
         }
         return base64.replace("\n","");
     }
-    // TODO
-    // Remove when call server is ok
+    // Used when simulate
     public UserCollection GetRequestList(String JSONStr)
     {
         UserCollection users = new UserCollection();
@@ -58,8 +57,7 @@ public class BusinessBase {
         users.Add(new RequestUser(idCard++,"Utente 6",0));
         return users;
     }
-    // TODO
-    // Remove when call server is ok
+    // Used when simulate
     public CardCollection GetHomeCards(String JSONStr)
     {
         CardCollection cards = new CardCollection();
@@ -70,8 +68,7 @@ public class BusinessBase {
         cards.Add(new CardHome(idEvent++,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10,true));
         return cards;
     }
-    // TODO
-    // Remove when call server is ok
+    // Used when simulate
     public CardCollection GetMyEventsCards(String JSONStr)
     {
         CardCollection cards = new CardCollection();
@@ -93,9 +90,8 @@ public class BusinessBase {
         cards.Add(new CardRequest(1,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
-    // TODO
-    // Remove when call server is ok
-    public CardCollection GetRequestRecivedCards()
+    // Used when simulate
+    public CardCollection GetRequestRecivedCards(String JSONStr)
     {
         CardCollection cards = new CardCollection();
         cards.Add(new CardRequestRecived(1,1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));

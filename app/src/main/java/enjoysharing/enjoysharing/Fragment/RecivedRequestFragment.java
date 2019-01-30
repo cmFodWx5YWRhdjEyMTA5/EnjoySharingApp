@@ -14,6 +14,7 @@ import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
 import enjoysharing.enjoysharing.DataObject.CardRequestUserList;
@@ -23,6 +24,9 @@ import enjoysharing.enjoysharing.R;
 public class RecivedRequestFragment extends FragmentBase {
 
     protected TableLayout tableRecivedRequests;
+    protected TextView txtConfirmDecline;
+    protected Button btn1, btn2;
+    protected boolean stateRequest;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -49,27 +53,66 @@ public class RecivedRequestFragment extends FragmentBase {
     {
         activity.showProgress(state, formView, progressView);
     }
-    // TODO
     // Load with server call
     protected void LoadRecivedRequests()
     {
-
         if (mTask != null) {
-            recivedRequestCards = new CardRequestUserListCollection();
-            DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
             return;
         }
         //ShowProgress(true);
-        mTask = new FragmentRequestTask();
-        mTask.execute();
+        PostCall = false;
+        mTask = new FragmentRequestTask(false, true, "RequestServlet");
+        mTask.AddParameter("RequestType","RR");
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
     }
-    // TODO
+    // Load with server call
+    protected void AcceptRefuseAll(Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest, int EventId, boolean state)
+    {
+        if (mTask != null) {
+            SetButtonsVisibility(btnConfirmRequest,btnDeclineRequest,true);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        stateRequest = state;  // True = accetto, False = rifiuto
+        txtConfirmDecline = txtConfirmDeclineRequest;
+        btn1 = btnConfirmRequest;
+        btn2 = btnDeclineRequest;
+        SetButtonsVisibility(false);
+        mTask = new FragmentRequestTask(true, false, "RequestServlet",false);
+        mTask.AddParameter("RequestType",stateRequest?"AR":"RR");  // Accept Request or Refuse Request
+        mTask.AddParameter("EventId",EventId);
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
+    }
     // Server call
     @Override
     protected void DoInBackground()
     {
-        cardCollection = business.GetRequestRecivedCards();
-        recivedRequestCards = business.GetGroupedCards(cardCollection);
+        if(!PostCall)
+        {
+            if (activity.simulateCall)
+                cardCollection = business.GetRequestRecivedCards(null);
+            else
+                cardCollection = new BusinessJSON(activity).GetRequestRecivedCards(activity.retObj.getMessage());
+            recivedRequestCards = business.GetGroupedCards(cardCollection);
+        }
     }
 
     @Override
@@ -77,12 +120,26 @@ public class RecivedRequestFragment extends FragmentBase {
     {
         if(requestSuccess && activity.retObj.isOkResponse())
         {
-            if(recivedRequestCards != null)
-                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-                DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
+            if(PostCall)
+            {
+                txtConfirmDecline.setText(stateRequest?R.string.txtConfirmedRequest:R.string.txtDeclinedRequest);
+                txtConfirmDecline.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                if(recivedRequestCards != null)
+                    // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                    DrawCardsOnTable(recivedRequestCards,tableRecivedRequests);
+            }
         }
         else
-            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+        {
+            Toast.makeText(activity, activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            if (PostCall)
+            {
+                SetButtonsVisibility(true);
+            }
+        }
     }
 
     // Used by requests tabs
@@ -127,12 +184,12 @@ public class RecivedRequestFragment extends FragmentBase {
             final TextView txtConfirmDeclineRequest = (TextView)relLayout.findViewById(R.id.txtConfirmDeclineRequest);
             btnConfirmRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRequestConfirm(btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest);
+                    onRequestConfirm(card.getEventId(),btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest);
                 }
             });
             btnDeclineRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRequestDecline(btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest);
+                    onRequestDecline(card.getEventId(),btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest);
                 }
             });
             row.setOnClickListener(new View.OnClickListener() {
@@ -144,30 +201,28 @@ public class RecivedRequestFragment extends FragmentBase {
         }
     }
     // Used to confirm request
-    // TODO
-    // Server call
-    protected void onRequestConfirm(Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest)
+    protected void onRequestConfirm(int EventId, Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest)
     {
         // Server call
-        onRequestActionClick(btnConfirmRequest, btnDeclineRequest);
-        txtConfirmDeclineRequest.setText(R.string.txtConfirmedRequest);
-        txtConfirmDeclineRequest.setVisibility(View.VISIBLE);
+        AcceptRefuseAll(btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest, EventId, true);
     }
     // Used to decline request
-    // TODO
-    // Server call
-    protected void onRequestDecline(Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest)
+    protected void onRequestDecline(int EventId, Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest)
     {
         // Server call
-        onRequestActionClick(btnConfirmRequest, btnDeclineRequest);
-        txtConfirmDeclineRequest.setText(R.string.txtDeclinedRequest);
-        txtConfirmDeclineRequest.setVisibility(View.VISIBLE);
+        AcceptRefuseAll(btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest, EventId, false);
     }
-    // Used to disable buttons
-    protected void onRequestActionClick(Button btnConfirmRequest, Button btnDeclineRequest)
+
+    protected void SetButtonsVisibility(Button btnConfirmRequest, Button btnDeclineRequest,boolean visible)
     {
-        btnConfirmRequest.setVisibility(View.GONE);
-        btnDeclineRequest.setVisibility(View.GONE);
+        btnConfirmRequest.setVisibility(visible?View.VISIBLE:View.GONE);
+        btnDeclineRequest.setVisibility(visible?View.VISIBLE:View.GONE);
+    }
+
+    protected void SetButtonsVisibility(boolean visible)
+    {
+        btn1.setVisibility(visible?View.VISIBLE:View.GONE);
+        btn2.setVisibility(visible?View.VISIBLE:View.GONE);
     }
 
 }

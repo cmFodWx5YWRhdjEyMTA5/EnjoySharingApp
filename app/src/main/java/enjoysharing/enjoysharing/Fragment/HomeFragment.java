@@ -57,8 +57,6 @@ public class HomeFragment extends FragmentBase {
     protected void FillHomeCards()
     {
         if (mTask != null) {
-            homeCards = new CardCollection();
-            DrawCardsOnTable(homeCards,tableHomeCards);
             return;
         }
         //ShowProgress(true);

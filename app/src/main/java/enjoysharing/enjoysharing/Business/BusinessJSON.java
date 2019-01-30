@@ -15,6 +15,7 @@ import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.DataObject.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CardHome;
 import enjoysharing.enjoysharing.DataObject.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
@@ -66,6 +67,19 @@ public class BusinessJSON extends BusinessBase {
         ArrayList<CardMyEvent> cardList = gson.fromJson(JSONStr, founderListType);
         CardCollection cards = new CardCollection();
         for (CardMyEvent card : cardList)
+        {
+            cards.Add(card);
+        }
+        return cards;
+    }
+    @Override
+    public CardCollection GetRequestRecivedCards(String JSONStr)
+    {
+        Gson gson = new Gson();
+        Type founderListType = new TypeToken<ArrayList<CardRequestRecived>>(){}.getType();
+        ArrayList<CardRequestRecived> cardList = gson.fromJson(JSONStr, founderListType);
+        CardCollection cards = new CardCollection();
+        for (CardRequestRecived card : cardList)
         {
             cards.Add(card);
         }

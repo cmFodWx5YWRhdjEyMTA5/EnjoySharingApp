@@ -275,7 +275,7 @@ public class SearchActivity extends BaseActivity {
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
-            business.SetButtonRequest(btnPartecipateRequest,true);
+            business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v,card.getEventId());
