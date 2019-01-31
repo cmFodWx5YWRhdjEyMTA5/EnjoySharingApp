@@ -158,7 +158,7 @@ public class IUEventActivity extends BaseActivity {
             mTask.AddParameter("Title",txtTitleIUEvent.getText());
             mTask.AddParameter("Content",txtContentIUEvent.getText());
             mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
-            mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString())+1);
+            mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString()));
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String date = df.format(Calendar.getInstance().getTime());
             mTask.AddParameter("DateEvent",date);
