@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Enjoy Sharing</string>
     <string name="title_activity_home">EnjoySharing</string>
-    <string name="service_url">http://2.33.153.239:8080/EnjoySharingWeb/</string>
+    <string name="service_url">http://2.33.154.13:8080/EnjoySharingWeb/</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Impostazioni</string>
