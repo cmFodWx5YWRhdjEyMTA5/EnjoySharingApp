@@ -16,13 +16,17 @@ import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardRequest;
+import enjoysharing.enjoysharing.Business.BusinessJSON;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestSent;
 import enjoysharing.enjoysharing.R;
 
 public class SendRequestFragment extends FragmentBase {
 
     protected TableLayout tableSendRequests;
+    protected Button btn;
+    protected int EventId;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -52,22 +56,62 @@ public class SendRequestFragment extends FragmentBase {
     // Load with server call
     protected void LoadSendRequests()
     {
-
         if (mTask != null) {
-            sendRequestCards = new CardCollection();
-            DrawCardsOnTable(sendRequestCards,tableSendRequests);
             return;
         }
         //ShowProgress(true);
-        mTask = new FragmentRequestTask();
-        mTask.execute();
+        PostCall = false;
+        mTask = new FragmentRequestTask(false, true, "RequestServlet");
+        mTask.AddParameter("RequestType","RS");
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
     }
-    // TODO
+
+    protected void DeactivateRequest(Button btnPartecipateSendRequest, int EventId)
+    {
+        if (mTask != null) {
+            business.LoadingRequestButton(btnPartecipateSendRequest,false);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        btn = btnPartecipateSendRequest;
+        this.EventId = EventId;
+        mTask = new FragmentRequestTask(true, false, "RequestServlet",false);
+        mTask.AddParameter("RequestType","DR");  // Deactivate Request
+        mTask.AddParameter("EventId",EventId);
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
+        }
+    }
     // Server call
     @Override
     protected void DoInBackground()
     {
-        sendRequestCards = business.GetRequestCards();
+        if(!PostCall)
+        {
+            if(activity.simulateCall)
+            {
+                sendRequestCards = business.GetRequestSentCards(null);
+            }
+            else
+                sendRequestCards = new BusinessJSON(activity).GetRequestSentCards(activity.retObj.getMessage());
+        }
     }
 
     @Override
@@ -75,12 +119,34 @@ public class SendRequestFragment extends FragmentBase {
     {
         if(requestSuccess && activity.retObj.isOkResponse())
         {
-            if(sendRequestCards != null)
-                // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
-                DrawCardsOnTable(sendRequestCards,tableSendRequests);
+            if(PostCall)
+            {
+                business.DisableRequestButton(btn);
+                UpdateCard();
+            }
+            else
+            {
+                if(sendRequestCards != null)
+                    // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
+                    DrawCardsOnTable(sendRequestCards,tableSendRequests);
+            }
         }
         else
-            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+        {
+            Toast.makeText(activity, activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            if (PostCall)
+            {
+                business.SetButtonRequest(btn,false);
+            }
+        }
+    }
+
+    protected void UpdateCard()
+    {
+        CardRequestSent card = (CardRequestSent) sendRequestCards.GetCard(EventId);
+        if(card != null)
+            card.setRequestSubmitted(false);
+        EventId = 0;
     }
 
     // Used by requests tabs
@@ -89,7 +155,7 @@ public class SendRequestFragment extends FragmentBase {
         table.removeAllViews();
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<cards.List().size(); i++) {
-            final CardRequest card = (CardRequest)cards.List().get(i);
+            final CardRequestSent card = (CardRequestSent)cards.List().get(i);
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_send, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -113,10 +179,13 @@ public class SendRequestFragment extends FragmentBase {
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
             Button btnPartecipateSendRequest = (Button)relLayout.findViewById(R.id.btnPartecipateSendRequest);
-            business.SetButtonRequest(btnPartecipateSendRequest,false);
+            card.setRequestSubmitted(true);
+            business.SetButtonRequest(btnPartecipateSendRequest,!card.IsRequestSubmitted());
+            // TODO
+            // Aggiungere bordo immagine in base a status request
             btnPartecipateSendRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onRequestPartecipate(v);
+                    onRequestPartecipate(v, card.getEventId());
                 }
             });
             row.setOnClickListener(new View.OnClickListener() {
@@ -127,18 +196,17 @@ public class SendRequestFragment extends FragmentBase {
             table.addView(row);
         }
     }
-    // Used for click on request partecipate
-    // TODO
     // Manage click on request partecipate
-    protected void onRequestPartecipate(View v)
+    protected void onRequestPartecipate(View v, int EventId)
     {
-        business.DisableRequestButton((Button)v);
+        business.LoadingRequestButton(((Button)v),true);
+        DeactivateRequest((Button)v,EventId);
     }
 
     @Override
     protected void onRowClick(View v, int rowId)
     {
-        CardRequest card = (CardRequest) sendRequestCards.GetCard(rowId);
+        CardRequestSent card = (CardRequestSent) sendRequestCards.GetCard(rowId);
         if(card != null)
         {
             SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);

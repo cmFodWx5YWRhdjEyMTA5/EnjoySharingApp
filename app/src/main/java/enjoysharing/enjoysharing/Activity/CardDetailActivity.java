@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
-import enjoysharing.enjoysharing.DataObject.CardBase;
-import enjoysharing.enjoysharing.DataObject.CardHome;
-import enjoysharing.enjoysharing.DataObject.CardRequest;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.Card.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestSent;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
+import enjoysharing.enjoysharing.Fragment.FragmentBase;
 import enjoysharing.enjoysharing.R;
 
 public class CardDetailActivity extends BaseActivity {
@@ -24,6 +27,8 @@ public class CardDetailActivity extends BaseActivity {
     protected TextView txtNumberPerson;
     protected TextView txtUserHomeDetail;
     protected Button btnPartecipateRequest;
+    protected Button btn;
+    protected boolean stateRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +63,6 @@ public class CardDetailActivity extends BaseActivity {
         txtNumberPerson = (TextView) findViewById(R.id.txtNumberPerson);
 
         btnPartecipateRequest = (Button)findViewById(R.id.btnPartecipateRequest);
-        business.SetButtonRequest(btnPartecipateRequest,true);
-        btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onRequestPartecipate(v);
-            }
-        });
         // ATTENZIONE
         // Lasciare questo ordine di chiamate per il buon funzionamento!
         // Check if is home event
@@ -73,6 +72,80 @@ public class CardDetailActivity extends BaseActivity {
         // Check if is recived request event
         LoadRequestRecivedEventDetails();
         mFormView.requestFocus();
+    }
+    // Used to send or reverse request partecipate
+    protected void SendRequestPartecipate(Button btn, int EventId)
+    {
+        if (mTask != null) {
+            business.LoadingRequestButton(btn,false);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        this.btn = btn;
+        stateRequest = (this.btn.getHint() == "1");
+        mTask = new RequestTask(true, false, "RequestServlet", false);
+        mTask.AddParameter("RequestType",stateRequest?"NR":"DR");  // New Request or Delete Request
+        mTask.AddParameter("EventId",EventId);
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
+    }
+
+    protected void DeactivateRequest(Button btnPartecipateSendRequest, int EventId)
+    {
+        if (mTask != null) {
+            business.LoadingRequestButton(btnPartecipateSendRequest,false);
+            return;
+        }
+        //ShowProgress(true);
+        PostCall = true;
+        btn = btnPartecipateSendRequest;
+        stateRequest = false;
+        mTask = new RequestTask(true, false, "RequestServlet",false);
+        mTask.AddParameter("RequestType","DR");  // Deactivate Request
+        mTask.AddParameter("EventId",EventId);
+        mTask.AddParameter("UserId",user.getUserId());
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
+    }
+
+    @Override
+    protected void OnRequestPostExecute()
+    {
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            if(PostCall)
+            {
+                if(isSendRequest)
+                    business.DisableRequestButton(btn);
+                else
+                {
+                    business.SetButtonRequest(btn,!stateRequest);
+                    business.LoadingRequestButton(btn,false);
+                }
+            }
+        }
+        else
+        {
+            Toast.makeText(CardDetailActivity.this, retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            if(PostCall)
+                business.LoadingRequestButton(btn,false);
+        }
     }
     // Used to load details of HOME EVENT if present
     protected void LoadHomeEventDetails()
@@ -87,6 +160,12 @@ public class CardDetailActivity extends BaseActivity {
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
+            btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onRequestPartecipate(v,card.getEventId());
+                }
+            });
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -132,20 +211,29 @@ public class CardDetailActivity extends BaseActivity {
     {
         Intent i = getIntent();
         CardBase cardBase = (CardBase)i.getSerializableExtra("CardPassed");
-        if(cardBase != null && cardBase instanceof CardRequest)
+        if(cardBase != null && cardBase instanceof CardRequestSent)
         {
             isSendRequest = true;
-            final CardRequest card = (CardRequest) cardBase;
+            final CardRequestSent card = (CardRequestSent) cardBase;
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            business.SetButtonRequest(btnPartecipateRequest,false);
+            if(card.IsRequestSubmitted())
+                business.SetButtonRequest(btnPartecipateRequest,false);
+            else
+                business.DisableRequestButton(btnPartecipateRequest);
+            btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onRequestDeactivate(v,card.getEventId());
+                }
+            });
             txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN
+                            && btnPartecipateRequest.getHint() == "1") {
                         // Open list of persons
                         OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
                         return true;
@@ -155,16 +243,17 @@ public class CardDetailActivity extends BaseActivity {
             });
         }
     }
-    // Used for click on request partecipate
-    // TODO
-    // Manage click on request partecipate
-    protected void onRequestPartecipate(View v)
+
+    protected void onRequestPartecipate(View v, int EventId)
     {
-        boolean state = ((Button)v).getHint() == "1";
-        if(!isSendRequest)
-            business.SetButtonRequest((Button)v,!state);
-        else
-            business.DisableRequestButton((Button)v);
+        business.LoadingRequestButton(((Button)v),true);
+        SendRequestPartecipate((Button)v,EventId);
+    }
+    // Manage click on request partecipate
+    protected void onRequestDeactivate(View v, int EventId)
+    {
+        business.LoadingRequestButton(((Button)v),true);
+        DeactivateRequest((Button)v,EventId);
     }
     @Override
     public void onBackPressed() {

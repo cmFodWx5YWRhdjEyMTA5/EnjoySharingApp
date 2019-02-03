@@ -1,4 +1,4 @@
-package enjoysharing.enjoysharing.DataObject;
+package enjoysharing.enjoysharing.DataObject.Card;
 
 import org.json.JSONObject;
 import java.io.Serializable;

@@ -18,7 +18,7 @@ import android.view.Window;
 import android.widget.Button;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
-import enjoysharing.enjoysharing.DataObject.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;

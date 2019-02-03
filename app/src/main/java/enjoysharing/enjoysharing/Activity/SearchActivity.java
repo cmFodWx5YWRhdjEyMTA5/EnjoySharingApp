@@ -21,8 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
 import enjoysharing.enjoysharing.R;
 
 public class SearchActivity extends BaseActivity {

@@ -1,4 +1,4 @@
-package enjoysharing.enjoysharing.DataObject;
+package enjoysharing.enjoysharing.DataObject.Card;
 
 import java.util.ArrayList;
 import java.util.List;

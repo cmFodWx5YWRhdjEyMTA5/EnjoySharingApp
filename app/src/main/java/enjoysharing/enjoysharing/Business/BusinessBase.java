@@ -3,13 +3,13 @@ package enjoysharing.enjoysharing.Business;
 import android.util.Base64;
 import android.widget.Button;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
-import enjoysharing.enjoysharing.DataObject.CardBase;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardHome;
-import enjoysharing.enjoysharing.DataObject.CardMyEvent;
-import enjoysharing.enjoysharing.DataObject.CardRequest;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
-import enjoysharing.enjoysharing.DataObject.CardRequestUserListCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestSent;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserListCollection;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
@@ -79,15 +79,14 @@ public class BusinessBase {
         cards.Add(new CardMyEvent(idEvent++,activity.GetUser().getUserId(),activity.GetUser().getUsername(),"Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
         return cards;
     }
-    // TODO
     // Remove when call server is ok
-    public CardCollection GetRequestCards()
+    public CardCollection GetRequestSentCards(String JSONStr)
     {
         CardCollection cards = new CardCollection();
-        cards.Add(new CardRequest(1,1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5));
-        cards.Add(new CardRequest(1,2,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4));
-        cards.Add(new CardRequest(2,3,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7));
-        cards.Add(new CardRequest(1,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10));
+        cards.Add(new CardRequestSent(1,1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5,2));
+        cards.Add(new CardRequestSent(1,2,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4,2));
+        cards.Add(new CardRequestSent(2,3,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7,2));
+        cards.Add(new CardRequestSent(1,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10,2));
         return cards;
     }
     // Used when simulate

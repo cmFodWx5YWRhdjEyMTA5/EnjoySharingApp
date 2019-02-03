@@ -17,8 +17,8 @@ import enjoysharing.enjoysharing.Activity.IUEventActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
 import enjoysharing.enjoysharing.R;
 
 public class MyEventsFragment extends FragmentBase {

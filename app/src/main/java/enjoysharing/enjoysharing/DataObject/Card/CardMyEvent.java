@@ -1,4 +1,4 @@
-package enjoysharing.enjoysharing.DataObject;
+package enjoysharing.enjoysharing.DataObject.Card;
 
 public class CardMyEvent extends CardBase {
 

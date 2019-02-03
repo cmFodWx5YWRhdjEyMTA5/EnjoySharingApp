@@ -1,9 +1,10 @@
-package enjoysharing.enjoysharing.DataObject;
+package enjoysharing.enjoysharing.DataObject.Card;
 
 public class CardHome extends CardBase {
 
     protected boolean RequestSubmitted;
 
+    public void setRequestSubmitted(boolean RequestSubmitted) { this.RequestSubmitted = RequestSubmitted; }
     public boolean IsRequestSubmitted() { return RequestSubmitted; }
 
     // Simple constructor

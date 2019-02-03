@@ -15,13 +15,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 
 import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;

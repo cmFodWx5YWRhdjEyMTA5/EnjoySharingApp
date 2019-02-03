@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardHome;
-import enjoysharing.enjoysharing.DataObject.CardMyEvent;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestSent;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
@@ -97,5 +98,18 @@ public class BusinessJSON extends BusinessBase {
             users.Add(user);
         }
         return users;
+    }
+    @Override
+    public CardCollection GetRequestSentCards(String JSONStr)
+    {
+        Gson gson = new Gson();
+        Type founderListType = new TypeToken<ArrayList<CardRequestSent>>(){}.getType();
+        ArrayList<CardRequestSent> cardList = gson.fromJson(JSONStr, founderListType);
+        CardCollection cards = new CardCollection();
+        for (CardRequestSent card : cardList)
+        {
+            cards.Add(card);
+        }
+        return cards;
     }
 }

@@ -18,8 +18,8 @@ import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardHome;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardHome;
 import enjoysharing.enjoysharing.R;
 
 public class HomeFragment extends FragmentBase {
@@ -27,6 +27,7 @@ public class HomeFragment extends FragmentBase {
     protected TableLayout tableHomeCards;
     protected Button btn;
     protected boolean stateRequest;
+    protected int EventId;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -84,6 +85,7 @@ public class HomeFragment extends FragmentBase {
         PostCall = true;
         this.btn = btn;
         stateRequest = (this.btn.getHint() == "1");
+        this.EventId = EventId;
         mTask = new FragmentRequestTask(true, false, "RequestServlet", false);
         mTask.AddParameter("RequestType",stateRequest?"NR":"DR");  // New Request or Delete Request
         mTask.AddParameter("EventId",EventId);
@@ -120,6 +122,7 @@ public class HomeFragment extends FragmentBase {
             {
                 business.SetButtonRequest(btn,!stateRequest);
                 business.LoadingRequestButton(btn,false);
+                UpdateCard();
             }
             else
             {
@@ -134,6 +137,14 @@ public class HomeFragment extends FragmentBase {
             if(PostCall)
                 business.LoadingRequestButton(btn,false);
         }
+    }
+
+    protected void UpdateCard()
+    {
+        CardHome card = (CardHome) homeCards.GetCard(EventId);
+        if(card != null)
+            card.setRequestSubmitted(stateRequest);
+        EventId = 0;
     }
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)

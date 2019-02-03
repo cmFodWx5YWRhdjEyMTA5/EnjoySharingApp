@@ -20,8 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import enjoysharing.enjoysharing.Business.BusinessBase;
-import enjoysharing.enjoysharing.DataObject.CardBase;
-import enjoysharing.enjoysharing.DataObject.CardMyEvent;
+import enjoysharing.enjoysharing.DataObject.Card.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
 import enjoysharing.enjoysharing.R;
 
 public class IUEventActivity extends BaseActivity {
@@ -158,7 +158,7 @@ public class IUEventActivity extends BaseActivity {
             mTask.AddParameter("Title",txtTitleIUEvent.getText());
             mTask.AddParameter("Content",txtContentIUEvent.getText());
             mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
-            mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString()));
+            mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString())+1);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String date = df.format(Calendar.getInstance().getTime());
             mTask.AddParameter("DateEvent",date);

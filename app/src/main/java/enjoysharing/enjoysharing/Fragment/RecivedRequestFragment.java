@@ -15,10 +15,10 @@ import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.CardCollection;
-import enjoysharing.enjoysharing.DataObject.CardRequestRecived;
-import enjoysharing.enjoysharing.DataObject.CardRequestUserList;
-import enjoysharing.enjoysharing.DataObject.CardRequestUserListCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserList;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserListCollection;
 import enjoysharing.enjoysharing.R;
 
 public class RecivedRequestFragment extends FragmentBase {
