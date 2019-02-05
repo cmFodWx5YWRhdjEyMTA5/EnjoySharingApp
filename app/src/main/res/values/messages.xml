@@ -5,9 +5,10 @@
     <string name="error_incorrect_password">Password non corretta</string>
     <string name="error_email_required">Inserire Email</string>
     <string name="error_password_required">Inserire Password</string>
-    <string name="error_title_required">Inserire un titolo</string>
-    <string name="error_content_required">Inserire una descrizione</string>
-    <string name="error_maxrequest_required">Inserire un numero di partecipanti</string>
+    <string name="error_title_required">Inserisci un titolo</string>
+    <string name="error_content_required">Inserisci una descrizione</string>
+    <string name="error_maxrequest_required">Con quante persone?</string>
+    <string name="error_eventdate_required">Quando?</string>
     <string name="permission_rationale">"Per usare il completamento automatico è richiesto
     l'accesso ai contatti."
     </string>

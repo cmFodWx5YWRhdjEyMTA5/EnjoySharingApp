@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class CardDetailActivity extends BaseActivity {
     protected TextView txtContentHomeDetail;
     protected TextView txtNumberPerson;
     protected TextView txtUserHomeDetail;
+    protected ImageButton imgBtnNumberPerson;
     protected Button btnPartecipateRequest;
     protected Button btn;
     protected boolean stateRequest;
@@ -61,6 +63,8 @@ public class CardDetailActivity extends BaseActivity {
         txtUserHomeDetail = (TextView) findViewById(R.id.txtUserHomeDetail);
 
         txtNumberPerson = (TextView) findViewById(R.id.txtNumberPerson);
+
+        imgBtnNumberPerson = (ImageButton) findViewById(R.id.imgBtnNumberPerson);
 
         btnPartecipateRequest = (Button)findViewById(R.id.btnPartecipateRequest);
         // ATTENZIONE
@@ -166,7 +170,7 @@ public class CardDetailActivity extends BaseActivity {
                     onRequestPartecipate(v,card.getEventId());
                 }
             });
-            txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
+            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -193,7 +197,7 @@ public class CardDetailActivity extends BaseActivity {
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             btnPartecipateRequest.setVisibility(View.INVISIBLE);
-            txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
+            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -229,7 +233,7 @@ public class CardDetailActivity extends BaseActivity {
                     onRequestDeactivate(v,card.getEventId());
                 }
             });
-            txtNumberPerson.setOnTouchListener(new View.OnTouchListener() {
+            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN

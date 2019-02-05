@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -169,7 +170,8 @@ public class SendRequestFragment extends FragmentBase {
             txtTitleCardSendRequest.setText(card.getTitle());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
-            txtNumberPerson.setOnClickListener(new View.OnClickListener() {
+            ImageButton imgBtnNumberPerson = (ImageButton)relLayout.findViewById(R.id.imgBtnNumberPerson);
+            imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);

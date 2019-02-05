@@ -106,29 +106,38 @@
             android:orientation="horizontal"
             android:padding="5dp">
 
+            <ImageButton
+                android:id="@+id/imgBtnNumberPerson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:background="@drawable/button_border_grey"
+                app:srcCompat="@drawable/ic_person_custom" />
+
             <TextView
                 android:id="@+id/txtNumberPerson"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_person_custom"
-                android:gravity="center_vertical"
-                android:textSize="16dp" />
+                android:gravity="center_vertical|start"
+                android:textAlignment="gravity"
+                android:textSize="18dp" />
 
             <ImageView
                 android:id="@+id/imgBtnGender"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@color/whiteTrasparent"
+                android:layout_weight="0.1"
+                android:background="@drawable/button_border_grey"
                 app:srcCompat="@drawable/ic_gender_svago" />
 
             <TextView
                 android:id="@+id/txtBlankInt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="10" />
+                android:layout_weight="1.5" />
 
         </LinearLayout>
 

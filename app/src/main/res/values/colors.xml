@@ -5,6 +5,7 @@
     <color name="red">#dafd0000</color>
     <color name="green">#da00d100</color>
     <color name="grey">#d2d2d2</color>
+    <color name="grey_dark">#acacac</color>
     <color name="white">#ffffff</color>
     <color name="whiteTrasparent">#80ffffff</color>
     <color name="transparentColor">#002cb4e1</color>
@@ -14,6 +15,6 @@
     <color name="baseColorDark">#d62363bc</color>
     <color name="baseColorLight">#dac6ecfc</color>
     <color name="textColor">#3e3e3e</color>
-    <color name="textBorder">#3e3e3e</color>
+    <color name="textBorder">#cacaca</color>
     <color name="buttonColor">#90ff00</color>
 </resources>
