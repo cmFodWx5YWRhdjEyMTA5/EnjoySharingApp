@@ -279,7 +279,7 @@ public class SearchActivity extends BaseActivity {
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
             TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
-            txtGender.setText(business.GetGenderItem(card.getGenderEventId()));
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
