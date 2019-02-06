@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,8 @@ public class CardDetailActivity extends BaseActivity {
     protected TextView txtNumberPerson;
     protected TextView txtUserHomeDetail;
     protected ImageButton imgBtnNumberPerson;
+    protected LinearLayout layoutNumberPerson;
+    protected TextView txtGender;
     protected Button btnPartecipateRequest;
     protected Button btn;
     protected boolean stateRequest;
@@ -56,6 +59,7 @@ public class CardDetailActivity extends BaseActivity {
         mProgressView = findViewById(R.id.homedetail_progress);
 
         imgBtnGender = (ImageView) findViewById(R.id.imgBtnGender);
+        txtGender = (TextView)findViewById(R.id.txtGender);
 
         txtTitleHomeDetail = (TextView) findViewById(R.id.txtTitleHomeDetail);
         txtContentHomeDetail = (TextView) findViewById(R.id.txtContentHomeDetail);
@@ -63,8 +67,8 @@ public class CardDetailActivity extends BaseActivity {
         txtUserHomeDetail = (TextView) findViewById(R.id.txtUserHomeDetail);
 
         txtNumberPerson = (TextView) findViewById(R.id.txtNumberPerson);
-
         imgBtnNumberPerson = (ImageButton) findViewById(R.id.imgBtnNumberPerson);
+        layoutNumberPerson = (LinearLayout) findViewById(R.id.layoutNumberPerson);
 
         btnPartecipateRequest = (Button)findViewById(R.id.btnPartecipateRequest);
         // ATTENZIONE
@@ -164,21 +168,22 @@ public class CardDetailActivity extends BaseActivity {
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
             btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v,card.getEventId());
                 }
             });
-            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                        // Open list of persons
-                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
-                        return true;
-                    }
-                    return false;
+            imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
+                }
+            });
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
                 }
             });
         }
@@ -196,16 +201,17 @@ public class CardDetailActivity extends BaseActivity {
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
             btnPartecipateRequest.setVisibility(View.INVISIBLE);
-            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                        // Open list of persons
-                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, true);
-                        return true;
-                    }
-                    return false;
+            imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, true);
+                }
+            });
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
                 }
             });
         }
@@ -224,6 +230,7 @@ public class CardDetailActivity extends BaseActivity {
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
             if(card.IsRequestSubmitted())
                 business.SetButtonRequest(btnPartecipateRequest,false);
             else
@@ -233,16 +240,15 @@ public class CardDetailActivity extends BaseActivity {
                     onRequestDeactivate(v,card.getEventId());
                 }
             });
-            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN
-                            && btnPartecipateRequest.getHint() == "1") {
-                        // Open list of persons
-                        OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
-                        return true;
-                    }
-                    return false;
+            imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(CardDetailActivity.this,RequestListActivity.class, card, false);
+                }
+            });
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
                 }
             });
         }

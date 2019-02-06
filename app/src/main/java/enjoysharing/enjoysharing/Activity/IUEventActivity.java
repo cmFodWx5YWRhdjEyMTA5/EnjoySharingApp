@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,12 +32,16 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
 
     protected EditText txtTitleIUEvent;
     protected Spinner genderIUEvent;
-    protected ImageButton imgBtnGender;
+    protected ImageView imgBtnGender;
     protected EditText txtContentIUEvent;
     protected EditText txtNumberPerson;
     protected TextView txtUserIUEvent;
     protected TextView txtEventDate;
-    protected ImageButton imgBtnNumberPerson;
+    protected ImageButton imgBtnEventDate;
+    //protected ImageButton imgBtnNumberPerson;
+    protected LinearLayout layoutNumberPerson;
+    protected LinearLayout layoutGender;
+    protected TextView txtGender;
     protected int EventId;
     protected int year, month, day;
 
@@ -63,7 +69,6 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         mProgressView = findViewById(R.id.iuevent_progress);
 
         genderIUEvent = (Spinner) findViewById(R.id.genderIUEvent);
-        imgBtnGender = (ImageButton) findViewById(R.id.imgBtnGender);
         // Adapter for textsize
         String[] items = business.GetGenderItems();
         ArrayAdapter<String> widgetModeAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, items);
@@ -76,6 +81,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
             {
                 imgBtnGender.setImageResource(business.GetGenderIcon(position+1));
+                txtGender.setText(business.GetGenderItem(position));
             }
 
             @Override
@@ -83,13 +89,22 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             {
             }
         });
+        layoutGender = (LinearLayout) findViewById(R.id.layoutGender);
+        layoutGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genderIUEvent.performClick();
+            }
+        });
         // Open DDL on click
+        imgBtnGender = (ImageView) findViewById(R.id.imgBtnGender);
         imgBtnGender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 genderIUEvent.performClick();
             }
         });
+        txtGender = (TextView)findViewById(R.id.txtGender);
 
         txtTitleIUEvent = (EditText) findViewById(R.id.txtTitleIUEvent);
         txtContentIUEvent = (EditText) findViewById(R.id.txtContentIUEvent);
@@ -98,11 +113,16 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         txtUserIUEvent.setText(user.getUsername());
 
         txtNumberPerson = (EditText) findViewById(R.id.txtNumberPerson);
-
-        imgBtnNumberPerson = (ImageButton) findViewById(R.id.imgBtnNumberPerson);
+        layoutNumberPerson = (LinearLayout) findViewById(R.id.layoutNumberPerson);
+        layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                txtNumberPerson.performClick();
+            }
+        });
+        //imgBtnNumberPerson = (ImageButton) findViewById(R.id.imgBtnNumberPerson);
 
         txtEventDate = (TextView) findViewById(R.id.txtEventDate);
-        ImageButton imgBtnEventDate = (ImageButton) findViewById(R.id.imgBtnEventDate);
+        imgBtnEventDate = (ImageButton) findViewById(R.id.imgBtnEventDate);
         imgBtnEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,20 +160,13 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             txtContentIUEvent.setText(card.getContent());
             txtNumberPerson.setText(""+card.getMaxRequest());
             genderIUEvent.setSelection(card.getGenderEventId()-1);
-
-            imgBtnNumberPerson.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        if(event.getRawX() <= txtNumberPerson.getTotalPaddingLeft()) {
-                            // Open list of persons
-                            OpenRequestList(IUEventActivity.this,RequestListActivity.class, card, true);
-                            return true;
-                        }
-                    }
-                    return false;
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
+            /*imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Open list of persons
+                    OpenRequestList(IUEventActivity.this,RequestListActivity.class, card, true);
                 }
-            });
+            });*/
         }
     }
     @Override
@@ -215,7 +228,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         // Check for date
         if (TextUtils.isEmpty(eventDate)) {
             txtEventDate.setError(getString(R.string.error_eventdate_required));
-            focusView = imgBtnNumberPerson;
+            focusView = imgBtnEventDate;
             cancel = true;
         }
         // Check for number of persons

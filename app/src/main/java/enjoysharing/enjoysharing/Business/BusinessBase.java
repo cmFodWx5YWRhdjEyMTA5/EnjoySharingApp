@@ -83,10 +83,11 @@ public class BusinessBase {
     public CardCollection GetRequestSentCards(String JSONStr)
     {
         CardCollection cards = new CardCollection();
-        cards.Add(new CardRequestSent(1,1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5,2));
-        cards.Add(new CardRequestSent(1,2,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4,2));
-        cards.Add(new CardRequestSent(2,3,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7,2));
-        cards.Add(new CardRequestSent(1,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10,2));
+        int idEvent = 0;
+        cards.Add(new CardRequestSent(idEvent++,1,"Utente 1","Titolo 1","Contenuto di prova 1 caricato da codice, proviamo a vedere come viene il testo sfumato in fondo alla text view...mah! Ho letto che non si può fare, però la credo difficile, stiamo a vedere!",null, 1, 1, 5,2));
+        cards.Add(new CardRequestSent(idEvent++,2,"Utente 2","Titolo 2","Contenuto di prova 2 caricato da codice",null, 3, 4, 4,2));
+        cards.Add(new CardRequestSent(idEvent++,3,"Utente 3","Titolo 3 moooooooooooollllllltttttoooooooo lllllluuuuuuunnnnnnngggggggggggooooooooo","Contenuto di prova 3 caricato da codice",null, 2, 5, 7,2));
+        cards.Add(new CardRequestSent(idEvent++,4,"Utente 4","Titolo 4","Contenuto di prova 4 caricato da codice",null, 4, 9, 10,2));
         return cards;
     }
     // Used when simulate

@@ -1,7 +1,6 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,16 +121,23 @@ public class MyEventsFragment extends FragmentBase {
             txtContentCardMyEvent.setText(card.getContent());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
-            ImageButton imgBtnNumberPerson = (ImageButton)relLayout.findViewById(R.id.imgBtnNumberPerson);
+            final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, true);
                 }
             });
+            LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
+                }
+            });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()-1));
+            TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v, card.getEventId());

@@ -1,7 +1,6 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -170,18 +168,25 @@ public class HomeFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
-            ImageButton imgBtnNumberPerson = (ImageButton)relLayout.findViewById(R.id.imgBtnNumberPerson);
+            final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);
                 }
             });
+            LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
+                }
+            });
             final TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()-1));
+            TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());

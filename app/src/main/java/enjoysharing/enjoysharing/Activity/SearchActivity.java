@@ -2,7 +2,6 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.TooltipCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -264,15 +263,23 @@ public class SearchActivity extends BaseActivity {
             txtContentCardHome.setText(card.getContent());
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
-            txtNumberPerson.setOnClickListener(new View.OnClickListener() {
+            final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
+            imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
                     OpenRequestList(SearchActivity.this,RequestListActivity.class, card, false);
                 }
             });
+            LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
+            layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    imgBtnNumberPerson.performClick();
+                }
+            });
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
-            TooltipCompat.setTooltipText(imgBtnGender, business.GetGenderItem(card.getGenderEventId()));
+            TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
+            txtGender.setText(business.GetGenderItem(card.getGenderEventId()));
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
