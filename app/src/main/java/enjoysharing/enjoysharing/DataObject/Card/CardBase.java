@@ -2,6 +2,7 @@ package enjoysharing.enjoysharing.DataObject.Card;
 
 import org.json.JSONObject;
 import java.io.Serializable;
+import java.util.Date;
 
 public class CardBase implements Serializable {
 
@@ -15,6 +16,7 @@ public class CardBase implements Serializable {
     protected int GenderEventId;
     protected int AcceptedRequest;
     protected int MaxRequest;
+    protected Date DateEvent;
 
     public String getCardType() {
         return CardType;
@@ -64,8 +66,16 @@ public class CardBase implements Serializable {
         return GenderEventId;
     }
 
+    public void setDateEvent(Date dateEvent) {
+        DateEvent = dateEvent;
+    }
+
+    public Date getDateEvent() {
+        return DateEvent;
+    }
+
     // Constructor simple
-    public CardBase(int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId) {
+    public CardBase(int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId, Date DateEvent) {
         this.EventId = EventId;
         this.UserId = UserId;
         this.UserName = UserName;
@@ -73,6 +83,7 @@ public class CardBase implements Serializable {
         this.Content = Content;
         this.UserImage = UserImage;
         this.GenderEventId = GenderEventId;
+        this.DateEvent = DateEvent;
     }
 
     // TODO

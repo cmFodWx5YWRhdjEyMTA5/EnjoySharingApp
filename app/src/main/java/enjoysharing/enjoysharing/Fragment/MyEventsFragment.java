@@ -119,6 +119,8 @@ public class MyEventsFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardMyEvent.setWidth(((LinearLayout)txtContentCardMyEvent.getParent()).getWidth()-parentTollerancePX);
             txtContentCardMyEvent.setText(card.getContent());
+            TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);

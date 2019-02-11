@@ -23,6 +23,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
@@ -36,7 +38,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     protected EditText txtContentIUEvent;
     protected EditText txtNumberPerson;
     protected TextView txtUserIUEvent;
-    protected TextView txtEventDate;
+    protected TextView txtDateEvent;
     protected ImageButton imgBtnEventDate;
     //protected ImageButton imgBtnNumberPerson;
     protected LinearLayout layoutNumberPerson;
@@ -121,7 +123,6 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         });
         //imgBtnNumberPerson = (ImageButton) findViewById(R.id.imgBtnNumberPerson);
 
-        txtEventDate = (TextView) findViewById(R.id.txtEventDate);
         imgBtnEventDate = (ImageButton) findViewById(R.id.imgBtnEventDate);
         imgBtnEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +132,13 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
                         c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
                 dpd.getDatePicker().setMinDate(c.getTimeInMillis());
                 dpd.show();
+            }
+        });
+        txtDateEvent = (TextView) findViewById(R.id.txtDateEvent);
+        txtDateEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgBtnEventDate.performClick();
             }
         });
 
@@ -161,6 +169,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             txtNumberPerson.setText(""+card.getMaxRequest());
             genderIUEvent.setSelection(card.getGenderEventId()-1);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             /*imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -220,14 +229,14 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         String title = txtTitleIUEvent.getText().toString();
         String content = txtContentIUEvent.getText().toString();
         String numberPerson = txtNumberPerson.getText().toString();
-        String eventDate = txtEventDate.getText().toString();
+        String eventDate = txtDateEvent.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for date
         if (TextUtils.isEmpty(eventDate)) {
-            txtEventDate.setError(getString(R.string.error_eventdate_required));
+            txtDateEvent.setError(getString(R.string.error_eventdate_required));
             focusView = imgBtnEventDate;
             cancel = true;
         }
@@ -287,8 +296,6 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
         c.set(year, month, day, hourOfDay, minute);
-        java.text.DateFormat dateFormat = new SimpleDateFormat("EEE dd/MM/yyyy"+System.getProperty("line.separator")+"hh:mm");
-        dateFormat.setCalendar(c);
-        txtEventDate.setText(dateFormat.format(c.getTime()));
+        txtDateEvent.setText(business.GetDateString(c.getTime()));
     }
 }

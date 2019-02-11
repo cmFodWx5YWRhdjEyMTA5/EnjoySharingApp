@@ -1,13 +1,11 @@
 package enjoysharing.enjoysharing.AdapterObject;
 
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableRow;
-
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.R;
 
