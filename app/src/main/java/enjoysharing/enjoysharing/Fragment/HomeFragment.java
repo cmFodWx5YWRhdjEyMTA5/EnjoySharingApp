@@ -168,6 +168,8 @@ public class HomeFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
+            TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

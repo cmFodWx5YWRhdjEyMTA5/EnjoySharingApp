@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context="enjoysharing.enjoysharing.Activity.CardDetailActivity">>
+    tools:context="enjoysharing.enjoysharing.Activity.CardDetailActivity"
+    tools:openDrawer="start">>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +62,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -74,7 +75,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <TextView
@@ -103,6 +104,20 @@
                                 android:textAlignment="textStart"
                                 android:textSize="18dp" />
 
+                            <TextView
+                                android:id="@+id/txtDateEvent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/txtTitleCardMyEvent"
+                                android:layout_alignStart="@+id/txtTitleCardMyEvent"
+                                android:layout_weight="1"
+                                android:inputType="textMultiLine"
+                                android:maxLines="2"
+                                android:minLines="2"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/grey_dark"
+                                android:textSize="16dp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -129,7 +144,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
-
 
 
                         <LinearLayout

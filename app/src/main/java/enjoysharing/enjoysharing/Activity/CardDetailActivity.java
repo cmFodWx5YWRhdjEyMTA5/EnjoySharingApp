@@ -31,6 +31,7 @@ public class CardDetailActivity extends BaseActivity {
     protected ImageButton imgBtnNumberPerson;
     protected LinearLayout layoutNumberPerson;
     protected TextView txtGender;
+    protected TextView txtDateEvent;
     protected Button btnPartecipateRequest;
     protected Button btn;
     protected boolean stateRequest;
@@ -63,6 +64,7 @@ public class CardDetailActivity extends BaseActivity {
 
         txtTitleHomeDetail = (TextView) findViewById(R.id.txtTitleHomeDetail);
         txtContentHomeDetail = (TextView) findViewById(R.id.txtContentHomeDetail);
+        txtDateEvent = (TextView) findViewById(R.id.txtDateEvent);
 
         txtUserHomeDetail = (TextView) findViewById(R.id.txtUserHomeDetail);
 
@@ -165,6 +167,7 @@ public class CardDetailActivity extends BaseActivity {
             final CardHome card = (CardHome) cardBase;
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
@@ -198,6 +201,7 @@ public class CardDetailActivity extends BaseActivity {
             final CardRequestRecived card = (CardRequestRecived) cardBase;
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
@@ -227,6 +231,7 @@ public class CardDetailActivity extends BaseActivity {
             final CardRequestSent card = (CardRequestSent) cardBase;
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             txtContentHomeDetail.setText(card.getContent());
             txtNumberPerson.setText(card.getAcceptedRequest()+"/"+card.getMaxRequest());
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));

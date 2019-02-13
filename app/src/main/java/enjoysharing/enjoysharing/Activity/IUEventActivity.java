@@ -46,6 +46,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     protected TextView txtGender;
     protected int EventId;
     protected int year, month, day;
+    protected Date DateEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,8 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             txtNumberPerson.setText(""+card.getMaxRequest());
             genderIUEvent.setSelection(card.getGenderEventId()-1);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
-            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
+            DateEvent = card.getDateEvent();
+            txtDateEvent.setText(business.GetDateString(DateEvent));
             /*imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
@@ -201,9 +203,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             mTask.AddParameter("Content",txtContentIUEvent.getText());
             mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
             mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString())+1);
-            java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String date = df.format(Calendar.getInstance().getTime());
-            mTask.AddParameter("DateEvent",date);
+            mTask.AddParameter("DateEvent",business.GetDateStringShort(DateEvent));
             try
             {
                 mTask.execute();
@@ -296,6 +296,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
         c.set(year, month, day, hourOfDay, minute);
+        DateEvent = c.getTime();
         txtDateEvent.setText(business.GetDateString(c.getTime()));
     }
 }

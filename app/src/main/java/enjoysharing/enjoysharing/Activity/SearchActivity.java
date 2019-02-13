@@ -261,6 +261,8 @@ public class SearchActivity extends BaseActivity {
             // Set the same width of parent - tollerance
             txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
             txtContentCardHome.setText(card.getContent());
+            TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);

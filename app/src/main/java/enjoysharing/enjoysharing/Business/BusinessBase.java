@@ -75,6 +75,11 @@ public class BusinessBase {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DateTimeFormatJSON_OUT);
         return sdf.format(date);
     }
+    public String GetDateStringShort(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DateTimeFormatJSON_OUT_SHORT);
+        return sdf.format(date);
+    }
     // Used when simulate
     public UserCollection GetRequestList(String JSONStr)
     {
