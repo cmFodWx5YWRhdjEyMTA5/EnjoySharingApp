@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
@@ -185,6 +186,9 @@ public class HomeActivity extends BaseActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.nav_my_account:
+                    OpenActivityNoFinish(HomeActivity.this,ProfileActivity.class);
+                    break;
                 case R.id.nav_manage:
                     OpenActivityNoFinish(context, SettingsActivity.class);
                     break;
@@ -206,11 +210,9 @@ public class HomeActivity extends BaseActivity {
     protected void FillUserData()
     {
         View header = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) header.findViewById(R.id.txtNavUsername);
-        if(navUsername != null) navUsername.setText(user.getUsername());
+        TextView txtNavUsername = (TextView) header.findViewById(R.id.txtNavUsername);
+        txtNavUsername.setText(user.getUsername());
     }
-
-    // TODO
     // When click on card home row -> redirect to detail row!
     @Override
     public void onRowClick(View v)

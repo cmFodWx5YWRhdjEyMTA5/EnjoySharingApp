@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/nav_recived_request_home"
-        android:title="RICEVUTE" />
+        android:title="@string/nav_recived_request_home" />
     <item
         android:id="@+id/nav_send_request_requests"
-        android:title="INVIATE" />
+        android:title="@string/nav_send_request_requests" />
 </menu>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Request Received-->
+    <string name="nav_recived_request_home">RICEVUTE</string>
+    <string name="nav_send_request_requests">INVIATE</string>
+    <string name="nav_gallery_profile">Foto</string>
+    <string name="nav_send_request_profile">Richieste Inviate</string>
+    <string name="nav_my_events_profile">I Miei Eventi</string>
     <!-- Login -->
     <string name="txtTitle">Enjoy Sharing</string>
     <string name="txtBoxEmail">Email</string>
@@ -44,5 +48,9 @@
     <string name="txtDeclineRequest">Rifiuta Tutti</string>
     <string name="txtConfirmedRequest">Tutte le richieste accettate</string>
     <string name="txtDeclinedRequest">Tutte le richieste rifiutate</string>
+
+    <string name="txtName">Nome: </string>
+    <string name="txtSurname">Cognome: </string>
+    <string name="txtEmail">Email: </string>
 
 </resources>

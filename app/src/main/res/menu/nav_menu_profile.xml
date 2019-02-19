@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_gallery_profile"
+        android:icon="@drawable/ic_gallery_custom"
+        android:title="@string/nav_gallery_profile" />
+    <item
+        android:id="@+id/nav_send_request_profile"
+        android:title="@string/nav_send_request_profile" />
+    <item
+        android:id="@+id/nav_my_events_profile"
+        android:title="@string/nav_my_events_profile" />
+</menu>

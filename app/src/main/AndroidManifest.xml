@@ -47,9 +47,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.HomeActivity" />
         </activity>
-        <activity android:name=".Activity.CardDetailActivity" />
-        <activity android:name=".Activity.RequestListActivity"></activity>
-        <activity android:name=".Activity.BaseActivity" />
+        <activity android:name=".Activity.CardDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.RequestListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.ProfileActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
