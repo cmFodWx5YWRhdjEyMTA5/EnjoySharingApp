@@ -6,8 +6,10 @@
         android:title="@string/nav_gallery_profile" />
     <item
         android:id="@+id/nav_send_request_profile"
+        android:icon="@drawable/ic_add_request_custom"
         android:title="@string/nav_send_request_profile" />
     <item
         android:id="@+id/nav_my_events_profile"
+        android:icon="@drawable/ic_event_date"
         android:title="@string/nav_my_events_profile" />
 </menu>

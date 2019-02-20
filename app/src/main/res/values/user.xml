@@ -2,6 +2,8 @@
 <resources>
     <string name="userId"></string>
     <string name="username"></string>
+    <string name="name"></string>
+    <string name="surname"></string>
     <string name="email"></string>
     <string name="password"></string>
 </resources>

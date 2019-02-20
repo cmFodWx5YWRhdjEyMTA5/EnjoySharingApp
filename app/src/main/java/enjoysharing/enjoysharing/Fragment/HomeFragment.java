@@ -149,7 +149,7 @@ public class HomeFragment extends FragmentBase {
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         table.removeAllViews();
-        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(84);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);

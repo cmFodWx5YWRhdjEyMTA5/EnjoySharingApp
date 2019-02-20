@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="nav_friends_requests">AMICI</string>
     <string name="nav_recived_request_home">RICEVUTE</string>
-    <string name="nav_send_request_requests">INVIATE</string>
-    <string name="nav_gallery_profile">Foto</string>
+    <string name="nav_gallery_profile">Galleria</string>
     <string name="nav_send_request_profile">Richieste Inviate</string>
     <string name="nav_my_events_profile">I Miei Eventi</string>
     <!-- Login -->
@@ -49,8 +49,8 @@
     <string name="txtConfirmedRequest">Tutte le richieste accettate</string>
     <string name="txtDeclinedRequest">Tutte le richieste rifiutate</string>
 
-    <string name="txtName">Nome: </string>
-    <string name="txtSurname">Cognome: </string>
-    <string name="txtEmail">Email: </string>
+    <string name="txtName">Nome:</string>
+    <string name="txtSurname">Cognome:</string>
+    <string name="txtEmail">Email:</string>
 
 </resources>

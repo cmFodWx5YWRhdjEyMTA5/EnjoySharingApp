@@ -10,6 +10,8 @@ public class CurrentUser {
 
     protected int userId;
     protected String username;
+    protected String name;
+    protected String surname;
     protected String email;
     protected String password;
 
@@ -33,6 +35,14 @@ public class CurrentUser {
         this.username = username;
     }
 
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public String getSurname() { return surname; }
+
+    public void setSurname(String surname) { this.surname = surname; }
+
     public String getEmail() {
         return email;
     }
@@ -50,9 +60,12 @@ public class CurrentUser {
     }
 
     public void Clear() {
+        userId = 0;
         username = "";
         email = "";
         password = "";
+        name = "";
+        surname = "";
     }
 
     // TODO
@@ -67,6 +80,8 @@ public class CurrentUser {
         String sUserId = sharedPref.getString("userId",null);
         setUserId(sUserId == null?0:Integer.parseInt(sUserId));
         setUsername(sharedPref.getString("username",null));
+        setName(sharedPref.getString("name",null));
+        setSurname(sharedPref.getString("surname",null));
         setEmail(sharedPref.getString("email",null));
         setPassword(sharedPref.getString("password",null));
     }
@@ -78,6 +93,8 @@ public class CurrentUser {
         SharedPreferences.Editor ed=e.edit();
         ed.putString("userId", String.valueOf(getUserId()));
         ed.putString("username", getUsername());
+        ed.putString("name", getName());
+        ed.putString("surname", getSurname());
         ed.putString("email", getEmail());
         ed.putString("password", getPassword());
         ed.apply();

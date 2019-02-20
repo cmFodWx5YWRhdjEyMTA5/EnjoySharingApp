@@ -241,9 +241,15 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 ParameterCollection params = business.GetUserInfo(retObj.getMessage());
                 user.setUserId(Integer.parseInt(params.Get("UserId").toString()));
                 user.setUsername(params.Get("UserName").toString());
+                user.setName(params.Get("Name").toString());
+                user.setSurname(params.Get("Surname").toString());
             }
             else
-                user.setUsername("Utente");
+            {
+                user.setUsername("Utente Test");
+                user.setName("Utente");
+                user.setSurname("Test");
+            }
             user.SaveOnXMLFile();
             SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
         }

@@ -34,13 +34,13 @@ public class FragmentBase extends Fragment {
     protected boolean PostCall;
 
     protected View progressView;
-    protected FrameLayout formView;
+    protected View formView;
 
     public void setProgressView(View progressView) {
         this.progressView = progressView;
     }
 
-    public void setFormView(FrameLayout formView) {
+    public void setFormView(View formView) {
         this.formView = formView;
     }
 

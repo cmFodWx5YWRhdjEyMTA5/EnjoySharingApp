@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/nav_friends_requests"
+        android:title="@string/nav_friends_requests" />
     <item
         android:id="@+id/nav_recived_request_home"
         android:title="@string/nav_recived_request_home" />
-    <item
+    <!--<item
         android:id="@+id/nav_send_request_requests"
-        android:title="@string/nav_send_request_requests" />
+        android:title="@string/nav_send_request_requests" />-->
 </menu>

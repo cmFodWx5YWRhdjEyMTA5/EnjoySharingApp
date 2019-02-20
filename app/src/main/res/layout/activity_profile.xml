@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:navigationIcon="@drawable/ic_go_back_custom"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/EnjoySharingTheme.NoActionBar"
             app:titleTextColor="@color/white" />
 
@@ -55,13 +55,30 @@
             android:id="@+id/nav_profile_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/whiteTrasparent"
+            android:background="@color/white"
             android:elevation="0dp"
             android:itemBackground="@color/whiteTrasparent"
             android:textAlignment="center"
             app:itemIconTint="@color/nav_profile_color"
             app:itemTextColor="@color/nav_profile_color"
             app:menu="@menu/nav_menu_profile"></android.support.design.widget.BottomNavigationView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp">
+
+            <ProgressBar
+                android:id="@+id/progress_tab"
+                style="@style/EnjoySharingProgressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="154dp"
+                tools:layout_editor_absoluteY="495dp" />
+        </RelativeLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/profile_form"

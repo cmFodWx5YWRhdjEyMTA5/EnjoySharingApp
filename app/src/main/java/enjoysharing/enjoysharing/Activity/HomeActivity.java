@@ -13,9 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
 import enjoysharing.enjoysharing.Fragment.RequestFragment;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
@@ -30,7 +28,7 @@ public class HomeActivity extends BaseActivity {
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
     protected RequestFragment requestFragment;
-    protected MyEventsFragment myEventsFragment;
+    //protected MyEventsFragment myEventsFragment;
     protected int currentMenuPosition;
 
     @Override
@@ -73,10 +71,10 @@ public class HomeActivity extends BaseActivity {
         requestFragment = new RequestFragment();
         requestFragment.SetActivity(HomeActivity.this);
         requestFragment.setCurrentUser(user);
-        myEventsFragment = new MyEventsFragment();
+        /*myEventsFragment = new MyEventsFragment();
         myEventsFragment.SetActivity(HomeActivity.this);
         myEventsFragment.setCurrentUser(user);
-        myEventsFragment.setProgressView(mProgressView);
+        myEventsFragment.setProgressView(mProgressView);*/
     }
     // Used to create menu elements
     protected void CreateMenuElements()
@@ -135,7 +133,7 @@ public class HomeActivity extends BaseActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(homeFragment);
         adapter.AddFragment(requestFragment);
-        adapter.AddFragment(myEventsFragment);
+        //adapter.AddFragment(myEventsFragment);
         viewPager.setAdapter(adapter);
     }
     // Used when user click in tab menu
@@ -151,9 +149,9 @@ public class HomeActivity extends BaseActivity {
                 case R.id.nav_menu_requests:
                     viewPager.setCurrentItem(1);
                     break;
-                case R.id.nav_menu_events:
+                /*case R.id.nav_menu_events:
                     viewPager.setCurrentItem(2);
-                    break;
+                    break;*/
                 case R.id.nav_menu_notification:
                     // TODO
                     break;
@@ -187,7 +185,7 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_my_account:
-                    OpenActivityNoFinish(HomeActivity.this,ProfileActivity.class);
+                    OpenActivityNoFinish(context,ProfileActivity.class);
                     break;
                 case R.id.nav_manage:
                     OpenActivityNoFinish(context, SettingsActivity.class);

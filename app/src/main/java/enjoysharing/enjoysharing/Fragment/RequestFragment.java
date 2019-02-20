@@ -18,7 +18,7 @@ public class RequestFragment extends FragmentBase {
     protected BottomNavigationView nav_menu_request;
     // Request Fragments object
     protected RecivedRequestFragment recivedRequestFragment;
-    protected SendRequestFragment sendRequestFragment;
+    //protected SendRequestFragment sendRequestFragment;
     protected FragmentBase currentFragment;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
@@ -66,11 +66,11 @@ public class RequestFragment extends FragmentBase {
         recivedRequestFragment.setCurrentUser(user);
         recivedRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
         recivedRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
-        sendRequestFragment = new SendRequestFragment();
+        /*sendRequestFragment = new SendRequestFragment();
         sendRequestFragment.SetActivity(activity);
         sendRequestFragment.setCurrentUser(user);
         sendRequestFragment.setFormView((FrameLayout) vMain.findViewById(R.id.request_form));
-        sendRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));
+        sendRequestFragment.setProgressView((View)vMain.findViewById(R.id.request_progress));*/
     }
     // Used when user click in tab menu request
     protected BottomNavigationView.OnNavigationItemSelectedListener tabSelected
@@ -79,12 +79,15 @@ public class RequestFragment extends FragmentBase {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.nav_friends_requests:
+                    // TODO
+                    break;
                 case R.id.nav_recived_request_home:
                     SetFragment(recivedRequestFragment);
                     break;
-                case R.id.nav_send_request_requests:
+                /*case R.id.nav_send_request_requests:
                     SetFragment(sendRequestFragment);
-                    break;
+                    break;*/
             }
             return true;
         }
