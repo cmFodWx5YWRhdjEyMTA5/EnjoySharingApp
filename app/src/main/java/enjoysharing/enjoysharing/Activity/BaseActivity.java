@@ -80,6 +80,12 @@ public class BaseActivity extends AppCompatActivity {
         //finish();
     }
     // Enter in Activity with swipe from Up to Down
+    public void SwipeDownOpenActivity(Context context, Class cl)
+    {
+        OpenActivityNoFinish(context,cl);
+        overridePendingTransition(R.anim.activity_enter_from_top, 0);
+    }
+    // Enter in Activity with swipe from Up to Down
     public void SwipeDownOpenActivity(Context context, Class cl, CardBase card)
     {
         OpenActivity(context,cl, card);

@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.Fragment.GalleryFragment;
@@ -37,6 +36,14 @@ public class ProfileActivity extends BaseActivity {
         mFormView = findViewById(R.id.main_frame);
         mProgressView = findViewById(R.id.progress);
 
+        Button btnModifyProfile = (Button) findViewById(R.id.btnModifyProfile);
+        btnModifyProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SwipeDownOpenActivity(ProfileActivity.this, IUProfileActivity.class);
+            }
+        });
+
         CreateFragments();
         setupViewPager(profile_form);
         FillUserData();
@@ -49,13 +56,14 @@ public class ProfileActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        user.LoadFromXMLFile();
+        FillUserData();
         CallStartFragment(currentMenuPosition);
     }
     // Used to create menu elements
     protected void CreateMenuElements()
     {
         toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
-        toolbar.setNavigationIcon(R.drawable.ic_go_back_custom);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,9 +175,4 @@ public class ProfileActivity extends BaseActivity {
         }
 
     };
-
-    @Override
-    public void onBackPressed() {
-        super.StandardOnBackPressed();
-    }
 }

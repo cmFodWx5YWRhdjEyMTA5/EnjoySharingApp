@@ -47,17 +47,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.HomeActivity" />
         </activity>
-        <activity android:name=".Activity.ProfileActivity"
+        <activity
+            android:name=".Activity.ProfileActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.HomeActivity" />
         </activity>
-        <activity android:name=".Activity.CardDetailActivity"
+        <activity android:name=".Activity.IUProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity.CardDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.RequestListActivity"
+        <activity
+            android:name=".Activity.RequestListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.BaseActivity"
+        <activity
+            android:name=".Activity.BaseActivity"
             android:screenOrientation="portrait" />
     </application>
 

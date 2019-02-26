@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,10 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardMyEvent;
@@ -46,7 +43,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     protected TextView txtGender;
     protected int EventId;
     protected int year, month, day;
-    protected Date DateEvent;
+    protected Date DateEvent=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +126,12 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 Calendar c = Calendar.getInstance();
+                if(DateEvent != null)
+                    c.setTime(DateEvent);
                 DatePickerDialog dpd = new DatePickerDialog(IUEventActivity.this,IUEventActivity.this,
                         c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
-                dpd.getDatePicker().setMinDate(c.getTimeInMillis());
+                Calendar cNow = Calendar.getInstance();
+                dpd.getDatePicker().setMinDate(cNow.getTimeInMillis());
                 dpd.show();
             }
         });
@@ -143,14 +143,15 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             }
         });
 
-        Button btnCreatEvent = (Button) findViewById(R.id.btnCreatEvent);
-        btnCreatEvent.setOnClickListener(new View.OnClickListener() {
+        Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
+        btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SaveEvent();
             }
         });
         EventId = 0;
+        DateEvent = null;
         // Check if is in Update
         LoadMyEventDetails();
         mFormView.requestFocus();
@@ -220,10 +221,18 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             return true;
         }
 
+        if(txtDateEvent.getError() != null)
+        {
+            txtDateEvent.setError(getString(R.string.error_invalid_eventdate));
+            txtDateEvent.requestFocus();
+            return false;
+        }
+
         // Reset errors.
         txtTitleIUEvent.setError(null);
         txtContentIUEvent.setError(null);
         txtNumberPerson.setError(null);
+        txtDateEvent.setError(null);
 
         // Store values to check
         String title = txtTitleIUEvent.getText().toString();
@@ -265,12 +274,6 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         }
         return true;
     }
-    // TODO
-    // Do request call ONLY FOR UPDATE
-    @Override
-    public void DoInBackground()
-    { }
-    // TODO
     // Used to fill fields ONLY FOR UPDATE
     @Override
     protected void OnRequestPostExecute()
@@ -284,11 +287,13 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         this.year = year;
-        this.month = month +1;
+        this.month = month;
         this.day = dayOfMonth;
         Calendar c = Calendar.getInstance();
+        if(DateEvent != null)
+            c.setTime(DateEvent);
         TimePickerDialog tpd = new TimePickerDialog(IUEventActivity.this,IUEventActivity.this,
-                c.get(Calendar.HOUR),c.get(Calendar.MINUTE), DateFormat.is24HourFormat(this));
+                c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE), DateFormat.is24HourFormat(this));
         tpd.show();
     }
 
@@ -296,7 +301,18 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
         c.set(year, month, day, hourOfDay, minute);
-        DateEvent = c.getTime();
-        txtDateEvent.setText(business.GetDateString(c.getTime()));
+
+        txtDateEvent.setError(null);
+        Calendar cNow = Calendar.getInstance();
+        if(c.getTime().before(cNow.getTime()))
+        {
+            txtDateEvent.setError(getString(R.string.error_invalid_eventdate));
+            txtDateEvent.requestFocus();
+        }
+        else
+        {
+            DateEvent = c.getTime();
+            txtDateEvent.setText(business.GetDateString(c.getTime()));
+        }
     }
 }

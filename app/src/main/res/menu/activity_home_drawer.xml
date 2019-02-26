@@ -7,19 +7,19 @@
         <item
             android:id="@+id/nav_my_account"
             android:icon="@drawable/ic_account_custom"
-            android:title="Il mio account" />
+            android:title="@string/nav_my_account" />
     </group>
 
-    <item android:title="Generali">
+    <item android:title="@string/nav_general">
         <menu>
             <item
-                android:id="@+id/nav_manage"
+                android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Impostazioni" />
+                android:title="@string/nav_settings" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout_custom"
-                android:title="Disconnetti" />
+                android:title="@string/nav_logout" />
         </menu>
     </item>
 

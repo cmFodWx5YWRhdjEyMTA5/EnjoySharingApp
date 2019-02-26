@@ -14,8 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
-import enjoysharing.enjoysharing.Fragment.RequestFragment;
+import enjoysharing.enjoysharing.Fragment.RecivedRequestFragment;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.R;
 import enjoysharing.enjoysharing.Fragment.HomeFragment;
@@ -27,7 +26,7 @@ public class HomeActivity extends BaseActivity {
     protected ImageButton imgBtnAddEvent;
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
-    protected RequestFragment requestFragment;
+    protected RecivedRequestFragment requestFragment;
     //protected MyEventsFragment myEventsFragment;
     protected int currentMenuPosition;
 
@@ -55,11 +54,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Nel caso del tab Richieste devo ricaricare il subtab!
-        if(currentMenuPosition != 1)
-            CallStartFragment(currentMenuPosition);
-        else
-            requestFragment.ReloadCurrentTab();
+        CallStartFragment(currentMenuPosition);
     }
     // Used to create fragments
     protected void CreateFragments()
@@ -68,7 +63,7 @@ public class HomeActivity extends BaseActivity {
         homeFragment.SetActivity(HomeActivity.this);
         homeFragment.setCurrentUser(user);
         homeFragment.setProgressView(mProgressView);
-        requestFragment = new RequestFragment();
+        requestFragment = new RecivedRequestFragment();
         requestFragment.SetActivity(HomeActivity.this);
         requestFragment.setCurrentUser(user);
         /*myEventsFragment = new MyEventsFragment();
@@ -149,9 +144,9 @@ public class HomeActivity extends BaseActivity {
                 case R.id.nav_menu_requests:
                     viewPager.setCurrentItem(1);
                     break;
-                /*case R.id.nav_menu_events:
-                    viewPager.setCurrentItem(2);
-                    break;*/
+                case R.id.nav_menu_friends:
+                    // TODO
+                    break;
                 case R.id.nav_menu_notification:
                     // TODO
                     break;
@@ -187,7 +182,7 @@ public class HomeActivity extends BaseActivity {
                 case R.id.nav_my_account:
                     OpenActivityNoFinish(context,ProfileActivity.class);
                     break;
-                case R.id.nav_manage:
+                case R.id.nav_settings:
                     OpenActivityNoFinish(context, SettingsActivity.class);
                     break;
                 case R.id.nav_logout :

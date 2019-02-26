@@ -9,10 +9,10 @@
     <string name="error_content_required">Inserisci una descrizione</string>
     <string name="error_maxrequest_required">Con quante persone?</string>
     <string name="error_eventdate_required">Quando?</string>
+    <string name="error_invalid_eventdate">Data/Ora non validi</string>
     <string name="permission_rationale">"Per usare il completamento automatico è richiesto
     l'accesso ai contatti."
     </string>
-
-
-
+    <string name="error_name_required">Nome mancante</string>
+    <string name="error_surname_required">Cognome mancante</string>
 </resources>

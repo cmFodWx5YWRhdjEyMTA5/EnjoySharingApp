@@ -37,11 +37,11 @@ public class CurrentUser {
 
     public String getName() { return name; }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) { this.name = name; RefreshUsername(); }
 
     public String getSurname() { return surname; }
 
-    public void setSurname(String surname) { this.surname = surname; }
+    public void setSurname(String surname) { this.surname = surname; RefreshUsername(); }
 
     public String getEmail() {
         return email;
@@ -57,6 +57,11 @@ public class CurrentUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void RefreshUsername()
+    {
+        username = surname + " " + name;
     }
 
     public void Clear() {

@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="nav_my_account">Il mio account</string>
+    <string name="nav_general">Generali</string>
+    <string name="nav_settings">Impostazioni</string>
+    <string name="nav_logout">Disconnetti</string>
+    <string name="nav_menu_home">Home</string>
+    <string name="nav_menu_friends">Amici</string>
+    <string name="nav_menu_requests">Richieste Eventi</string>
+    <string name="nav_menu_notification">Notifiche</string>
     <string name="nav_friends_requests">AMICI</string>
     <string name="nav_recived_request_home">RICEVUTE</string>
     <string name="nav_gallery_profile">Galleria</string>
     <string name="nav_send_request_profile">Richieste Inviate</string>
     <string name="nav_my_events_profile">I Miei Eventi</string>
+    <string name="btnModifyProfile">Modifica</string>
     <!-- Login -->
     <string name="txtTitle">Enjoy Sharing</string>
     <string name="txtBoxEmail">Email</string>
@@ -20,6 +29,13 @@
     <!-- Iuevent -->
     <string name="txtTitleIUEvent">Titolo Evento</string>
     <string name="txtContentIUEvent">Descrizione Evento</string>
+    <string name="btnCreateEvent">Fatto</string>
+
+    <!-- IuProfile -->
+    <string name="btnSaveProfile">Fatto</string>
+    <string name="txtGeneralInfo">GENERALE</string>
+    <string name="txtName_hint">Nome</string>
+    <string name="txtSurname_hint">Cognome</string>
 
     <!-- Request List -->
     <string name="txtSearch">Cerca</string>
