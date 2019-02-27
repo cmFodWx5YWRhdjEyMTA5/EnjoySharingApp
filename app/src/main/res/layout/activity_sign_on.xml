@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="enjoysharing.enjoysharing.Activity.SignOnActivity">
+
+    <ProgressBar
+        android:id="@+id/sign_on_progress"
+        style="@style/EnjoySharingProgressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="495dp" />
+
+    <FrameLayout
+        android:id="@+id/sign_on_form_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtRegistration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtRegistration"
+                android:textSize="24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="85dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/txtName_hint"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/txtSurname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/txtSurname_hint"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/txtBoxEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txtBoxEmail"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/txtBoxPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/txtBoxPassword"
+                android:inputType="textPassword" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_marginTop="80dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnRegisterConfirm"
+                    style="@style/EnjoySharingButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="5"
+                    android:text="@string/btnRegisterConfirm"
+                    tools:layout_editor_absoluteY="269dp" />
+
+                <Button
+                    android:id="@+id/btnBackToLogin"
+                    style="@style/EnjoySharingButtonLightStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="5"
+                    android:text="@string/btnBackToLogin"
+                    android:textColor="@color/baseColorDark"
+                    tools:layout_editor_absoluteY="288dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>

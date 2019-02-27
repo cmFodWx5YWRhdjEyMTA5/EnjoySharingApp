@@ -81,6 +81,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             }
         });
 
+        Button btnRegister = (Button) findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SwipeLeftOpenActivity(LoginActivity.this, SignOnActivity.class);
+            }
+        });
+
         mFormView = findViewById(R.id.login_form_layout);
         mProgressView = findViewById(R.id.login_progress);
         mFormView.requestFocus();

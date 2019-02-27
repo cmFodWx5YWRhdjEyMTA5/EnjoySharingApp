@@ -26,6 +26,8 @@
             </intent-filter>
             >
         </activity>
+        <activity android:name=".Activity.SignOnActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HomeActivity"
             android:parentActivityName=".Activity.BaseActivity"
@@ -54,8 +56,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.HomeActivity" />
         </activity>
-        <activity android:name=".Activity.IUProfileActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity.IUProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.CardDetailActivity"
             android:screenOrientation="portrait" />
