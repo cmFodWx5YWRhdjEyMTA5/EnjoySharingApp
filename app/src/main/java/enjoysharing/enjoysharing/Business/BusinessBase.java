@@ -174,10 +174,9 @@ public class BusinessBase {
     public void setButtonNotClickable(Button btn)
     {
         btn.setEnabled(false);
-        btn.setText("Impossibile partecipare");
+        btn.setText(R.string.txtDisablePatecipation);
         btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
     }
-    // Used when loading request
 
     // This method checks the actual date with the eventdate
     // if it's afther than the event date, it returns FALSE
@@ -191,7 +190,7 @@ public class BusinessBase {
         }
         return true;
     }
-
+    // Used when loading request
     public void LoadingRequestButton(Button btn, boolean loading)
     {
         btn.setEnabled(!loading);
