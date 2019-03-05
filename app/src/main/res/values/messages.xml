@@ -2,9 +2,11 @@
 <resources>
     <string name="error_invalid_email">Indirizzo email non valido</string>
     <string name="error_invalid_password">La password deve avere almeno 4 caratteri</string>
+    <string name="error_invalid_confirm_password">La password deve avere almeno 4 caratteri</string>
     <string name="error_incorrect_password">Password non corretta</string>
     <string name="error_email_required">Inserire Email</string>
     <string name="error_password_required">Inserire Password</string>
+    <string name="error_confirm_password_required">Conferma password</string>
     <string name="error_title_required">Inserisci un titolo</string>
     <string name="error_content_required">Inserisci una descrizione</string>
     <string name="error_maxrequest_required">Con quante persone?</string>
@@ -15,4 +17,6 @@
     </string>
     <string name="error_name_required">Nome mancante</string>
     <string name="error_surname_required">Cognome mancante</string>
+    <string name="error_confirm_password_not_match">La password non corrisponde</string>
+    <string name="register_success">Ti abbiamo inviato una mail</string>
 </resources>

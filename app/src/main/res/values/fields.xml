@@ -16,6 +16,7 @@
     <string name="btnModifyProfile">Modifica</string>
     <!-- Sign On -->
     <string name="txtRegistration">Registrazione</string>
+    <string name="txtConfirmPassword">Conferma Password</string>
     <string name="btnRegisterConfirm">Conferma</string>
     <string name="btnBackToLogin">Torna a Login</string>
     <!-- Login -->
