@@ -175,7 +175,7 @@ public class RequestListActivity extends BaseActivity {
                         cardPassed.setAcceptedRequest(cardPassed.getAcceptedRequest()-1);
                     }
                     SetRequestInfo();
-                    swipeListenerList.get(UserId).SetDecined();
+                    swipeListenerList.get(UserId).SetDeclined();
                 }
             }
             else
@@ -222,7 +222,7 @@ public class RequestListActivity extends BaseActivity {
 
             CardSwipeDetector swipeListener = new CardSwipeDetector(RequestListActivity.this, imgUser, row);
             if(user.isAccepted()) swipeListener.SetAccepted();
-            if(user.isDeclined()) swipeListener.SetDecined();
+            if(user.isDeclined()) swipeListener.SetDeclined();
             swipeListener.CanManageList(canManageList);
             swipeListener.setUserId(user.getUserId());
             linLayout.setOnTouchListener(swipeListener);

@@ -192,11 +192,14 @@ public class HomeFragment extends FragmentBase {
 
             Button btnPartecipateRequest = (Button)relLayout.findViewById(R.id.btnPartecipateRequest);
             business.SetButtonRequest(btnPartecipateRequest,!card.IsRequestSubmitted());
-            btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    onRequestPartecipate(v,card.getEventId());
-                }
-            });
+            if ( business.checkButtonNotClickable(btnPartecipateRequest,card.getDateEvent()))
+            {
+                btnPartecipateRequest.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        onRequestPartecipate(v,card.getEventId());
+                    }
+                });
+            }
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

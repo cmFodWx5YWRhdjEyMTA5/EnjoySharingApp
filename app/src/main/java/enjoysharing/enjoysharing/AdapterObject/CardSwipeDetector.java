@@ -1,6 +1,7 @@
 package enjoysharing.enjoysharing.AdapterObject;
 
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,15 +31,27 @@ public class CardSwipeDetector implements View.OnTouchListener {
 
     public void SetAccepted()
     {
-        image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_green));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_green));
+        }
+        else
+        {
+            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_no_border_green));
+        }
         SetBackground();
         leftSwipeDone = true;
         rightSwipeDone = false;
     }
 
-    public void SetDecined()
+    public void SetDeclined()
     {
-        image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_red));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_red));
+        }
+        else
+        {
+            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_no_border_red));
+        }
         SetBackground();
         rightSwipeDone = true;
         leftSwipeDone = false;
@@ -138,7 +151,7 @@ public class CardSwipeDetector implements View.OnTouchListener {
         if(declineFinish) {
             if (!rightSwipeDone)
                 activity.onRightSwipe(v, leftSwipeDone,UserId);
-            //SetDecined();
+            //SetDeclined();
         }
         if(acceptFinish) {
             if (!leftSwipeDone)

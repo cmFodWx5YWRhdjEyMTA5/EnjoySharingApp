@@ -109,7 +109,6 @@ public class HomeActivity extends BaseActivity {
                 // Call start fragment when selected
                 CallStartFragment(position);
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -159,9 +158,9 @@ public class HomeActivity extends BaseActivity {
     protected void CreateButtons()
     {
         imgBtnSearch = (ImageButton) findViewById(R.id.imgBtnSearch);
-        imgBtnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                 SwipeOpenActivity(context, SearchActivity.class);
             }
         });

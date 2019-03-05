@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.IllegalFormatCodePointException;
 import java.util.Locale;
 
 import enjoysharing.enjoysharing.Activity.BaseActivity;
@@ -169,7 +170,28 @@ public class BusinessBase {
         btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
         btn.setHint("0");
     }
+    // Used to set a non clickable button
+    public void setButtonNotClickable(Button btn)
+    {
+        btn.setEnabled(false);
+        btn.setText("Impossibile partecipare");
+        btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_request_disabled_custom,0,0,0);
+    }
     // Used when loading request
+
+    // This method checks the actual date with the eventdate
+    // if it's afther than the event date, it returns FALSE
+    public boolean checkButtonNotClickable (Button btn, Date EventDate)
+    {
+        Date currentTime = Calendar.getInstance().getTime();
+
+        if( currentTime.after(EventDate)) {
+            setButtonNotClickable(btn);
+            return false;
+        }
+        return true;
+    }
+
     public void LoadingRequestButton(Button btn, boolean loading)
     {
         btn.setEnabled(!loading);

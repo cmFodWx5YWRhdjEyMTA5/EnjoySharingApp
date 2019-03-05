@@ -13,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements View.OnTouchListener {
 
     protected Context context;
     protected CurrentUser user;
@@ -51,6 +52,9 @@ public class BaseActivity extends AppCompatActivity {
     public boolean simulateCall = true;
     // Usata da alcune activity per distinguere Post da Get nel result
     protected boolean PostCall;
+    // Usata dal metodo OnTouch
+    static final int MIN_DISTANCE = 5;
+    private float downX, downY, upX, upY;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -249,6 +253,75 @@ public class BaseActivity extends AppCompatActivity {
     {
         mTask = null;
         showProgress(false);
+    }
+
+    // SWIPE
+    protected void ActivityRightSwipe()
+    { }
+
+    protected void ActivityLeftSwipe()
+    { }
+
+    protected void ActivityDownSwipe()
+    { }
+
+    protected void ActivityUpSwipe(float deltaY)
+    {
+        // Se deltaY raggiunge un valore x attivo lo swipeUP
+        if (deltaY >= 500)
+            ActivityUpSwipeDone();
+    }
+
+    protected void ActivityUpSwipeDone()
+    { }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN: {
+                downX = event.getX();
+                downY = event.getY();
+                return true;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                upX = event.getX();
+                upY = event.getY();
+
+                float deltaX = downX - upX;
+                float deltaY = downY - upY;
+
+                // swipe horizontal?
+                if(Math.abs(deltaX) > Math.abs(deltaY))
+                {
+                    if(Math.abs(deltaX) > MIN_DISTANCE){
+                        // left or right
+                        if(deltaX < 0) {  this.ActivityRightSwipe(); return true; }
+                        if(deltaX > 0 ) {  this.ActivityLeftSwipe(); return true; }
+                    }
+                    else {
+                        return false; // We don't consume the event
+                    }
+                }
+                // swipe vertical?
+                else
+                {
+                    if(Math.abs(deltaY) > MIN_DISTANCE){
+                        // top or down
+                        if(deltaY < 0) { this.ActivityDownSwipe(); return true; }
+                        if(deltaY > 0) {this.ActivityUpSwipe(deltaY); return true;}
+
+                    }
+                    else {
+                        return false; // We don't consume the event
+                    }
+                }
+
+                return true;
+            }
+            default: {
+                return true;
+            }
+        }
     }
 
     /**
