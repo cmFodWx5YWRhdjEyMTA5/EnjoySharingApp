@@ -6,14 +6,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,14 +26,13 @@ import enjoysharing.enjoysharing.R;
 public class SearchActivity extends BaseActivity {
 
     protected EditText searchTo;
-    protected EditText txtNumberPerson;
-    protected LinearLayout barFilters;
-    protected Spinner genderIUEvent;
-    protected ImageButton imgBtnGender;
-    // Used when filter bar open
-    protected boolean useFilter = true;
+    protected TableLayout searchTable;
     protected Button btn;
+    protected TableRow row_progress;
+    protected ProgressBar search_progress_bar;
+    protected int Index;
     protected boolean stateRequest;
+    protected CardCollection existingCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,77 +67,40 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                SearchCards();
-            }
-        });
-        txtNumberPerson = (EditText) findViewById(R.id.txtNumberPerson);
-        txtNumberPerson.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                SearchCards();
-            }
-        });
-        ImageButton imgBtnFilters = (ImageButton) findViewById(R.id.imgBtnFilters);
-        barFilters = (LinearLayout) findViewById(R.id.barFilters);
-        imgBtnFilters.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(barFilters.getVisibility() == View.GONE)
-                {
-                    useFilter = false;
-                    barFilters.setVisibility(View.VISIBLE);
-                }
-                else
-                    barFilters.setVisibility(View.GONE);
-            }
-        });
-
-        genderIUEvent = (Spinner) findViewById(R.id.genderIUEvent);
-        imgBtnGender = (ImageButton) findViewById(R.id.imgBtnGender);
-        // Adapter for textsize
-        String[] items = business.GetGenderSearchItems();
-        ArrayAdapter<String> widgetModeAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, items);
-        // Layout for list layout
-        widgetModeAdapter.setDropDownViewResource(R.layout.spinner_item_list);
-        genderIUEvent.setAdapter(widgetModeAdapter);
-        genderIUEvent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id)
-            {
-                imgBtnGender.setImageResource(business.GetGenderIconSearch(position));
-                if(useFilter)
+                Index = 0;
+                existingCards = new CardCollection();
+                if(searchTo.getText() != null && !searchTo.getText().toString().equals(""))
                     SearchCards();
                 else
-                    useFilter = true;
+                {
+                    searchTable.removeAllViews();
+                }
             }
+        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView)
-            {
-            }
-        });
-        // Open DDL on click
-        imgBtnGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                genderIUEvent.performClick();
-            }
-        });
+        searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
+
+        row_progress = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.progress_bar, null);
+        search_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
 
         mFormView = findViewById(R.id.search_form);
+        mFormView.getViewTreeObserver()
+                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                    @Override
+                    public void onScrollChanged() {
+                        if (!mFormView.canScrollVertically(1)) {
+                            search_progress_bar.setVisibility(View.VISIBLE);
+                            SearchCards();
+                        }
+                        if (!mFormView.canScrollVertically(-1)) {
+                        }
+                    }
+                });
         mProgressView = findViewById(R.id.search_progress);
         mFormView.requestFocus();
+
+        Index = 0;
+        existingCards = new CardCollection();
     }
 
     @Override
@@ -154,11 +115,10 @@ public class SearchActivity extends BaseActivity {
         }
         //showProgress(true);
         PostCall = false;
-        mTask = new RequestTask(false, true, "EventServlet");
+        mTask = new RequestTask(false, true, "EventServlet",(Index == 0));
         mTask.AddParameter("RequestType","S");
-        mTask.AddParameter("Title",searchTo.getText());
-        mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
-        mTask.AddParameter("GenderEventId",business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString()));
+        mTask.AddParameter("SearchText",searchTo.getText());
+        mTask.AddParameter("Index",Index);
         // TODO
         // Quando implemento le date uso la data come filtro
 //        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -202,9 +162,6 @@ public class SearchActivity extends BaseActivity {
             if (simulateCall) {
                 searchCards = business.GetHomeCards(null);
                 searchCards.FilterByTitle(searchTo.getText().toString());
-                searchCards.FilterByNumberPerson(txtNumberPerson.getText().toString());
-                // Il -1 è perchè nella lista search c'è un item in più (ovvero "tutti")
-                searchCards.FilterByGender(business.GetGenderSearchIndex(genderIUEvent.getSelectedItem().toString()) - 1);
             } else
                 searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
         }
@@ -213,7 +170,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void OnRequestPostExecute()
     {
-
+        search_progress_bar.setVisibility(View.GONE);
         if(requestSuccess && retObj.isOkResponse())
         {
             if(PostCall)
@@ -225,7 +182,6 @@ public class SearchActivity extends BaseActivity {
             {
                 if(searchCards != null)
                 {
-                    TableLayout searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
                     // Riempio la tabella qui perchè altrimenti mi dice che non posso accedere alla view da un task che non è l'originale
                     DrawCardsOnTable(searchCards, searchTable);
                 }
@@ -241,11 +197,20 @@ public class SearchActivity extends BaseActivity {
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
-        table.removeAllViews();
+        if(Index == 0)
+        {
+            table.removeAllViews();
+        }
+        else
+        {
+            table.removeView(row_progress);
+        }
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
+            Index++;
+            if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -297,7 +262,14 @@ public class SearchActivity extends BaseActivity {
                 }
             });
             table.addView(row);
+            existingCards.Add(card);
         }
+        table.addView(row_progress);
+    }
+
+    protected boolean CardAlreadyExists(CardHome card)
+    {
+        return existingCards.GetCard(card.getEventId()) != null;
     }
 
     protected void onRequestPartecipate(View v, int EventId)

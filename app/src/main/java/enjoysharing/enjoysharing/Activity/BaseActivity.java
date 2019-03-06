@@ -373,6 +373,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             businessCallService.simulateCall = simulateCall;
         }
 
+        public void SetLongTimeout() {
+            if(businessCallService!=null)
+                businessCallService.SetLongTimeout();
+        }
+
         @Override
         protected Boolean doInBackground(Void... pars) {
             try

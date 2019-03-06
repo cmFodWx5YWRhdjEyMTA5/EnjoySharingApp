@@ -8,18 +8,19 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ScrollView
+            android:id="@+id/tableHomeScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-                <TableLayout
-                    android:id="@+id/tableHomeCards"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/tableHomeCards"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                </TableLayout>
+            </TableLayout>
 
         </ScrollView>
 

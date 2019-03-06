@@ -64,6 +64,7 @@ public class SignOnActivity extends BaseActivity {
             user.setEmail(getString(R.string.register_email));
             user.setPassword(getString(R.string.register_password));
             mTask = new RequestTask(true, false, "UserServlet");
+            mTask.SetLongTimeout();
             mTask.AddParameter("RequestType","RU");
             mTask.AddParameter("Name",txtName.getText().toString().trim());
             mTask.AddParameter("Surname",txtSurname.getText().toString().trim());

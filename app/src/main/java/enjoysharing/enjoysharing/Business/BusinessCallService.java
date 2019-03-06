@@ -33,6 +33,7 @@ public class BusinessCallService {
     public boolean simulateCall = true;
 
     public void SetParams(ParameterCollection params) { this.params = params; }
+    public void SetLongTimeout() { this.timeout = 20000; }
 
     public BusinessCallService(String serviceURL, String servletName,CurrentUser user, boolean executePost,boolean executeGet)
     {
