@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
@@ -189,7 +188,7 @@ public class SearchActivity extends BaseActivity {
         }
         else
         {
-            Toast.makeText(SearchActivity.this, retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
             if(PostCall)
                 business.LoadingRequestButton(btn,false);
         }
@@ -281,7 +280,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onRowClick(View v, int EventId)
     {
-        CardHome card = (CardHome) searchCards.GetCard(EventId);
+        CardHome card = (CardHome) existingCards.GetCard(EventId);
         if(card != null)
         {
             SwipeDownOpenActivity(this, CardDetailActivity.class, card);

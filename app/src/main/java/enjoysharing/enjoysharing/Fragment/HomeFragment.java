@@ -15,7 +15,6 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -158,7 +157,7 @@ public class HomeFragment extends FragmentBase {
         }
         else
         {
-            Toast.makeText(activity, activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(activity.retObj.getMessage());
             if(PostCall)
                 business.LoadingRequestButton(btn,false);
         }
@@ -261,10 +260,14 @@ public class HomeFragment extends FragmentBase {
     @Override
     protected void onRowClick(View v, int EventId)
     {
-        CardHome card = (CardHome) homeCards.GetCard(EventId);
+        CardHome card = (CardHome) existingCards.GetCard(EventId);
         if(card != null)
         {
-            SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
+            // Se il titolo o la descrizione sono troppo lunghe abilito il dettaglio
+            if(business.isTextTruncated((TextView)v.findViewById(R.id.txtTitleCardHome))
+                    || business.isTextTruncated((TextView)v.findViewById(R.id.txtContentCardHome))) {
+                SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
+            }
         }
     }
 

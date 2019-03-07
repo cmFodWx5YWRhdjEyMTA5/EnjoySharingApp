@@ -13,10 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.HashMap;
-
 import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
@@ -190,7 +187,7 @@ public class RequestListActivity extends BaseActivity {
         }
         else
         {
-            Toast.makeText(RequestListActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
         }
     }
 

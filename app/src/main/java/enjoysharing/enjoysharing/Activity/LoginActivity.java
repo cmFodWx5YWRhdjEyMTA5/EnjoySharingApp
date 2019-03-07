@@ -22,11 +22,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
@@ -266,7 +264,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             user.Clear();
             user.SaveOnXMLFile();
             String message = retObj.getMessage();
-            Toast.makeText(LoginActivity.this,message == ""?"UserError":message,Toast.LENGTH_SHORT).show();
+            ShowShortMessage(message == ""?"UserError":message);
         }
     }
 

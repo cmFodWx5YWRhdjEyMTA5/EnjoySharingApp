@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
@@ -174,6 +175,12 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
     }
 
+    // Used to show a message with ToastMessage
+    protected void ShowShortMessage(String message)
+    {
+        if(message == null || message.equals("")) return;
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
     // Generally back to homepage
     @Override
     public void onBackPressed() {

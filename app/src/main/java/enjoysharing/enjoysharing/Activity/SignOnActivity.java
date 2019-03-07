@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import java.util.regex.Pattern;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.R;
@@ -86,11 +85,11 @@ public class SignOnActivity extends BaseActivity {
     {
         if(requestSuccess && retObj.isOkResponse())
         {
-            Toast.makeText(SignOnActivity.this,getString(R.string.register_success), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(getString(R.string.register_success));
             onBackPressed();
         }
         else
-            Toast.makeText(SignOnActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
         user.Clear();
     }
 

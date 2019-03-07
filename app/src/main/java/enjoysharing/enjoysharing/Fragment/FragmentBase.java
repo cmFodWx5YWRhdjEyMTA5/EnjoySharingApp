@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
@@ -88,6 +88,12 @@ public class FragmentBase extends Fragment {
     {
         activity.OpenActivity(context, cl, card);
         //finish();
+    }
+    // Used to show a message with ToastMessage
+    protected void ShowShortMessage(String message)
+    {
+        if(message == null || message.equals("")) return;
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
     // Creo metodo per customizzarlo dove serve
     protected void ShowProgress(boolean state)

@@ -1,7 +1,9 @@
 package enjoysharing.enjoysharing.Business;
 
+import android.text.Layout;
 import android.util.Base64;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +60,31 @@ public class BusinessBase {
         } catch (Exception e) {
         }
         return base64.replace("\n","");
+    }
+
+    // Used to check if text is truncate
+    public boolean isTextTruncated(TextView textView)
+    {
+        String text = textView.getText().toString();
+        if ( textView != null && text != null )
+        {
+
+            Layout layout = textView.getLayout();
+            if ( layout != null )
+            {
+                int lines = layout.getLineCount();
+                if ( lines > 0 )
+                {
+                    int ellipsisCount = layout.getEllipsisCount( lines - 1 );
+                    if ( ellipsisCount > 0 )
+                    {
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
     }
     public Date GetDate(String dateStr)
     {

@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -131,7 +130,7 @@ public class SendRequestFragment extends FragmentBase {
         }
         else
         {
-            Toast.makeText(activity, activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(activity.retObj.getMessage());
             if (PostCall)
             {
                 business.SetButtonRequest(btn,false);

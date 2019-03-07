@@ -8,19 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardHome;
 import enjoysharing.enjoysharing.DataObject.Card.CardRequestSent;
 import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
-import enjoysharing.enjoysharing.Fragment.FragmentBase;
 import enjoysharing.enjoysharing.R;
 
 public class CardDetailActivity extends BaseActivity {
@@ -156,7 +152,7 @@ public class CardDetailActivity extends BaseActivity {
         }
         else
         {
-            Toast.makeText(CardDetailActivity.this, retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
             if(PostCall)
                 business.LoadingRequestButton(btn,false);
         }

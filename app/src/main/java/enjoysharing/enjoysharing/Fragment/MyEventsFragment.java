@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import enjoysharing.enjoysharing.Activity.IUEventActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -93,7 +91,7 @@ public class MyEventsFragment extends FragmentBase {
                 DrawCardsOnTable(myEventCards,tableCardsMyEvent);
         }
         else
-            Toast.makeText(activity,activity.retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(activity.retObj.getMessage());
     }
 
     // Used by requests tabs

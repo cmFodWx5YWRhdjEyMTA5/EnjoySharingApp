@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
 
@@ -126,7 +124,7 @@ public class IUProfileActivity extends BaseActivity {
             onBackPressed();
         }
         else
-            Toast.makeText(IUProfileActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
     }
 
     protected void SaveUser()

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -281,7 +280,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         if(requestSuccess && retObj.isOkResponse())
             onBackPressed();
         else
-            Toast.makeText(IUEventActivity.this,retObj.getMessage(), Toast.LENGTH_SHORT).show();
+            ShowShortMessage(retObj.getMessage());
     }
     // Used when set DATE
     @Override
