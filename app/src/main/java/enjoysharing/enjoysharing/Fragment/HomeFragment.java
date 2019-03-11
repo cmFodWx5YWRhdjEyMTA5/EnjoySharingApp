@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,13 +24,9 @@ import enjoysharing.enjoysharing.R;
 public class HomeFragment extends FragmentBase {
 
     protected TableLayout tableHomeCards;
-    protected TableRow row_progress;
-    protected ProgressBar home_progress_bar;
     protected Button btn;
-    protected int Index;
     protected boolean stateRequest;
     protected int EventId;
-    protected CardCollection existingCards;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -41,52 +35,41 @@ public class HomeFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_home, container, false);
         tableHomeCards = (TableLayout) vMain.findViewById(R.id.tableHomeCards);
-        row_progress = (TableRow) LayoutInflater.from(activity).inflate(R.layout.progress_bar, null);
-        home_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
-        final ScrollView tableHomeScrollView = (ScrollView) vMain.findViewById(R.id.tableHomeScrollView);
-        tableHomeScrollView.getViewTreeObserver()
-                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        if (!tableHomeScrollView.canScrollVertically(1)) {
-                            home_progress_bar.setVisibility(View.VISIBLE);
-                            FillHomeCards();
-                        }
-                        if (!tableHomeScrollView.canScrollVertically(-1)) {
-                        }
-                    }
-                });
+        setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableHomeScrollView));
+        reloadOnSwipeBottom = true;
         setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_home));
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
     }
     @Override
+    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==0; }
+    @Override
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state, formView, progressView);
+        ShowProgressPassView(state);
     }
     @Override
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        Index = 0;
-        existingCards = new CardCollection();
-        FillHomeCards();
+        super.StartFragment();
+        LoadTable();
     }
 
     protected CardCollection homeCards;
     // User to load home cards
     // Fill cards by server call
-    protected void FillHomeCards()
+    @Override
+    protected void LoadTable()
     {
         if (mTask != null) {
             return;
         }
         //ShowProgress(true);
         PostCall = false;
-        mTask = new FragmentRequestTask(false, true, "EventServlet",(Index == 0));
+        mTask = new FragmentRequestTask(false, true, "EventServlet",(IndexCard == 0));
         mTask.AddParameter("RequestType","H");
-        mTask.AddParameter("Index",Index);
+        mTask.AddParameter("Index",IndexCard);
         try
         {
             mTask.execute();
@@ -139,7 +122,7 @@ public class HomeFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
-        home_progress_bar.setVisibility(View.GONE);
+        super.OnRequestPostExecute();
         if(requestSuccess && activity.retObj.isOkResponse())
         {
             if(PostCall)
@@ -173,19 +156,11 @@ public class HomeFragment extends FragmentBase {
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
-        if(Index == 0)
-        {
-            table.removeAllViews();
-        }
-        else
-        {
-            table.removeView(row_progress);
-        }
+        super.DrawCardsOnTable(cards,table);
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(84);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
-            Index++;
             if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
@@ -241,14 +216,9 @@ public class HomeFragment extends FragmentBase {
                 }
             });
             table.addView(row);
-            existingCards.Add(card);
+            AddToExistingCards(card);
         }
-        table.addView(row_progress);
-    }
-
-    protected boolean CardAlreadyExists(CardHome card)
-    {
-        return existingCards.GetCard(card.getEventId()) != null;
+        AddProgressToTable(table);
     }
 
     protected void onRequestPartecipate(View v, int EventId)

@@ -43,7 +43,7 @@
     <string name="txtSurname_hint">Cognome</string>
 
     <!-- Request List -->
-    <string name="txtSearch">Cerca</string>
+    <string name="txtSearch">Cerca Eventi</string>
 
     <!-- Card Home-->
     <string name="txtContentCardHome">Contenuto</string>

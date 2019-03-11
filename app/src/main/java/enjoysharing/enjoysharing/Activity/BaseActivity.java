@@ -13,14 +13,21 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
@@ -56,10 +63,23 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Usata dal metodo OnTouch
     static final int MIN_DISTANCE = 5;
     private float downX, downY, upX, upY;
+    // Used to enable/disable reload cards on swipe bottom
+    protected boolean reloadOnSwipeBottom = false;
+    protected int IndexCard;
+    protected CardCollection existingCards;
+    protected TableRow row_progress;
+    protected ProgressBar row_progress_bar;
+    protected ScrollView tableReloadScrollView;
+    // Used to check current fragment
+    protected int currentMenuPosition;
 
     protected void SetContext(Context context){ this.context = context; }
 
     public CurrentUser GetUser() { return user; }
+
+    protected void setTableReloadScrollView(ScrollView table) { tableReloadScrollView = table; }
+
+    public int getCurrentMenuPosition() { return currentMenuPosition; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +87,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
+        if(reloadOnSwipeBottom)
+        {
+            tableReloadScrollView.getViewTreeObserver()
+                    .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                        @Override
+                        public void onScrollChanged() {
+                            if (!tableReloadScrollView.canScrollVertically(1)) {
+                                SetRowProgressVisibility(true);
+                                LoadTable();
+                            }
+                            if (!tableReloadScrollView.canScrollVertically(-1)) {
+                            }
+                        }
+                    });
+        }
+        InitReload();
+        row_progress = (TableRow) LayoutInflater.from(this).inflate(R.layout.progress_bar, null);
+        row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
     }
     // Used to open activity and pass Card
     protected void SwipeOpenActivity(Context context, Class cl, CardBase card)
@@ -174,7 +212,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         startActivityForResult(intent,1);
         overridePendingTransition(R.anim.activity_enter_from_right, R.anim.activity_exit_to_left);
     }
-
     // Used to show a message with ToastMessage
     protected void ShowShortMessage(String message)
     {
@@ -188,6 +225,50 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     }
     // Used to close current activity as standard
     protected void StandardOnBackPressed() { super.onBackPressed(); }
+    // Used to reset reload informations
+    protected void InitReload()
+    {
+        IndexCard = 0;
+        existingCards = new CardCollection();
+    }
+    // Used when load table
+    protected void LoadTable()
+    { }
+    // Used to load table and reload on swipe bottom
+    protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
+    {
+        if(reloadOnSwipeBottom && IndexCard == 0)
+        {
+            table.removeAllViews();
+        }
+        else
+        {
+            table.removeView(row_progress);
+        }
+    }
+    // Used to check if card already exists
+    protected boolean CardAlreadyExists(CardBase card)
+    {
+        IndexCard++;
+        return existingCards.GetCard(card.getEventId()) != null;
+    }
+    // Used to add into card list
+    protected void AddToExistingCards(CardBase card)
+    {
+        if(reloadOnSwipeBottom)
+            existingCards.Add(card);
+    }
+    // Used to add row progress on table
+    protected void AddProgressToTable(TableLayout table)
+    {
+        if(reloadOnSwipeBottom && existingCards.List().size()!=0)
+            table.addView(row_progress);
+    }
+
+    protected void SetRowProgressVisibility(boolean state)
+    {
+        row_progress_bar.setVisibility(state?View.VISIBLE:View.GONE);
+    }
     // Used for click on rows
     protected void onRowClick(View v)
     { }
@@ -254,7 +335,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     { }
 
     protected void OnRequestPostExecute()
-    { }
+    {
+        if(reloadOnSwipeBottom)
+            SetRowProgressVisibility(false);
+    }
 
     protected void OnRequestCancelled()
     {
@@ -359,6 +443,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName)
         {
+            this.useShowProgress = reloadOnSwipeBottom;
             if(useShowProgress)
                 showProgress(true);
             params = new ParameterCollection();
@@ -370,9 +455,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
         {
+            this.useShowProgress = useShowProgress;
             if(useShowProgress)
                 showProgress(true);
-            this.useShowProgress = useShowProgress;
             params = new ParameterCollection();
             retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;

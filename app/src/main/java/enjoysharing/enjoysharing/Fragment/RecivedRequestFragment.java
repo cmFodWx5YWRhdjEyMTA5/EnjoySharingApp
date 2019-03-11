@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,14 +34,19 @@ public class RecivedRequestFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_recived_request, container, false);
         tableRecivedRequests = (TableLayout) vMain.findViewById(R.id.tableRecivedRequests);
+        setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableRecievedRequestScrollView));
+        reloadOnSwipeBottom = true;
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
     }
     @Override
+    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==1; }
+    @Override
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        LoadRecivedRequests();
+        super.StartFragment();
+        LoadTable();
     }
 
     protected CardRequestUserListCollection recivedRequestCards;
@@ -49,10 +55,11 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state, formView, progressView);
+        ShowProgressPassView(state);
     }
     // Load with server call
-    protected void LoadRecivedRequests()
+    @Override
+    protected void LoadTable()
     {
         if (mTask != null) {
             return;
@@ -116,6 +123,7 @@ public class RecivedRequestFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
+        super.OnRequestPostExecute();
         if(requestSuccess && activity.retObj.isOkResponse())
         {
             if(PostCall)
@@ -141,12 +149,14 @@ public class RecivedRequestFragment extends FragmentBase {
     }
 
     // Used by requests tabs
+    @Override
     protected void DrawCardsOnTable(CardRequestUserListCollection cards, TableLayout table)
     {
-        table.removeAllViews();
+        super.DrawCardsOnTable(cards,table);
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(100);
         for (int i=0; i<cards.List().size(); i++) {
             final CardRequestUserList card = (CardRequestUserList)cards.List().get(i);
+            if(CardAlreadyExists(card)) continue;
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -196,7 +206,9 @@ public class RecivedRequestFragment extends FragmentBase {
                 }
             });
             table.addView(row);
+            AddToExistingCards(card);
         }
+        AddProgressToTable(table);
     }
     // Used to confirm request
     protected void onRequestConfirm(int EventId, Button btnConfirmRequest, Button btnDeclineRequest, TextView txtConfirmDeclineRequest)

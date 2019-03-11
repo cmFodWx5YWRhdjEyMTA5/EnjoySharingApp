@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,14 +33,19 @@ public class SendRequestFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_send_request, container, false);
         tableSendRequests = (TableLayout) vMain.findViewById(R.id.tableSendRequests);
+        setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableSendRequestScrollView));
+        reloadOnSwipeBottom = true;
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
     }
     @Override
+    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==1; }
+    @Override
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        LoadSendRequests();
+        super.StartFragment();
+        LoadTable();
     }
 
     protected CardCollection sendRequestCards;
@@ -47,11 +53,11 @@ public class SendRequestFragment extends FragmentBase {
     @Override
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state, formView, progressView);
+        ShowProgressPassView(state);
     }
-    // TODO
     // Load with server call
-    protected void LoadSendRequests()
+    @Override
+    protected void LoadTable()
     {
         if (mTask != null) {
             return;
@@ -114,6 +120,7 @@ public class SendRequestFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
+        super.OnRequestPostExecute();
         if(requestSuccess && activity.retObj.isOkResponse())
         {
             if(PostCall)
@@ -149,10 +156,11 @@ public class SendRequestFragment extends FragmentBase {
     // Used by requests tabs
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
-        table.removeAllViews();
+        super.DrawCardsOnTable(cards,table);
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<cards.List().size(); i++) {
             final CardRequestSent card = (CardRequestSent)cards.List().get(i);
+            if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_send, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -199,12 +207,15 @@ public class SendRequestFragment extends FragmentBase {
                 }
             });
             table.addView(row);
+            AddToExistingCards(card);
         }
+        AddProgressToTable(table);
     }
     // Manage click on request partecipate
     protected void onRequestPartecipate(View v, int EventId)
     {
         business.LoadingRequestButton(((Button)v),true);
+        super.StartFragment();
         DeactivateRequest((Button)v,EventId);
     }
 

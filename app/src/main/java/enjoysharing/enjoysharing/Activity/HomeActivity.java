@@ -28,7 +28,6 @@ public class HomeActivity extends BaseActivity {
     protected HomeFragment homeFragment;
     protected RecivedRequestFragment requestFragment;
     //protected MyEventsFragment myEventsFragment;
-    protected int currentMenuPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

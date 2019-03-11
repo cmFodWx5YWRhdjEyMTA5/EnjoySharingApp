@@ -8,12 +8,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
+import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
+import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserListCollection;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
@@ -32,6 +39,13 @@ public class FragmentBase extends Fragment {
     protected boolean requestSuccess;
     // Usata da alcuni fragment per distinguere Post da Get nel result
     protected boolean PostCall;
+    // Used to enable/disable reload cards on swipe bottom
+    protected boolean reloadOnSwipeBottom = false;
+    protected int IndexCard;
+    protected CardCollection existingCards;
+    protected TableRow row_progress;
+    protected ProgressBar row_progress_bar;
+    protected ScrollView tableReloadScrollView;
 
     protected View progressView;
     protected View formView;
@@ -52,6 +66,8 @@ public class FragmentBase extends Fragment {
         this.activity = activity;
     }
 
+    protected void setTableReloadScrollView(ScrollView table) { tableReloadScrollView = table; }
+
     // Lo creo solo per il refresh
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +87,39 @@ public class FragmentBase extends Fragment {
                 }
             });
         }
+        if(reloadOnSwipeBottom)
+        {
+            tableReloadScrollView.getViewTreeObserver()
+                    .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                        @Override
+                        public void onScrollChanged() {
+                            if(CheckForCurrentFragment())
+                            {
+                                if (!tableReloadScrollView.canScrollVertically(1)) {
+                                    SetRowProgressVisibility(true);
+                                    LoadTable();
+                                }
+                                if (!tableReloadScrollView.canScrollVertically(-1)) {
+                                }
+                            }
+                        }
+                    });
+        }
+        IndexCard = 0;
+        existingCards = new CardCollection();
+        row_progress = (TableRow) LayoutInflater.from(activity).inflate(R.layout.progress_bar, null);
+        row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
         return vMain;
     }
+
+    protected boolean CheckForCurrentFragment() { return true; }
+
+    protected void SetRowProgressVisibility(boolean state)
+    {
+        row_progress_bar.setVisibility(state?View.VISIBLE:View.GONE);
+    }
+
+    protected boolean IsRowProgressVisible() { return row_progress_bar == null?false:row_progress_bar.getVisibility() == View.VISIBLE; }
 
     protected void OpenRequestList(Context context, Class cl, CardBase card, boolean canManageList)
     {
@@ -98,10 +145,62 @@ public class FragmentBase extends Fragment {
     // Creo metodo per customizzarlo dove serve
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state);
+        if(!IsRowProgressVisible())
+            activity.showProgress(state);
+    }
+    // Creo metodo per customizzarlo dove serve
+    protected void ShowProgressPassView(boolean state)
+    {
+        if(!IsRowProgressVisible())
+            activity.showProgress(state, formView, progressView);
     }
     // Used for functionality
     public void StartFragment(){ }
+    // Used when load table
+    protected void LoadTable()
+    { }
+    // Used to load table and reload on swipe bottom
+    protected void DrawCardsOnTable(CardRequestUserListCollection cards, TableLayout table)
+    {
+        if(reloadOnSwipeBottom && IndexCard == 0)
+        {
+            table.removeAllViews();
+        }
+        else
+        {
+            table.removeView(row_progress);
+        }
+    }
+    // Used to load table and reload on swipe bottom
+    protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
+    {
+        if(reloadOnSwipeBottom && IndexCard == 0)
+        {
+            table.removeAllViews();
+        }
+        else
+        {
+            table.removeView(row_progress);
+        }
+    }
+    // Used to check if card already exists
+    protected boolean CardAlreadyExists(CardBase card)
+    {
+        IndexCard++;
+        return existingCards.GetCard(card.getEventId()) != null;
+    }
+    // Used to add into card list
+    protected void AddToExistingCards(CardBase card)
+    {
+        if(reloadOnSwipeBottom)
+            existingCards.Add(card);
+    }
+    // Used to add row progress on table
+    protected void AddProgressToTable(TableLayout table)
+    {
+        if(reloadOnSwipeBottom && existingCards.List().size()!=0)
+            table.addView(row_progress);
+    }
     // Used for click on rows
     protected void onRowClick(View v)
     { }
@@ -120,7 +219,10 @@ public class FragmentBase extends Fragment {
     { }
 
     protected void OnRequestPostExecute()
-    { }
+    {
+        if(reloadOnSwipeBottom)
+            SetRowProgressVisibility(false);
+    }
 
     protected void OnRequestCancelled()
     {
@@ -166,9 +268,9 @@ public class FragmentBase extends Fragment {
 
         public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
         {
+            this.useShowProgress = useShowProgress;
             if(useShowProgress)
                 ShowProgress(true);
-            this.useShowProgress = useShowProgress;
             params = new ParameterCollection();
             activity.retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;

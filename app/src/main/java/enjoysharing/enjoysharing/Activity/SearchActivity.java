@@ -6,13 +6,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,11 +26,7 @@ public class SearchActivity extends BaseActivity {
     protected EditText searchTo;
     protected TableLayout searchTable;
     protected Button btn;
-    protected TableRow row_progress;
-    protected ProgressBar search_progress_bar;
-    protected int Index;
     protected boolean stateRequest;
-    protected CardCollection existingCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +61,9 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Index = 0;
-                existingCards = new CardCollection();
+                InitReload();
                 if(searchTo.getText() != null && !searchTo.getText().toString().equals(""))
-                    SearchCards();
+                    LoadTable();
                 else
                 {
                     searchTable.removeAllViews();
@@ -79,45 +73,30 @@ public class SearchActivity extends BaseActivity {
 
         searchTable = (TableLayout) findViewById(R.id.tblSearchCards);
 
-        row_progress = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.progress_bar, null);
-        search_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
+        setTableReloadScrollView((ScrollView)mFormView);
+        reloadOnSwipeBottom = true;
 
         mFormView = findViewById(R.id.search_form);
-        mFormView.getViewTreeObserver()
-                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        if (!mFormView.canScrollVertically(1)) {
-                            search_progress_bar.setVisibility(View.VISIBLE);
-                            SearchCards();
-                        }
-                        if (!mFormView.canScrollVertically(-1)) {
-                        }
-                    }
-                });
         mProgressView = findViewById(R.id.search_progress);
         mFormView.requestFocus();
-
-        Index = 0;
-        existingCards = new CardCollection();
     }
 
     @Override
     public void onBackPressed() {
         SwipeCloseActivity(SearchActivity.this,HomeActivity.class);
     }
-
-    protected void SearchCards()
+    @Override
+    protected void LoadTable()
     {
         if (mTask != null) {
             mTask.cancel(true);
         }
         //showProgress(true);
         PostCall = false;
-        mTask = new RequestTask(false, true, "EventServlet",(Index == 0));
+        mTask = new RequestTask(false, true, "EventServlet",(IndexCard == 0));
         mTask.AddParameter("RequestType","S");
         mTask.AddParameter("SearchText",searchTo.getText());
-        mTask.AddParameter("Index",Index);
+        mTask.AddParameter("Index",IndexCard);
         // TODO
         // Quando implemento le date uso la data come filtro
 //        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -169,7 +148,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void OnRequestPostExecute()
     {
-        search_progress_bar.setVisibility(View.GONE);
+        super.OnRequestPostExecute();
         if(requestSuccess && retObj.isOkResponse())
         {
             if(PostCall)
@@ -196,19 +175,11 @@ public class SearchActivity extends BaseActivity {
 
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
-        if(Index == 0)
-        {
-            table.removeAllViews();
-        }
-        else
-        {
-            table.removeView(row_progress);
-        }
+        super.DrawCardsOnTable(cards,table);
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
-            Index++;
             if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
@@ -261,14 +232,9 @@ public class SearchActivity extends BaseActivity {
                 }
             });
             table.addView(row);
-            existingCards.Add(card);
+            AddToExistingCards(card);
         }
-        table.addView(row_progress);
-    }
-
-    protected boolean CardAlreadyExists(CardHome card)
-    {
-        return existingCards.GetCard(card.getEventId()) != null;
+        AddProgressToTable(table);
     }
 
     protected void onRequestPartecipate(View v, int EventId)

@@ -1,9 +1,8 @@
 package enjoysharing.enjoysharing.DataObject.Card;
 
 
-public class CardRequestUserList {
+public class CardRequestUserList extends CardBase{
 
-    protected int EventId;
     protected String UserIdList;
     protected String Usernames;
     protected String Title;
@@ -27,7 +26,7 @@ public class CardRequestUserList {
 
     public CardRequestUserList(int EventId, int UserId, String Username, String Title)
     {
-        this.EventId = EventId;
+        super(EventId, UserId, Username, Title, null, null, 0, null);
         this.UserIdList = UserId + "";
         this.Usernames = Username;
         this.Title = Title;

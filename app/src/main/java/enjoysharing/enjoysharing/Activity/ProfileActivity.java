@@ -20,7 +20,6 @@ public class ProfileActivity extends BaseActivity {
 
     protected MenuItem prevMenuItem;
     protected ViewPager profile_form;
-    protected int currentMenuPosition;
     protected GalleryFragment galleryFragment;
     protected SendRequestFragment sendRequestFragment;
     protected MyEventsFragment myEventsFragment;

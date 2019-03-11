@@ -25,7 +25,7 @@ public class GalleryFragment extends FragmentBase {
     @Override
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state, formView, progressView);
+        ShowProgressPassView(state);
     }
 
 }

@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -31,25 +32,31 @@ public class MyEventsFragment extends FragmentBase {
         vMain = inflater.inflate(R.layout.fragment_my_events, container, false);
         tableCardsMyEvent = (TableLayout) vMain.findViewById(R.id.tableCardsMyEvent);
         setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_my_event));
+        setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableMyEventScrollView));
+        reloadOnSwipeBottom = true;
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
     }
     @Override
+    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==2; }
+    @Override
     protected void ShowProgress(boolean state)
     {
-        activity.showProgress(state, formView, progressView);
+        ShowProgressPassView(state);
     }
     @Override
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        LoadMyEvents();
+        super.StartFragment();
+        LoadTable();
     }
 
     protected CardCollection myEventCards;
-    // TODO
+
     // Load with server call
-    protected void LoadMyEvents()
+    @Override
+    protected void LoadTable()
     {
 
         if (mTask != null) {
@@ -84,6 +91,7 @@ public class MyEventsFragment extends FragmentBase {
     @Override
     protected void OnRequestPostExecute()
     {
+        super.OnRequestPostExecute();
         if(requestSuccess && activity.retObj.isOkResponse())
         {
             if(myEventCards != null)
@@ -97,11 +105,12 @@ public class MyEventsFragment extends FragmentBase {
     // Used by requests tabs
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
-        table.removeAllViews();
+        super.DrawCardsOnTable(cards,table);
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardMyEvent card = (CardMyEvent)cards.List().get(i);
+            if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_my_event, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
@@ -144,7 +153,9 @@ public class MyEventsFragment extends FragmentBase {
                 }
             });
             table.addView(row);
+            AddToExistingCards(card);
         }
+        AddProgressToTable(table);
     }
 
     @Override
