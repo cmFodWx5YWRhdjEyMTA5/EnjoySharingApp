@@ -439,6 +439,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             params = new ParameterCollection();
             retObj = new JSONServiceResponseOBJ();
             businessCallService = null;
+            AddParameter("V",getString(R.string.current_version));
         }
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName)
@@ -451,6 +452,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             this.servletName = servletName;
             businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
             businessCallService.simulateCall = simulateCall;
+            AddParameter("V",getString(R.string.current_version));
         }
 
         public RequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
@@ -463,6 +465,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             this.servletName = servletName;
             businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
             businessCallService.simulateCall = simulateCall;
+            AddParameter("V",getString(R.string.current_version));
         }
 
         public void SetLongTimeout() {

@@ -253,6 +253,7 @@ public class FragmentBase extends Fragment {
             params = new ParameterCollection();
             activity.retObj = new JSONServiceResponseOBJ();
             businessCallService = null;
+            AddParameter("V",activity.getString(R.string.current_version));
         }
 
         public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName)
@@ -264,6 +265,7 @@ public class FragmentBase extends Fragment {
             this.servletName = servletName;
             businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
             businessCallService.simulateCall = activity.simulateCall;
+            AddParameter("V",activity.getString(R.string.current_version));
         }
 
         public FragmentRequestTask(boolean executePost, boolean executeGet, String servletName, boolean useShowProgress)
@@ -276,6 +278,7 @@ public class FragmentBase extends Fragment {
             this.servletName = servletName;
             businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
             businessCallService.simulateCall = activity.simulateCall;
+            AddParameter("V",activity.getString(R.string.current_version));
         }
 
         @Override
