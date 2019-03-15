@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.Fragment.GalleryFragment;
@@ -23,6 +24,8 @@ public class ProfileActivity extends BaseActivity {
     protected GalleryFragment galleryFragment;
     protected SendRequestFragment sendRequestFragment;
     protected MyEventsFragment myEventsFragment;
+    protected LinearLayout info_profile_layout;
+    protected boolean infoVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,25 @@ public class ProfileActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 SwipeDownOpenActivity(ProfileActivity.this, IUProfileActivity.class);
+            }
+        });
+
+        info_profile_layout = findViewById(R.id.info_profile_layout);
+        Button btnViewInfoProfile = findViewById(R.id.btnViewInfoProfile);
+        btnViewInfoProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(infoVisible)
+                {
+                    collapse(info_profile_layout);
+                    ((Button)view).setText(getString(R.string.btnShowViewInfoProfile));
+                }
+                else
+                {
+                    expand(info_profile_layout);
+                    ((Button)view).setText(getString(R.string.btnHideViewInfoProfile));
+                }
+                infoVisible = !infoVisible;
             }
         });
 

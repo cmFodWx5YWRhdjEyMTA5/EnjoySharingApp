@@ -36,6 +36,10 @@
     <string name="txtContentIUEvent">Descrizione Evento</string>
     <string name="btnCreateEvent">Fatto</string>
 
+    <!-- Profile Info -->
+    <string name="btnShowViewInfoProfile">Mostra più informazioni</string>
+    <string name="btnHideViewInfoProfile">Nascondi informazioni</string>
+
     <!-- IuProfile -->
     <string name="btnSaveProfile">Fatto</string>
     <string name="txtGeneralInfo">GENERALE</string>

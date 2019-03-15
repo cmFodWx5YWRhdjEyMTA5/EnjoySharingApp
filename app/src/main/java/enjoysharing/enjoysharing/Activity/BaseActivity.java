@@ -2,6 +2,7 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
@@ -57,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Used to retrieve result from service call
     public JSONServiceResponseOBJ retObj;
     // Questa variabile la uso per le esecuzioni a server spento!
-    public boolean simulateCall = true;
+    public boolean simulateCall = false;
     // Usata da alcune activity per distinguere Post da Get nel result
     protected boolean PostCall;
     // Usata dal metodo OnTouch
@@ -106,6 +108,58 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         row_progress = (TableRow) LayoutInflater.from(this).inflate(R.layout.progress_bar, null);
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
     }
+    // Used to expand/collapse VIEWS
+    protected void expand(View view) {
+        //set Visible
+        view.setVisibility(View.VISIBLE);
+
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(widthSpec, heightSpec);
+
+        ValueAnimator mAnimator = slideAnimator(view, 0, view.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    protected void collapse(final View view) {
+        int finalHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimator(view, finalHeight, 0);
+
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) { }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //Height=0, but it set visibility to GONE
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) { }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
+        });
+        mAnimator.start();
+    }
+
+    protected ValueAnimator slideAnimator(final View view, int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                layoutParams.height = value;
+                view.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
     // Used to open activity and pass Card
     protected void SwipeOpenActivity(Context context, Class cl, CardBase card)
     {
