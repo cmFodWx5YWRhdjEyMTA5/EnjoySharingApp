@@ -42,7 +42,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtUserCardHome"
+                    android:id="@+id/txtUserCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/txtContentCardSendRequest"
@@ -54,11 +54,11 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/txtTitleCardHome"
+                    android:id="@+id/txtTitleCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/imgUserCardHome"
-                    android:layout_alignStart="@+id/txtUserCardHome"
+                    android:layout_alignStart="@+id/txtUserCard"
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:textAlignment="textStart"
@@ -94,7 +94,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtContentCardHome"
+                android:id="@+id/txtContentCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/imgUserCardHome"

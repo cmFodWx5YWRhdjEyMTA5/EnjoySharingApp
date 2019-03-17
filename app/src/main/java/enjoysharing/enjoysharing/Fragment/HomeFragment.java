@@ -165,18 +165,18 @@ public class HomeFragment extends FragmentBase {
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
+            TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
-            txtUserCardHome.setWidth(txtUserTitleWidth);
-            txtUserCardHome.setText(card.getUserName());
-            TextView txtTitleCardHome = (TextView)relLayout.findViewById(R.id.txtTitleCardHome);
+            txtUserCard.setWidth(txtUserTitleWidth);
+            txtUserCard.setText(card.getUserName());
+            TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
-            txtTitleCardHome.setWidth(txtUserTitleWidth);
-            txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
+            txtTitleCard.setWidth(txtUserTitleWidth);
+            txtTitleCard.setText(card.getTitle());
+            TextView txtContentCard = (TextView)relLayout.findViewById(R.id.txtContentCard);
             // Set the same width of parent - tollerance
-            txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
-            txtContentCardHome.setText(card.getContent());
+            txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
+            txtContentCard.setText(card.getContent());
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
@@ -234,8 +234,8 @@ public class HomeFragment extends FragmentBase {
         if(card != null)
         {
             // Se il titolo o la descrizione sono troppo lunghe abilito il dettaglio
-            if(business.isTextTruncated((TextView)v.findViewById(R.id.txtTitleCardHome))
-                    || business.isTextTruncated((TextView)v.findViewById(R.id.txtContentCardHome))) {
+            if(business.isTextTruncated((TextView)v.findViewById(R.id.txtTitleCard))
+                    || business.isTextTruncated((TextView)v.findViewById(R.id.txtContentCard))) {
                 SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
             }
         }

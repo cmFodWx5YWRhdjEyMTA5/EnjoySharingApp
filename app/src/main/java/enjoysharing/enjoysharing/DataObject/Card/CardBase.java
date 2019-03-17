@@ -86,16 +86,4 @@ public class CardBase implements Serializable {
         this.DateEvent = DateEvent;
     }
 
-    // TODO
-    // Load card from json object
-    protected void LoadFromJSON(JSONObject json)
-    { }
-
-    // TODO
-    // Load card from user
-    protected void LoadFromUser(Object user)
-    { }
-
-
-
 }

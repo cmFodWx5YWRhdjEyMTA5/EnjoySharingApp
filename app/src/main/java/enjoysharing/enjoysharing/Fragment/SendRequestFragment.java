@@ -194,8 +194,6 @@ public class SendRequestFragment extends FragmentBase {
             Button btnPartecipateSendRequest = (Button)relLayout.findViewById(R.id.btnPartecipateSendRequest);
             card.setRequestSubmitted(true);
             business.SetButtonRequest(btnPartecipateSendRequest,!card.IsRequestSubmitted());
-            // TODO
-            // Aggiungere bordo immagine in base a status request
             btnPartecipateSendRequest.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRequestPartecipate(v, card.getEventId());

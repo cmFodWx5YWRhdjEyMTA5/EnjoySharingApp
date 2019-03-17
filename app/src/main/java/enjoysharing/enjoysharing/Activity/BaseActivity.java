@@ -334,8 +334,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     public void onRightSwipe(View v, boolean wasLeft, int UserId){ }
     public void onLeftSwipe(View v, int UserId){ }
     // Used for click on request partecipate
-    // TODO
-    // Manage click on request partecipate
     protected void onRequestPartecipate(View v)
     {
         boolean state = ((Button)v).getHint() == "1";
@@ -473,8 +471,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    // TODO
-        // To use Parameter Collection as input
     protected class RequestTask extends AsyncTask<Void, Void, Boolean> {
 
         protected BusinessCallService businessCallService;

@@ -83,6 +83,7 @@ public class FragmentBase extends Fragment {
                 public void onRefresh() {
                     // Quando faccio swipe in alto refresho la pagina MA NON MOSTRO IL LOADING perchè ho il mio custom!
                     mSwipeRefreshLayout.setRefreshing(false);
+                    InitReload();
                     StartFragment();
                 }
             });
@@ -105,11 +106,16 @@ public class FragmentBase extends Fragment {
                         }
                     });
         }
-        IndexCard = 0;
-        existingCards = new CardCollection();
+        InitReload();
         row_progress = (TableRow) LayoutInflater.from(activity).inflate(R.layout.progress_bar, null);
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
         return vMain;
+    }
+
+    protected void InitReload()
+    {
+        IndexCard = 0;
+        existingCards = new CardCollection();
     }
 
     protected boolean CheckForCurrentFragment() { return true; }
@@ -155,7 +161,8 @@ public class FragmentBase extends Fragment {
             activity.showProgress(state, formView, progressView);
     }
     // Used for functionality
-    public void StartFragment(){ }
+    public void StartFragment()
+    { }
     // Used when load table
     protected void LoadTable()
     { }
@@ -233,8 +240,6 @@ public class FragmentBase extends Fragment {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    // TODO
-    // To use Parameter Collection as input
     protected class FragmentRequestTask extends AsyncTask<Void, Void, Boolean> {
 
         protected BusinessCallService businessCallService;

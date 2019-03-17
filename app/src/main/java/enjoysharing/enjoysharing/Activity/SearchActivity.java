@@ -19,6 +19,8 @@ import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
 import enjoysharing.enjoysharing.DataObject.Card.CardHome;
+import enjoysharing.enjoysharing.DataObject.User;
+import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;
 
 public class SearchActivity extends BaseActivity {
@@ -27,6 +29,8 @@ public class SearchActivity extends BaseActivity {
     protected TableLayout searchTable;
     protected Button btn;
     protected boolean stateRequest;
+    protected int IndexUsers;
+    protected UserCollection users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +54,10 @@ public class SearchActivity extends BaseActivity {
         searchTo = (EditText)findViewById(R.id.txtSearch);
         searchTo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-            }
+            public void afterTextChanged(Editable s) { }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -82,6 +82,14 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
+    protected void InitReload()
+    {
+        super.InitReload();
+        IndexUsers = 0;
+        users = new UserCollection();
+    }
+
+    @Override
     public void onBackPressed() {
         SwipeCloseActivity(SearchActivity.this,HomeActivity.class);
     }
@@ -96,12 +104,8 @@ public class SearchActivity extends BaseActivity {
         mTask = new RequestTask(false, true, "EventServlet",(IndexCard == 0));
         mTask.AddParameter("RequestType","S");
         mTask.AddParameter("SearchText",searchTo.getText());
+        mTask.AddParameter("IndexUsers",IndexUsers);
         mTask.AddParameter("Index",IndexCard);
-        // TODO
-        // Quando implemento le date uso la data come filtro
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        String date = df.format(Calendar.getInstance().getTime());
-//        mTask.AddParameter("DateEvent",date);
         mTask.execute();
     }
     // Used to send or reverse request partecipate
@@ -176,6 +180,42 @@ public class SearchActivity extends BaseActivity {
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         super.DrawCardsOnTable(cards,table);
+        cards.FilterByType("U");
+        DrowUserCardsOnTable(cards,table);
+        cards.FilterByType("C");
+        DrowEventCardsOnTable(cards,table);
+    }
+
+    protected void DrowUserCardsOnTable(CardCollection cards, TableLayout table)
+    {
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        for (int i=0; i<cards.List().size(); i++) {
+            final CardHome card = (CardHome)cards.List().get(i);
+            IndexUsers++;
+            if(users.Exists(card.getUserId())) continue;
+            TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_user_list, null);
+            final LinearLayout linLayout = (LinearLayout)row.getChildAt(0);
+
+            TextView txtUsername = (TextView)linLayout.findViewById(R.id.txtUsername);
+            // Set width based on screen percentage
+            txtUsername.setWidth(txtUserTitleWidth);
+            txtUsername.setText(card.getUserName());
+
+            ImageView imgUser = (ImageView) linLayout.findViewById(R.id.imgUser);
+
+            row.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onRowClick(v, card.getUserId());
+                }
+            });
+            table.addView(row);
+            if(reloadOnSwipeBottom)
+                users.Add(new User(card.getUserId(),card.getUserName()));
+        }
+    }
+
+    protected void DrowEventCardsOnTable(CardCollection cards, TableLayout table)
+    {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
@@ -184,18 +224,18 @@ public class SearchActivity extends BaseActivity {
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardHome = (TextView)relLayout.findViewById(R.id.txtUserCardHome);
+            TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
-            txtUserCardHome.setWidth(txtUserTitleWidth);
-            txtUserCardHome.setText(card.getUserName());
-            TextView txtTitleCardHome = (TextView)relLayout.findViewById(R.id.txtTitleCardHome);
+            txtUserCard.setWidth(txtUserTitleWidth);
+            txtUserCard.setText(card.getUserName());
+            TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
-            txtTitleCardHome.setWidth(txtUserTitleWidth);
-            txtTitleCardHome.setText(card.getTitle());
-            TextView txtContentCardHome = (TextView)relLayout.findViewById(R.id.txtContentCardHome);
+            txtTitleCard.setWidth(txtUserTitleWidth);
+            txtTitleCard.setText(card.getTitle());
+            TextView txtContentCard = (TextView)relLayout.findViewById(R.id.txtContentCard);
             // Set the same width of parent - tollerance
-            txtContentCardHome.setWidth(((LinearLayout)txtContentCardHome.getParent()).getWidth()-parentTollerancePX);
-            txtContentCardHome.setText(card.getContent());
+            txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
+            txtContentCard.setText(card.getContent());
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
@@ -246,10 +286,17 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onRowClick(View v, int EventId)
     {
-        CardHome card = (CardHome) existingCards.GetCard(EventId);
-        if(card != null)
-        {
-            SwipeDownOpenActivity(this, CardDetailActivity.class, card);
+        if(v.getId() == R.id.row_card_home) {
+            // Se il titolo o la descrizione sono troppo lunghe abilito il dettaglio
+            if(business.isTextTruncated((TextView)v.findViewById(R.id.txtTitleCard))
+                    || business.isTextTruncated((TextView)v.findViewById(R.id.txtContentCard))) {
+                CardHome card = (CardHome) existingCards.GetCard(EventId);
+                if (card != null) {
+                    SwipeDownOpenActivity(this, CardDetailActivity.class, card);
+                }
+            }
         }
+        // TODO
+        // RowClick if is user to open his/her profile
     }
 }

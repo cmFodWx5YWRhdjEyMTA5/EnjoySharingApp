@@ -17,6 +17,15 @@ public class UserCollection {
         filtered = false;
     }
 
+    public boolean Exists(int userId)
+    {
+        for(User user : users)
+        {
+            if(user.getUserId() == userId)
+                return true;
+        }
+        return false;
+    }
     public List<User> List() { return filtered ? usersFiltered : users; }
     public void Clear() { users.clear(); }
     public void Add(User user) { users.add(user); }
