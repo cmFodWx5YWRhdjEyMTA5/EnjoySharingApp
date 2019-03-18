@@ -14,6 +14,7 @@ public class CurrentUser {
     protected String surname;
     protected String email;
     protected String password;
+    protected String profile_image;
 
     public CurrentUser(Activity activity) {
         this.activity = activity;
@@ -59,6 +60,14 @@ public class CurrentUser {
         this.password = password;
     }
 
+    public String getProfileImage() {
+        return profile_image;
+    }
+
+    public void setProfileImage(String profile_image) {
+        this.profile_image = profile_image;
+    }
+
     public void RefreshUsername()
     {
         username = surname + " " + name;
@@ -71,6 +80,7 @@ public class CurrentUser {
         password = "";
         name = "";
         surname = "";
+        profile_image = "";
     }
 
     // TODO
@@ -89,6 +99,7 @@ public class CurrentUser {
         setSurname(sharedPref.getString("surname",null));
         setEmail(sharedPref.getString("email",null));
         setPassword(sharedPref.getString("password",null));
+        setProfileImage(sharedPref.getString("profile_image",null));
     }
     // Store on xml
     public void SaveOnXMLFile()
@@ -102,6 +113,7 @@ public class CurrentUser {
         ed.putString("surname", getSurname());
         ed.putString("email", getEmail());
         ed.putString("password", getPassword());
+        ed.putString("profile_image", getProfileImage());
         ed.apply();
     }
 

@@ -1,9 +1,15 @@
 package enjoysharing.enjoysharing.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -13,7 +19,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
+
+import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Fragment.RecivedRequestFragment;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.R;
@@ -27,6 +38,8 @@ public class HomeActivity extends BaseActivity {
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
     protected RecivedRequestFragment requestFragment;
+    protected ImageView imgUser;
+    protected int REQUEST_CODE = 1;
     //protected MyEventsFragment myEventsFragment;
 
     @Override
@@ -34,6 +47,8 @@ public class HomeActivity extends BaseActivity {
         SetContext(HomeActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        business = new BusinessBase(HomeActivity.this);
 
         CreateMenuElements();
         CreateButtons();
@@ -53,7 +68,20 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        CallStartFragment(currentMenuPosition);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null ){
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                imgUser.setImageBitmap(bitmap);
+                user.setProfileImage(business.ImageToString(bitmap));
+                user.SaveOnXMLFile();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        if(requestCode != REQUEST_CODE)
+            CallStartFragment(currentMenuPosition);
     }
     // Used to create fragments
     protected void CreateFragments()
@@ -203,6 +231,24 @@ public class HomeActivity extends BaseActivity {
         View header = navigationView.getHeaderView(0);
         TextView txtNavUsername = (TextView) header.findViewById(R.id.txtNavUsername);
         txtNavUsername.setText(user.getUsername());
+        imgUser = (ImageView) header.findViewById(R.id.imgUser);
+        business.LoadImage(imgUser,user.getProfileImage());
+        FloatingActionButton btnChooseImage = (FloatingActionButton) header.findViewById(R.id.btnChooseImage);
+        btnChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    protected void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+        }
     }
     // When click on card home row -> redirect to detail row!
     @Override

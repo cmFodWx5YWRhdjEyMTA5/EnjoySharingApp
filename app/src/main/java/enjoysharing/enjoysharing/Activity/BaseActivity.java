@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Used to retrieve result from service call
     public JSONServiceResponseOBJ retObj;
     // Questa variabile la uso per le esecuzioni a server spento!
-    public boolean simulateCall = false;
+    public boolean simulateCall = true;
     // Usata da alcune activity per distinguere Post da Get nel result
     protected boolean PostCall;
     // Usata dal metodo OnTouch

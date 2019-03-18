@@ -189,6 +189,13 @@ public class SearchActivity extends BaseActivity {
     protected void DrowUserCardsOnTable(CardCollection cards, TableLayout table)
     {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        if(cards.List().size()>0 && IndexUsers == 0)
+        {
+            TableRow row_simple = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.row_simple_text, null);
+            TextView txtSimple = row_simple.findViewById(R.id.txtSimple);
+            txtSimple.setText(getString(R.string.txtSimple_users));
+            table.addView(row_simple);
+        }
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
             IndexUsers++;
@@ -218,6 +225,13 @@ public class SearchActivity extends BaseActivity {
     {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         int parentTollerancePX = 5;
+        if(cards.List().size()>0 && IndexCard == 0)
+        {
+            TableRow row_simple = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.row_simple_text, null);
+            TextView txtSimple = row_simple.findViewById(R.id.txtSimple);
+            txtSimple.setText(getString(R.string.txtSimple_events));
+            table.addView(row_simple);
+        }
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
             if(CardAlreadyExists(card)) continue;

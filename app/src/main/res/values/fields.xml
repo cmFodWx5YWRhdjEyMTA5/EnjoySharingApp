@@ -14,11 +14,17 @@
     <string name="nav_send_request_profile">Richieste Inviate</string>
     <string name="nav_my_events_profile">I Miei Eventi</string>
     <string name="btnModifyProfile">Modifica</string>
+
+    <!-- Simple text -->
+    <string name="txtSimple_users">Utenti</string>
+    <string name="txtSimple_events">Eventi</string>
+
     <!-- Sign On -->
     <string name="txtRegistration">Registrazione</string>
     <string name="txtConfirmPassword">Conferma Password</string>
     <string name="btnRegisterConfirm">Conferma</string>
     <string name="btnBackToLogin">Torna a Login</string>
+
     <!-- Login -->
     <string name="txtTitle">Enjoy Sharing</string>
     <string name="txtBoxEmail">Email</string>

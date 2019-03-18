@@ -1,10 +1,14 @@
 package enjoysharing.enjoysharing.Business;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Layout;
 import android.util.Base64;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,6 +43,28 @@ public class BusinessBase {
     public BusinessBase(BaseActivity activity)
     {
         this.activity = activity;
+    }
+
+    public Bitmap StringToImage(String base64)
+    {
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    public String ImageToString(Bitmap imgBitmap)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public void LoadImage(ImageView img, String strBase64)
+    {
+        if(strBase64 != null && !strBase64.equals(""))
+            img.setImageBitmap(StringToImage(strBase64));
+        // TODO
+        // Se manca immagine -> immagine default
     }
 
     public String decrypt(String str)
