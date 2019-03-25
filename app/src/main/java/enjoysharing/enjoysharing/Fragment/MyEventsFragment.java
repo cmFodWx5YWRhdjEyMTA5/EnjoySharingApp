@@ -1,5 +1,6 @@
 package enjoysharing.enjoysharing.Fragment;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,6 @@ public class MyEventsFragment extends FragmentBase {
             activity.retObj.setMessage("GeneralError");
         }
     }
-    // TODO
     // Server call
     @Override
     protected void DoInBackground()
@@ -126,6 +126,11 @@ public class MyEventsFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCardMyEvent.setWidth(((LinearLayout)txtContentCardMyEvent.getParent()).getWidth()-parentTollerancePX);
             txtContentCardMyEvent.setText(card.getContent());
+
+            ImageView imgUserCardMyEvent = (ImageView)relLayout.findViewById(R.id.imgUserCardMyEvent);
+            imgUserCardMyEvent.setClipToOutline(true);
+            business.LoadUserImage(imgUserCardMyEvent);
+
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);

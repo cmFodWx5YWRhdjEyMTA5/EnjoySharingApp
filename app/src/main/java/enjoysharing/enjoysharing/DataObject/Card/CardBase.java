@@ -17,6 +17,7 @@ public class CardBase implements Serializable {
     protected int AcceptedRequest;
     protected int MaxRequest;
     protected Date DateEvent;
+    protected Date LastUpdateProfileImage;
 
     public String getCardType() {
         return CardType;
@@ -73,6 +74,10 @@ public class CardBase implements Serializable {
     public Date getDateEvent() {
         return DateEvent;
     }
+
+    public void setLastUpdateProfileImage(Date LastUpdateProfileImage) { this.LastUpdateProfileImage = LastUpdateProfileImage; }
+
+    public Date getLastUpdateProfileImage() { return LastUpdateProfileImage; }
 
     // Constructor simple
     public CardBase(int EventId, int UserId, String UserName, String Title, String Content, byte[] UserImage, int GenderEventId, Date DateEvent) {

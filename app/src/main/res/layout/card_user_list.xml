@@ -26,7 +26,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/txtContentCardSendRequest"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@mipmap/ic_launcher_round"
+            android:background="@drawable/rounded_image"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/txtUsername"

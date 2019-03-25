@@ -212,6 +212,7 @@ public class RequestListActivity extends BaseActivity {
             txtUsername.setText(user.getUserName());
 
             ImageView imgUser = (ImageView) linLayout.findViewById(R.id.imgUser);
+            AddUserToLoadImage(user.getUserId()+"",user.getLastUpdateProfileImage(),imgUser);
 
             CardSwipeDetector swipeListener = new CardSwipeDetector(RequestListActivity.this, imgUser, row);
             if(user.isAccepted()) swipeListener.SetAccepted();
@@ -230,6 +231,7 @@ public class RequestListActivity extends BaseActivity {
 
             tblRequestList.addView(row);
         }
+        LoadUserImages(RequestListActivity.this);
     }
     @Override
     public boolean BeforeSwipe()

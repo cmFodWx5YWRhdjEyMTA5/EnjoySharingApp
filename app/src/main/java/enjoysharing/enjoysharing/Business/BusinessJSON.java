@@ -21,12 +21,14 @@ import enjoysharing.enjoysharing.DataObject.UserCollection;
 
 public class BusinessJSON extends BusinessBase {
 
+    public BusinessJSON() { }
+
     public BusinessJSON(BaseActivity activity) {
         super(activity);
     }
 
     @Override
-    public ParameterCollection GetUserInfo(String JsonStr)
+    public ParameterCollection GetParamsByJSON(String JsonStr)
     {
         try
         {

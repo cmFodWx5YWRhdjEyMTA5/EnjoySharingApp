@@ -220,11 +220,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         user.setEmail(mEmailView.getText().toString());
         // Crypto la password!
         user.setPassword(business.encrypt(mPasswordView.getText().toString()));
-        //user.setPassword(mPasswordView.getText().toString());
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         //showProgress(true);
-        mTask = new RequestTask(false, true, "UserServlet");
+        mTask = new RequestTask(false, true, "UserServlet", true);
+        mTask.AddParameter("RequestType","LI");  // Log In
         finishOnPostExecute = true;
         try
         {
@@ -242,13 +242,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     {
         if(requestSuccess && retObj.isOkResponse())
         {
-            if(retObj.getMessage() != null)
+            if(!simulateCall)
             {
-                ParameterCollection params = business.GetUserInfo(retObj.getMessage());
+                ParameterCollection params = business.GetParamsByJSON(retObj.getMessage());
                 user.setUserId(Integer.parseInt(params.Get("UserId").toString()));
                 user.setUsername(params.Get("UserName").toString());
                 user.setName(params.Get("Name").toString());
                 user.setSurname(params.Get("Surname").toString());
+                user.setProfileImage(params.Get("ProfileImage").toString());
             }
             else
             {

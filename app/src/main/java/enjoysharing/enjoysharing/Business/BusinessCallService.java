@@ -1,5 +1,6 @@
 package enjoysharing.enjoysharing.Business;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -31,9 +32,17 @@ public class BusinessCallService {
     // Questa variabile la uso per le esecuzioni a server spento!
     // Di default è true ma in realtà viene valorizzata con quella dell'Activity!
     public boolean simulateCall = true;
+    // Siccome la conversione da bitmap a string ci mette molto gliela faccio fare nell'async!
+    protected Bitmap bitmap = null;
+    protected String bitmapField = "Bitmap";
 
     public void SetParams(ParameterCollection params) { this.params = params; }
     public void SetLongTimeout() { this.timeout = 20000; }
+    public void SetBitmap(String bitmapField, Bitmap bitmap)
+    {
+        this.bitmapField = bitmapField;
+        this.bitmap = bitmap;
+    }
 
     public BusinessCallService(String serviceURL, String servletName,CurrentUser user, boolean executePost,boolean executeGet)
     {
@@ -63,6 +72,11 @@ public class BusinessCallService {
     protected String prepareParams()
     {
         String ret="";
+        if(bitmap != null)
+        {
+            String strBitmap = new BusinessBase().ImageToString(bitmap);
+            ret += "&"+bitmapField+"="+strBitmap;
+        }
         for(Parameter param : params.GetParametersList())
         {
             ret += "&"+param.GetName()+"="+param.GetValue();
@@ -141,6 +155,7 @@ public class BusinessCallService {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
+
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

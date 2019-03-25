@@ -21,9 +21,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.io.IOException;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Fragment.RecivedRequestFragment;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
@@ -38,6 +36,7 @@ public class HomeActivity extends BaseActivity {
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
     protected RecivedRequestFragment requestFragment;
+    protected Bitmap profilePhoto;
     protected ImageView imgUser;
     protected int REQUEST_CODE = 1;
     //protected MyEventsFragment myEventsFragment;
@@ -68,20 +67,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null ){
-            Uri uri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                imgUser.setImageBitmap(bitmap);
-                user.setProfileImage(business.ImageToString(bitmap));
-                user.SaveOnXMLFile();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        if(requestCode != REQUEST_CODE)
-            CallStartFragment(currentMenuPosition);
+        CallStartFragment(currentMenuPosition);
     }
     // Used to create fragments
     protected void CreateFragments()
@@ -232,23 +218,22 @@ public class HomeActivity extends BaseActivity {
         TextView txtNavUsername = (TextView) header.findViewById(R.id.txtNavUsername);
         txtNavUsername.setText(user.getUsername());
         imgUser = (ImageView) header.findViewById(R.id.imgUser);
-        business.LoadImage(imgUser,user.getProfileImage());
-        FloatingActionButton btnChooseImage = (FloatingActionButton) header.findViewById(R.id.btnChooseImage);
-        btnChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+        imgUser.setClipToOutline(true);
+        business.LoadUserImage(imgUser);
     }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    protected void selectImage(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+
+    @Override
+    protected void OnRequestPostExecute()
+    {
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            imgUser.setImageBitmap(profilePhoto);
+            user.setProfileImage(business.ImageToString(profilePhoto));
+            user.SaveOnXMLFile();
         }
+        else
+            ShowShortMessage(retObj.getMessage());
+        profilePhoto = null;
     }
     // When click on card home row -> redirect to detail row!
     @Override

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Business.BusinessImage;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
 import enjoysharing.enjoysharing.DataObject.Card.CardHome;
@@ -177,6 +178,10 @@ public class HomeFragment extends FragmentBase {
             // Set the same width of parent - tollerance
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
             txtContentCard.setText(card.getContent());
+
+            ImageView imgUserCardHome = (ImageView)relLayout.findViewById(R.id.imgUserCardHome);
+            AddUserToLoadImage(card,imgUserCardHome);
+
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
@@ -219,6 +224,7 @@ public class HomeFragment extends FragmentBase {
             AddToExistingCards(card);
         }
         AddProgressToTable(table);
+        LoadUserImages();
     }
 
     protected void onRequestPartecipate(View v, int EventId)

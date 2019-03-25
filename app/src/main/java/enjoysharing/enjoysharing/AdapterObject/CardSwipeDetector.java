@@ -31,13 +31,7 @@ public class CardSwipeDetector implements View.OnTouchListener {
 
     public void SetAccepted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_green));
-        }
-        else
-        {
-            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_no_border_green));
-        }
+        image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_green));
         SetBackground();
         leftSwipeDone = true;
         rightSwipeDone = false;
@@ -45,13 +39,7 @@ public class CardSwipeDetector implements View.OnTouchListener {
 
     public void SetDeclined()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_red));
-        }
-        else
-        {
-            image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_no_border_red));
-        }
+        image.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), R.drawable.image_with_border_red));
         SetBackground();
         rightSwipeDone = true;
         leftSwipeDone = false;

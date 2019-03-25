@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -162,7 +163,9 @@ public class FragmentBase extends Fragment {
     }
     // Used for functionality
     public void StartFragment()
-    { }
+    {
+        InitReload();
+    }
     // Used when load table
     protected void LoadTable()
     { }
@@ -196,6 +199,11 @@ public class FragmentBase extends Fragment {
         IndexCard++;
         return existingCards.GetCard(card.getEventId()) != null;
     }
+    // Used to add user for load image profile
+    protected void AddUserToLoadImage(CardBase card, ImageView imageView)
+    {
+        activity.AddUserToLoadImage(card,imageView);
+    }
     // Used to add into card list
     protected void AddToExistingCards(CardBase card)
     {
@@ -207,6 +215,11 @@ public class FragmentBase extends Fragment {
     {
         if(reloadOnSwipeBottom && existingCards.List().size()!=0)
             table.addView(row_progress);
+    }
+    // Used to load users profile images
+    protected void LoadUserImages()
+    {
+        activity.LoadUserImages(activity);
     }
     // Used for click on rows
     protected void onRowClick(View v)

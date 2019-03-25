@@ -184,6 +184,7 @@ public class SearchActivity extends BaseActivity {
         DrowUserCardsOnTable(cards,table);
         cards.FilterByType("C");
         DrowEventCardsOnTable(cards,table);
+        LoadUserImages(SearchActivity.this);
     }
 
     protected void DrowUserCardsOnTable(CardCollection cards, TableLayout table)
@@ -209,6 +210,7 @@ public class SearchActivity extends BaseActivity {
             txtUsername.setText(card.getUserName());
 
             ImageView imgUser = (ImageView) linLayout.findViewById(R.id.imgUser);
+            AddUserToLoadImage(card,imgUser);
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -250,6 +252,10 @@ public class SearchActivity extends BaseActivity {
             // Set the same width of parent - tollerance
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
             txtContentCard.setText(card.getContent());
+
+            ImageView imgUserCardHome = (ImageView)relLayout.findViewById(R.id.imgUserCardHome);
+            AddUserToLoadImage(card,imgUserCardHome);
+
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);

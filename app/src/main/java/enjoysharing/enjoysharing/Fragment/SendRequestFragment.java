@@ -172,6 +172,10 @@ public class SendRequestFragment extends FragmentBase {
             // Set width based on screen percentage
             txtTitleCardSendRequest.setWidth(txtUserTitleWidth);
             txtTitleCardSendRequest.setText(card.getTitle());
+
+            ImageView imgUserCardSendRequest = (ImageView)relLayout.findViewById(R.id.imgUserCardSendRequest);
+            AddUserToLoadImage(card,imgUserCardSendRequest);
+
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
@@ -208,6 +212,7 @@ public class SendRequestFragment extends FragmentBase {
             AddToExistingCards(card);
         }
         AddProgressToTable(table);
+        LoadUserImages();
     }
     // Manage click on request partecipate
     protected void onRequestPartecipate(View v, int EventId)

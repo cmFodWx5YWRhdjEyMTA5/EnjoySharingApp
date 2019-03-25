@@ -6,9 +6,12 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -21,17 +24,25 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
+import enjoysharing.enjoysharing.Business.BusinessImage;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
 import enjoysharing.enjoysharing.DataObject.CurrentUser;
 import enjoysharing.enjoysharing.DataObject.JSONServiceResponseOBJ;
+import enjoysharing.enjoysharing.DataObject.Parameter;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 
@@ -59,7 +70,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Used to retrieve result from service call
     public JSONServiceResponseOBJ retObj;
     // Questa variabile la uso per le esecuzioni a server spento!
-    public boolean simulateCall = true;
+    public boolean simulateCall = false;
     // Usata da alcune activity per distinguere Post da Get nel result
     protected boolean PostCall;
     // Usata dal metodo OnTouch
@@ -74,6 +85,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected ScrollView tableReloadScrollView;
     // Used to check current fragment
     protected int currentMenuPosition;
+    protected Bitmap currentUserImage;
+    public ParameterCollection userImageToLoad;
+    public ParameterCollection userImageUpdateDate;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -83,12 +97,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
     public int getCurrentMenuPosition() { return currentMenuPosition; }
 
+    public Bitmap GetCurrentUserImage()
+    {
+        if(user.getProfileImage() != null && !user.getProfileImage().equals(""))
+        {
+            if(currentUserImage == null)
+                currentUserImage = business.StringToImage(user.getProfileImage());
+            return currentUserImage;
+        }
+        return null;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
+        currentUserImage = null;
         if(reloadOnSwipeBottom)
         {
             tableReloadScrollView.getViewTreeObserver()
@@ -158,6 +184,89 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
         return animator;
+    }
+
+    // Used to load bitmap image profile if exists
+    public Bitmap LoadProfileImage(String userId)
+    {
+        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_name);
+        String filename = "img_prof_"+userId+".jpg";
+        try
+        {
+            File imagefile = new File(directory + File.separator + filename);
+            if(imagefile.exists())
+            {
+                if(((Date)userImageUpdateDate.Get(userId)).after(new Date(imagefile.lastModified()))) return null;
+                Bitmap bitmap = BitmapFactory.decodeFile(directory + File.separator + filename);
+                return bitmap;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Used to store user image profile
+    public void StoreImageProfile(String userId, Bitmap bitImage)
+    {
+        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_name);
+        String filename = "img_prof_"+userId+".jpg";
+        FileOutputStream outputStream;
+        try {
+            File folder = new File(directory);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            File f = new File( directory + File.separator + filename);
+            f.createNewFile();
+            outputStream = new FileOutputStream(f);
+            bitImage.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void InsertImage(ImageView imageView, Bitmap bitImage)
+    {
+        business.LoadImage(imageView,bitImage);
+    }
+
+    // Used to add user for load image profile
+    public void AddUserToLoadImage(CardBase card, ImageView imageView)
+    {
+        String userId = String.valueOf(card.getUserId());
+        Date LastUpdateProfileImage = card.getLastUpdateProfileImage();
+        AddUserToLoadImage(userId, LastUpdateProfileImage, imageView);
+    }
+
+    protected void AddUserToLoadImage(String userId, Date LastUpdateProfileImage, ImageView imageView)
+    {
+        if(userImageToLoad == null)
+            userImageToLoad = new ParameterCollection();
+        if(userImageUpdateDate == null)
+            userImageUpdateDate = new ParameterCollection();
+        if(userImageToLoad.Get(userId) == null)
+        {
+            userImageToLoad.Add(userId, new ArrayList<ImageView>());
+            userImageUpdateDate.Add(userId, LastUpdateProfileImage);
+        }
+        ArrayList<ImageView> imageViews = (ArrayList<ImageView>)userImageToLoad.Get(userId);
+        imageViews.add(imageView);
+        userImageToLoad.Update(userId,imageViews);
+    }
+
+    public void LoadUserImages(BaseActivity activity)
+    {
+        if(userImageToLoad == null) return;
+        for(Parameter param : userImageToLoad.GetParametersList())
+        {
+            BusinessImage bi = new BusinessImage(activity);
+            bi.AddParameter("UserIdImage",""+param.GetName());
+            bi.execute();
+        }
     }
 
     // Used to open activity and pass Card
@@ -482,6 +591,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         {
             params.Add(name, value);
         }
+        public void SetBitmap(String bitmapField, Bitmap bitmap) { businessCallService.SetBitmap(bitmapField, bitmap); }
 
         public RequestTask()
         {

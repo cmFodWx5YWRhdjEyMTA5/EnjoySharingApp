@@ -1,17 +1,28 @@
 package enjoysharing.enjoysharing.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.IOException;
+
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
+import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Fragment.GalleryFragment;
 import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
 import enjoysharing.enjoysharing.Fragment.SendRequestFragment;
@@ -26,12 +37,17 @@ public class ProfileActivity extends BaseActivity {
     protected MyEventsFragment myEventsFragment;
     protected LinearLayout info_profile_layout;
     protected boolean infoVisible = false;
+    protected Bitmap profilePhoto;
+    protected ImageView imgProfile;
+    protected int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SetContext(ProfileActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        business = new BusinessBase(ProfileActivity.this);
 
         CreateMenuElements();
 
@@ -77,9 +93,38 @@ public class ProfileActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        user.LoadFromXMLFile();
-        FillUserData();
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null ){
+            Uri uri = data.getData();
+            try {
+                profilePhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                SavePhoto();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            user.LoadFromXMLFile();
+            FillUserData();
+        }
         CallStartFragment(currentMenuPosition);
+    }
+    // Used to save new photo profile
+    protected void SavePhoto()
+    {
+        mTask = new RequestTask(true, false, "UserServlet",false);
+        mTask.AddParameter("RequestType","SP");  // Save Photo
+        mTask.SetBitmap("Photo",profilePhoto);
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
     }
     // Used to create menu elements
     protected void CreateMenuElements()
@@ -140,6 +185,40 @@ public class ProfileActivity extends BaseActivity {
         txtSurname.setText(user.getSurname());
         TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
         txtEmail.setText(user.getEmail());
+        imgProfile  = (ImageView) findViewById(R.id.imgProfile);
+        imgProfile.setClipToOutline(true);
+        business.LoadUserImage(imgProfile);
+        FloatingActionButton btnChooseImage = (FloatingActionButton) findViewById(R.id.btnChooseImage);
+        btnChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+        profilePhoto = null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    protected void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+        }
+    }
+    @Override
+    protected void OnRequestPostExecute()
+    {
+        if(requestSuccess && retObj.isOkResponse())
+        {
+            imgProfile.setImageBitmap(profilePhoto);
+            user.setProfileImage(business.ImageToString(profilePhoto));
+            user.SaveOnXMLFile();
+        }
+        else
+            ShowShortMessage(retObj.getMessage());
+        profilePhoto = null;
     }
     // Used to create fragments
     protected void CreateFragments()

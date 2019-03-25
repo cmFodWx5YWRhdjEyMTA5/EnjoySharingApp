@@ -67,6 +67,10 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         mFormView = findViewById(R.id.iuevent_form);
         mProgressView = findViewById(R.id.iuevent_progress);
 
+        ImageView imgUserCardIUEvent = (ImageView)findViewById(R.id.imgUserCardIUEvent);
+        imgUserCardIUEvent.setClipToOutline(true);
+        business.LoadUserImage(imgUserCardIUEvent);
+
         genderIUEvent = (Spinner) findViewById(R.id.genderIUEvent);
         // Adapter for textsize
         String[] items = business.GetGenderItems();

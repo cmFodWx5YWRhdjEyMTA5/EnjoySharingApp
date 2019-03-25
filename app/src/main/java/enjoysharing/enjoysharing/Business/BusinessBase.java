@@ -7,15 +7,11 @@ import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.IllegalFormatCodePointException;
-import java.util.Locale;
-
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.DataObject.Card.CardBase;
 import enjoysharing.enjoysharing.DataObject.Card.CardCollection;
@@ -40,6 +36,8 @@ public class BusinessBase {
 
     protected BaseActivity activity;
 
+    public BusinessBase() { }
+
     public BusinessBase(BaseActivity activity)
     {
         this.activity = activity;
@@ -47,16 +45,29 @@ public class BusinessBase {
 
     public Bitmap StringToImage(String base64)
     {
-        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);//base64.getBytes();//Base64.decode(base64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     public String ImageToString(Bitmap imgBitmap)
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public void LoadUserImage(ImageView img)
+    {
+        LoadImage(img,activity.GetCurrentUserImage());
+    }
+
+    public void LoadImage(ImageView img, Bitmap imageBitmap)
+    {
+        if(imageBitmap != null)
+            img.setImageBitmap(imageBitmap);
+        // TODO
+        // Se manca immagine -> immagine default
     }
 
     public void LoadImage(ImageView img, String strBase64)
@@ -333,7 +344,7 @@ public class BusinessBase {
     }
 
     // Used by BusinessJSON
-    public ParameterCollection GetUserInfo(String message) {
+    public ParameterCollection GetParamsByJSON(String message) {
         return null;
     }
 }
