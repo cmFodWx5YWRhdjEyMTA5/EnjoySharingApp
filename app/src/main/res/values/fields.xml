@@ -29,6 +29,7 @@
     <string name="txtTitle">Enjoy Sharing</string>
     <string name="txtBoxEmail">Email</string>
     <string name="txtBoxPassword">Password</string>
+    <string name="chcBoxRememberMe">Ricordami</string>
     <string name="btnRegister">Registrati</string>
     <string name="btnLogin">Connettiti</string>
 

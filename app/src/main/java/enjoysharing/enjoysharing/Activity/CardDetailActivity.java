@@ -22,6 +22,7 @@ import enjoysharing.enjoysharing.R;
 public class CardDetailActivity extends BaseActivity {
 
     protected boolean isSendRequest = false;
+    protected ImageView imgUserCardHomeDetail;
     protected TextView txtTitleHomeDetail;
     protected ImageView imgBtnGender;
     protected TextView txtContentHomeDetail;
@@ -59,6 +60,8 @@ public class CardDetailActivity extends BaseActivity {
         mFormView.setOnTouchListener(this);
         mProgressView = findViewById(R.id.homedetail_progress);
 
+        imgUserCardHomeDetail = (ImageView) findViewById(R.id.imgUserCardHomeDetail);
+
         imgBtnGender = (ImageView) findViewById(R.id.imgBtnGender);
         txtGender = (TextView)findViewById(R.id.txtGender);
 
@@ -81,6 +84,8 @@ public class CardDetailActivity extends BaseActivity {
         LoadRequestEventDetails();
         // Check if is recived request event
         LoadRequestRecivedEventDetails();
+        // Load user images if exists
+        LoadUserImages(CardDetailActivity.this);
         mFormView.requestFocus();
     }
     // Used to send or reverse request partecipate
@@ -165,6 +170,7 @@ public class CardDetailActivity extends BaseActivity {
         if(cardBase != null && cardBase instanceof CardHome)
         {
             final CardHome card = (CardHome) cardBase;
+            AddUserToLoadImage(card,imgUserCardHomeDetail);
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
@@ -190,7 +196,8 @@ public class CardDetailActivity extends BaseActivity {
                 }
             });
         }
-    }// Used to load details of REQUEST EVENT RECIVED if present
+    }
+    // Used to load details of REQUEST EVENT RECIVED if present
     protected void LoadRequestRecivedEventDetails()
     {
         Intent i = getIntent();
@@ -199,6 +206,8 @@ public class CardDetailActivity extends BaseActivity {
         {
             isSendRequest = false;
             final CardRequestRecived card = (CardRequestRecived) cardBase;
+            imgUserCardHomeDetail.setClipToOutline(true);
+            business.LoadUserImage(imgUserCardHomeDetail);
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
@@ -229,6 +238,7 @@ public class CardDetailActivity extends BaseActivity {
         {
             isSendRequest = true;
             final CardRequestSent card = (CardRequestSent) cardBase;
+            AddUserToLoadImage(card,imgUserCardHomeDetail);
             txtUserHomeDetail.setText(card.getUserName());
             txtTitleHomeDetail.setText(card.getTitle());
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));

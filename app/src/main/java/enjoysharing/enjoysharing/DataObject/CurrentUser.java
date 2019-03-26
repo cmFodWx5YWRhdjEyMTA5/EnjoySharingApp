@@ -14,6 +14,7 @@ public class CurrentUser {
     protected String surname;
     protected String email;
     protected String password;
+    protected boolean remember_me;
     protected String profile_image;
 
     public CurrentUser(Activity activity) {
@@ -68,6 +69,10 @@ public class CurrentUser {
         this.profile_image = profile_image;
     }
 
+    public boolean getRememberMe() { return remember_me; }
+
+    public void setRememberMe(boolean remember_me) { this.remember_me = remember_me; }
+
     public void RefreshUsername()
     {
         username = surname + " " + name;
@@ -80,13 +85,9 @@ public class CurrentUser {
         password = "";
         name = "";
         surname = "";
+        remember_me = false;
         profile_image = "";
     }
-
-    // TODO
-    // Check for remember me
-    public void CheckRememberMe()
-    { }
     // Load data from xml
     public void LoadFromXMLFile()
     {
@@ -99,6 +100,7 @@ public class CurrentUser {
         setSurname(sharedPref.getString("surname",null));
         setEmail(sharedPref.getString("email",null));
         setPassword(sharedPref.getString("password",null));
+        setRememberMe(sharedPref.getString("remember_me","0").equals("1"));
         setProfileImage(sharedPref.getString("profile_image",null));
     }
     // Store on xml
@@ -113,6 +115,7 @@ public class CurrentUser {
         ed.putString("surname", getSurname());
         ed.putString("email", getEmail());
         ed.putString("password", getPassword());
+        ed.putString("remember_me", getRememberMe()?"1":"0");
         ed.putString("profile_image", getProfileImage());
         ed.apply();
     }

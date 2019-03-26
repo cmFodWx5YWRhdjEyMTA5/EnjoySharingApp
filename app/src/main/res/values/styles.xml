@@ -10,6 +10,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/EnjoySharingTextViewStyle</item>
+        <item name="android:editTextStyle">@style/EnjoySharingEditText</item>
     </style>
 
     <style name="EnjoySharingTheme.NoActionBar">
@@ -63,6 +64,14 @@
     <style name="EnjoySharingEditTextNoBorderStyle" parent="android:Widget.Button">
         <item name="android:background">@drawable/edittext_no_border</item>
         <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="EnjoySharingEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/textColor</item>
+        <item name="colorAccent">@color/textColor</item>
+        <item name="colorControlNormal">@color/textColor</item>
+        <item name="colorControlActivated">@color/textColor</item>
     </style>
 
     <style name="EnjoySharingGeneralButtonStyle" parent="android:Widget.Button">

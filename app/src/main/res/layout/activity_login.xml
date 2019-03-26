@@ -73,16 +73,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5pt"
-                    android:layout_marginTop="5pt"
                     android:layout_marginRight="5pt"
+                    android:layout_marginTop="5pt"
                     android:hint="@string/txtBoxPassword"
                     android:imeActionId="6"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorLink="@color/textColor" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/chcBoxRememberMe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5pt"
+                android:layout_marginStart="5pt"
+                android:layout_marginTop="15pt"
+                android:buttonTint="@color/grey_dark"
+                android:text="@string/chcBoxRememberMe"
+                android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Enjoy Sharing</string>
+    <string name="app_folder">EnjoySharing</string>
     <string name="title_activity_home">EnjoySharing</string>
     <string name="service_url">http://2.33.153.203:8080/EnjoySharingWeb/</string>
     <string name="current_version">1.0</string>

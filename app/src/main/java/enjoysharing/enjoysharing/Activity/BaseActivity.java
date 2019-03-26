@@ -1,11 +1,13 @@
 package enjoysharing.enjoysharing.Activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,6 +16,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
@@ -88,6 +93,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected Bitmap currentUserImage;
     public ParameterCollection userImageToLoad;
     public ParameterCollection userImageUpdateDate;
+    // Used when app activity required (for example on request permissions)
+    protected BaseActivity activityApp;
+    // Used to check if permission already requested
+    protected List<String> permissionRequested;
 
     protected void SetContext(Context context){ this.context = context; }
 
@@ -108,6 +117,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         return null;
     }
 
+    public boolean PermissionRequested(String permission)
+    {
+        return permissionRequested.contains(permission);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +129,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         user = new CurrentUser(this);
         user.LoadFromXMLFile();
         currentUserImage = null;
+        permissionRequested = new ArrayList<>();
         if(reloadOnSwipeBottom)
         {
             tableReloadScrollView.getViewTreeObserver()
@@ -189,7 +204,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Used to load bitmap image profile if exists
     public Bitmap LoadProfileImage(String userId)
     {
-        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_name);
+        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_folder);
         String filename = "img_prof_"+userId+".jpg";
         try
         {
@@ -211,16 +226,17 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     // Used to store user image profile
     public void StoreImageProfile(String userId, Bitmap bitImage)
     {
-        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_name);
+        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_folder);
         String filename = "img_prof_"+userId+".jpg";
         FileOutputStream outputStream;
         try {
             File folder = new File(directory);
             if (!folder.exists()) {
-                folder.mkdirs();
+                if(!folder.mkdirs())
+                    return;
             }
             File f = new File( directory + File.separator + filename);
-            f.createNewFile();
+            if(!f.createNewFile()) return;
             outputStream = new FileOutputStream(f);
             bitImage.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
             outputStream.close();
@@ -261,11 +277,50 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     public void LoadUserImages(BaseActivity activity)
     {
         if(userImageToLoad == null) return;
+        if(!userImageToLoad.GetParametersList().isEmpty())
+        {
+            CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,activity);
+        }
         for(Parameter param : userImageToLoad.GetParametersList())
         {
             BusinessImage bi = new BusinessImage(activity);
             bi.AddParameter("UserIdImage",""+param.GetName());
             bi.execute();
+        }
+    }
+
+    public void CheckForPermissions(String[] permissions, int codeRequest, BaseActivity activity)
+    {
+        activityApp = null;
+        List<String> requestPermissions = new ArrayList<>();
+        for(String perm : permissions)
+        {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED
+                    && !PermissionRequested(perm))
+            {
+                permissionRequested.add(perm);
+                requestPermissions.add(perm);
+            }
+        }
+        if(!requestPermissions.isEmpty())
+        {
+            activityApp = activity;
+            ActivityCompat.requestPermissions(this, requestPermissions.toArray(new String[requestPermissions.size()]), codeRequest);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        //boolean allPermitted = true;
+        switch (requestCode) {
+            case 101:  // Request for external storage
+                /*for(int permiss : grantResults)
+                    if (permiss != PackageManager.PERMISSION_GRANTED)
+                        allPermitted = false;*/
+                LoadUserImages(activityApp);
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

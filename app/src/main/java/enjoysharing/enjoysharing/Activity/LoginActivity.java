@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    protected CheckBox chcBoxRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         // Set up the login form.
         String email = user.getEmail();
         String pw = business.decrypt(user.getPassword());
+        boolean rememberMe = user.getRememberMe();
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txtBoxEmail);
-        mEmailView.setText(email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.txtBoxPassword);
-        mPasswordView.setText(pw);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -70,6 +70,19 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 return false;
             }
         });
+
+        chcBoxRememberMe = (CheckBox) findViewById(R.id.chcBoxRememberMe);
+        chcBoxRememberMe.setChecked(rememberMe);
+        if(rememberMe)
+        {
+            mEmailView.setText(email);
+            mPasswordView.setText(pw);
+        }
+        else
+        {
+            user.Clear();
+            user.SaveOnXMLFile();
+        }
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new OnClickListener() {
@@ -220,10 +233,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         user.setEmail(mEmailView.getText().toString());
         // Crypto la password!
         user.setPassword(business.encrypt(mPasswordView.getText().toString()));
+        // Setto il remember me
+        user.setRememberMe(chcBoxRememberMe.isChecked());
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         //showProgress(true);
         mTask = new RequestTask(false, true, "UserServlet", true);
+        mTask.SetLongTimeout();
         mTask.AddParameter("RequestType","LI");  // Log In
         finishOnPostExecute = true;
         try

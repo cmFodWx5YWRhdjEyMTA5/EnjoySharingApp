@@ -6,5 +6,6 @@
     <string name="surname"></string>
     <string name="email"></string>
     <string name="password"></string>
+    <string name="remember_me"></string>
     <string name="profile_image"></string>
 </resources>

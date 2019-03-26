@@ -96,13 +96,17 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
             if(bitImage == null)
             {
                 ParameterCollection params = new BusinessJSON().GetParamsByJSON(retObj.getMessage());
-                activity.StoreImageProfile(userIdImage,new BusinessBase().StringToImage(params.Get("Photo").toString()));
                 bitImage = new BusinessBase().StringToImage(params.Get("Photo").toString());
+                if(bitImage != null)
+                    activity.StoreImageProfile(userIdImage,bitImage);
             }
-            if(imageView != null)
-                activity.InsertImage(imageView, bitImage);
-            else
-                LoadUserImages();
+            if(bitImage != null)
+            {
+                if(imageView != null)
+                    activity.InsertImage(imageView, bitImage);
+                else
+                    LoadUserImages();
+            }
         }
     }
 
