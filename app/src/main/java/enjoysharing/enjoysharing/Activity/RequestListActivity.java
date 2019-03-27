@@ -203,6 +203,7 @@ public class RequestListActivity extends BaseActivity {
         int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
         for (int i=0; i<users.List().size(); i++) {
             final RequestUser user = (RequestUser)users.List().get(i);
+
             TableRow row = (TableRow) LayoutInflater.from(RequestListActivity.this).inflate(R.layout.card_user_list, null);
             final LinearLayout linLayout = (LinearLayout)row.getChildAt(0);
 
@@ -253,6 +254,7 @@ public class RequestListActivity extends BaseActivity {
     {
         // TODO
         // When click on user open his/her profile
+        ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
     }
 }
 

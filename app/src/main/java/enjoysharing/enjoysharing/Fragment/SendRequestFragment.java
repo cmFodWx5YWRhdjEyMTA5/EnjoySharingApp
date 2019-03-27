@@ -163,11 +163,18 @@ public class SendRequestFragment extends FragmentBase {
             if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_send, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
+
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
             TextView txtUserCardSendRequest = (TextView)relLayout.findViewById(R.id.txtUserCardSendRequest);
             // Set width based on screen percentage
             txtUserCardSendRequest.setWidth(txtUserTitleWidth);
             txtUserCardSendRequest.setText(card.getUserName());
+            txtUserCardSendRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    OpenUserProfile(card.getUserId());
+                }
+            });
+
             TextView txtTitleCardSendRequest = (TextView)relLayout.findViewById(R.id.txtTitleCardSendRequest);
             // Set width based on screen percentage
             txtTitleCardSendRequest.setWidth(txtUserTitleWidth);
@@ -175,9 +182,15 @@ public class SendRequestFragment extends FragmentBase {
 
             ImageView imgUserCardSendRequest = (ImageView)relLayout.findViewById(R.id.imgUserCardSendRequest);
             AddUserToLoadImage(card,imgUserCardSendRequest);
+            imgUserCardSendRequest.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    OpenUserProfile(card.getUserId());
+                }
+            });
 
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
+
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -185,16 +198,20 @@ public class SendRequestFragment extends FragmentBase {
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);
                 }
             });
+
             LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
             layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     imgBtnNumberPerson.performClick();
                 }
             });
+
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+
             TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
+
             Button btnPartecipateSendRequest = (Button)relLayout.findViewById(R.id.btnPartecipateSendRequest);
             card.setRequestSubmitted(true);
             business.SetButtonRequest(btnPartecipateSendRequest,!card.IsRequestSubmitted());
@@ -203,11 +220,13 @@ public class SendRequestFragment extends FragmentBase {
                     onRequestPartecipate(v, card.getEventId());
                 }
             });
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v, card.getEventId());
                 }
             });
+
             table.addView(row);
             AddToExistingCards(card);
         }
@@ -230,6 +249,12 @@ public class SendRequestFragment extends FragmentBase {
         {
             SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
         }
+    }
+    // TODO
+    // Open user profile
+    protected void OpenUserProfile(int userId)
+    {
+        ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
     }
 
 }

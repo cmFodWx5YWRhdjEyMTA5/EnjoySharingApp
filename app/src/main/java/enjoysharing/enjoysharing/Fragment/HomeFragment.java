@@ -165,15 +165,26 @@ public class HomeFragment extends FragmentBase {
             if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
+
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
             TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
             txtUserCard.setWidth(txtUserTitleWidth);
             txtUserCard.setText(card.getUserName());
+            txtUserCard.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    OpenUserProfile(card.getUserId());
+                }
+            });
+
             TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
-            // Set width based on screen percentage
-            txtTitleCard.setWidth(txtUserTitleWidth);
+            // Set the same width of parent - tollerance
+            txtTitleCard.setWidth(((LinearLayout)txtTitleCard.getParent()).getWidth()-parentTollerancePX);
             txtTitleCard.setText(card.getTitle());
+
+            TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
+            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
+
             TextView txtContentCard = (TextView)relLayout.findViewById(R.id.txtContentCard);
             // Set the same width of parent - tollerance
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
@@ -181,9 +192,12 @@ public class HomeFragment extends FragmentBase {
 
             ImageView imgUserCardHome = (ImageView)relLayout.findViewById(R.id.imgUserCardHome);
             AddUserToLoadImage(card,imgUserCardHome);
+            imgUserCardHome.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    OpenUserProfile(card.getUserId());
+                }
+            });
 
-            TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
-            txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -191,16 +205,20 @@ public class HomeFragment extends FragmentBase {
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, false);
                 }
             });
+
             LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
             layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     imgBtnNumberPerson.performClick();
                 }
             });
+
             final TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
+
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+
             TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
 
@@ -245,6 +263,12 @@ public class HomeFragment extends FragmentBase {
                 SwipeDownOpenActivity(activity.getBaseContext(), CardDetailActivity.class, card);
             }
         }
+    }
+    // TODO
+    // Open user profile
+    protected void OpenUserProfile(int userId)
+    {
+        ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
     }
 
 }

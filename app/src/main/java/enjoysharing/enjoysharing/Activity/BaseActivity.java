@@ -29,6 +29,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -149,45 +150,83 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         row_progress = (TableRow) LayoutInflater.from(this).inflate(R.layout.progress_bar, null);
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
     }
-    // Used to expand/collapse VIEWS
+    // Used to expand view childs
+    protected void expandChilds(LinearLayout view) {
+        View child;
+        for (int i = 0; i < view.getChildCount(); i++) {
+            child = view.getChildAt(i);
+            expand(child);
+        }
+    }
+    // Used to expand VIEWS
+    protected void expand(View view, int duration, int finalHeight) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimator(view, initialHeight, finalHeight);
+        mAnimator.setDuration(duration);
+        mAnimator.start();
+    }
+    // Used to expand VIEWS
+    protected void expand(View view, int duration) {
+        expand(view,duration,ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+    // Used to expand VIEWS
     protected void expand(View view) {
-        //set Visible
-        view.setVisibility(View.VISIBLE);
-
-        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        view.measure(widthSpec, heightSpec);
-
-        ValueAnimator mAnimator = slideAnimator(view, 0, view.getMeasuredHeight());
+        expand(view,500);
+    }
+    // Used to expand IMAGE VIEWS
+    protected void expandImageView(View view, int duration, int finalHeight) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimatorImageView(view, initialHeight, finalHeight);
+        mAnimator.setDuration(duration);
         mAnimator.start();
     }
-
-    protected void collapse(final View view) {
-        int finalHeight = view.getHeight();
-        ValueAnimator mAnimator = slideAnimator(view, finalHeight, 0);
-
-        mAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) { }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                //Height=0, but it set visibility to GONE
-                view.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) { }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) { }
-        });
+    // Used to expand Width
+    protected void expandWidth(View view) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimatorWidth(view, initialHeight, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mAnimator.setDuration(500);
         mAnimator.start();
     }
-
+    // Used to collapse view childs
+    protected void collapseChilds(final LinearLayout view) {
+        View child;
+        for (int i = 0; i < view.getChildCount(); i++) {
+            child = view.getChildAt(i);
+            collapse(child);
+        }
+    }
+    // Used to collapse view
+    protected void collapse(View view, int duration, int finalHeight) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimator(view, initialHeight, finalHeight);
+        mAnimator.setDuration(duration);
+        mAnimator.start();
+    }
+    // Used to collapse view
+    protected void collapse(View view, int duration) {
+        collapse(view,duration,0);
+    }
+    // Used to collapse view
+    protected void collapse(View view) {
+        collapse(view,500);
+    }
+    // Used to collapse image view
+    protected void collapseImageView(View view, int duration, int finalHeight) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimatorImageView(view, initialHeight, finalHeight);
+        mAnimator.setDuration(duration);
+        mAnimator.start();
+    }
+    // Used to collapse Width
+    protected void collapseWidth(View view) {
+        int initialHeight = view.getHeight();
+        ValueAnimator mAnimator = slideAnimatorWidth(view, initialHeight, 0);
+        mAnimator.setDuration(500);
+        mAnimator.start();
+    }
+    // Used for animation expand/collapse
     protected ValueAnimator slideAnimator(final View view, int start, int end) {
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
-
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -195,6 +234,37 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
                 int value = (Integer) valueAnimator.getAnimatedValue();
                 ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
                 layoutParams.height = value;
+                view.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+    // Used for animation expand/collapse imageViews
+    protected ValueAnimator slideAnimatorImageView(final View view, int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                layoutParams.width = value;
+                layoutParams.height = value;
+                view.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+    // Used for animation expand/collapse imageViews
+    protected ValueAnimator slideAnimatorWidth(final View view, int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                layoutParams.width = value;
                 view.setLayoutParams(layoutParams);
             }
         });
@@ -569,7 +639,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected void ActivityLeftSwipe()
     { }
 
-    protected void ActivityDownSwipe()
+    protected void ActivityDownSwipe(float deltaY)
     { }
 
     protected void ActivityUpSwipe(float deltaY)
@@ -614,7 +684,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
                 {
                     if(Math.abs(deltaY) > MIN_DISTANCE){
                         // top or down
-                        if(deltaY < 0) { this.ActivityDownSwipe(); return true; }
+                        if(deltaY < 0) { this.ActivityDownSwipe(deltaY); return true; }
                         if(deltaY > 0) {this.ActivityUpSwipe(deltaY); return true;}
 
                     }

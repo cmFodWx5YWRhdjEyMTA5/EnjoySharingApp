@@ -92,7 +92,7 @@
                 android:layout_marginEnd="5pt"
                 android:layout_marginStart="5pt"
                 android:layout_marginTop="15pt"
-                android:buttonTint="@color/grey_dark"
+                android:buttonTint="@color/textColor"
                 android:text="@string/chcBoxRememberMe"
                 android:textSize="18dp" />
 

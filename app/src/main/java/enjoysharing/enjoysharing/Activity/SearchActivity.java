@@ -201,6 +201,7 @@ public class SearchActivity extends BaseActivity {
             final CardHome card = (CardHome)cards.List().get(i);
             IndexUsers++;
             if(users.Exists(card.getUserId())) continue;
+
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_user_list, null);
             final LinearLayout linLayout = (LinearLayout)row.getChildAt(0);
 
@@ -217,7 +218,9 @@ public class SearchActivity extends BaseActivity {
                     onRowClick(v, card.getUserId());
                 }
             });
+
             table.addView(row);
+
             if(reloadOnSwipeBottom)
                 users.Add(new User(card.getUserId(),card.getUserName()));
         }
@@ -237,17 +240,21 @@ public class SearchActivity extends BaseActivity {
         for (int i=0; i<cards.List().size(); i++) {
             final CardHome card = (CardHome)cards.List().get(i);
             if(CardAlreadyExists(card)) continue;
+
             TableRow row = (TableRow) LayoutInflater.from(SearchActivity.this).inflate(R.layout.card_home, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
+
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
             TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
             txtUserCard.setWidth(txtUserTitleWidth);
             txtUserCard.setText(card.getUserName());
+
             TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
             txtTitleCard.setWidth(txtUserTitleWidth);
             txtTitleCard.setText(card.getTitle());
+
             TextView txtContentCard = (TextView)relLayout.findViewById(R.id.txtContentCard);
             // Set the same width of parent - tollerance
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
@@ -258,8 +265,10 @@ public class SearchActivity extends BaseActivity {
 
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
+
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
+
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -267,14 +276,17 @@ public class SearchActivity extends BaseActivity {
                     OpenRequestList(SearchActivity.this,RequestListActivity.class, card, false);
                 }
             });
+
             LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
             layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     imgBtnNumberPerson.performClick();
                 }
             });
+
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+
             TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
 
@@ -318,5 +330,8 @@ public class SearchActivity extends BaseActivity {
         }
         // TODO
         // RowClick if is user to open his/her profile
+        if(v.getId() == R.id.row_card_user_list) {
+            ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
+        }
     }
 }

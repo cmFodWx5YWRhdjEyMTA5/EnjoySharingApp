@@ -30,17 +30,23 @@ public class BusinessBase {
     public static class Constants
     {
         public static String DateTimeFormatJSON_IN = "yyyy-MM-dd HH:mm:ss.S";
-        public static String DateTimeFormatJSON_OUT = "EEE dd/MM/yyyy"+System.getProperty("line.separator")+"HH:mm";
+        public static String DateTimeFormatJSON_OUT = "E dd/MM/yyyy '"+activity.getString(R.string.at)+"' HH:mm";
         public static String DateTimeFormatJSON_OUT_SHORT = "yyyy-MM-dd HH:mm";
     }
 
-    protected BaseActivity activity;
+    protected static BaseActivity activity;
 
     public BusinessBase() { }
 
     public BusinessBase(BaseActivity activity)
     {
         this.activity = activity;
+    }
+
+    public int PixelToDP(int pixels)
+    {
+        final float scale = activity.getResources().getDisplayMetrics().density;
+        return (int) (pixels * scale + 0.5f);
     }
 
     public Bitmap StringToImage(String base64)

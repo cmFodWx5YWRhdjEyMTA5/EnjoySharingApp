@@ -14,9 +14,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -35,11 +37,16 @@ public class ProfileActivity extends BaseActivity {
     protected GalleryFragment galleryFragment;
     protected SendRequestFragment sendRequestFragment;
     protected MyEventsFragment myEventsFragment;
+    protected LinearLayout image_user_layout;
     protected LinearLayout info_profile_layout;
     protected boolean infoVisible = false;
+    protected TextView txtUsername;
+    protected Button btnViewInfoProfile;
+    protected FloatingActionButton btnChooseImage;
     protected Bitmap profilePhoto;
     protected ImageView imgProfile;
     protected int REQUEST_CODE = 1;
+    protected boolean swipeState; // true = down done, false = up done
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +69,21 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
+        image_user_layout = (LinearLayout) findViewById(R.id.image_user_layout);
+
         info_profile_layout = findViewById(R.id.info_profile_layout);
-        Button btnViewInfoProfile = findViewById(R.id.btnViewInfoProfile);
+        btnViewInfoProfile = findViewById(R.id.btnViewInfoProfile);
         btnViewInfoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(infoVisible)
                 {
-                    collapse(info_profile_layout);
+                    collapseChilds(info_profile_layout);
                     ((Button)view).setText(getString(R.string.btnShowViewInfoProfile));
                 }
                 else
                 {
-                    expand(info_profile_layout);
+                    expandChilds(info_profile_layout);
                     ((Button)view).setText(getString(R.string.btnHideViewInfoProfile));
                 }
                 infoVisible = !infoVisible;
@@ -84,10 +93,41 @@ public class ProfileActivity extends BaseActivity {
         CreateFragments();
         setupViewPager(profile_form);
         FillUserData();
+        swipeState = true;
 
+        // Set this to use onTouch events!
+        mFormView.setOnTouchListener(this);
         // Set default page (HOME)
         profile_form.setCurrentItem(0);
         CallStartFragment(0);
+    }
+    // Quando effettuo lo swipe up devo nascondere immagine profilo e nome utente
+    @Override
+    protected void ActivityUpSwipe(float deltaY)
+    {
+        if(swipeState)
+        {
+            if(infoVisible)
+                btnViewInfoProfile.performClick();
+            collapse(btnViewInfoProfile);
+            collapse(txtUsername);
+            collapseImageView(btnChooseImage,500,0);
+            collapseImageView(imgProfile,1000, business.PixelToDP(50));
+            swipeState = !swipeState;
+        }
+    }
+    // Quando effettuo lo swipe down devo mostrare immagine profilo e nome utente
+    @Override
+    protected void ActivityDownSwipe(float deltaY)
+    {
+        if(!swipeState)
+        {
+            expandImageView(imgProfile,1000,business.PixelToDP(100));
+            expandImageView(btnChooseImage,1000,business.PixelToDP(40));
+            expand(txtUsername, 1300);
+            expand(btnViewInfoProfile,1300,business.PixelToDP(25));
+            swipeState = !swipeState;
+        }
     }
     // Used when activity reloaded
     @Override
@@ -177,24 +217,30 @@ public class ProfileActivity extends BaseActivity {
     // FillUserData
     protected void FillUserData()
     {
-        TextView txtUsername = (TextView) findViewById(R.id.txtUsername);
+        txtUsername = (TextView) findViewById(R.id.txtUsername);
         txtUsername.setText(user.getUsername());
+
         TextView txtName = (TextView) findViewById(R.id.txtName);
         txtName.setText(user.getName());
+
         TextView txtSurname = (TextView) findViewById(R.id.txtSurname);
         txtSurname.setText(user.getSurname());
+
         TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
         txtEmail.setText(user.getEmail());
+
         imgProfile  = (ImageView) findViewById(R.id.imgProfile);
         imgProfile.setClipToOutline(true);
         business.LoadUserImage(imgProfile);
-        FloatingActionButton btnChooseImage = (FloatingActionButton) findViewById(R.id.btnChooseImage);
+
+        btnChooseImage = (FloatingActionButton) findViewById(R.id.btnChooseImage);
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+
         profilePhoto = null;
     }
 
