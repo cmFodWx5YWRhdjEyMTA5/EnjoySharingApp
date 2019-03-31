@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="enjoysharing.enjoysharing.Fragment.SendRequestFragment"
-    android:id="@+id/main_frame_send_request">
+    tools:context="enjoysharing.enjoysharing.Fragment.NotifierFragment"
+    android:id="@+id/main_frame_notifier">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
@@ -12,19 +11,19 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/tableSendRequestScrollView"
+            android:id="@+id/tableNotifierScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TableLayout
-                android:id="@+id/tableSendRequests"
+                android:id="@+id/tableNotifier"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
             </TableLayout>
-
         </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>
+

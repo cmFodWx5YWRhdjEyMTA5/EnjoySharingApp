@@ -2,14 +2,9 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -21,8 +16,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.IOException;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Fragment.FriendsFragment;
+import enjoysharing.enjoysharing.Fragment.NotifierFragment;
+import enjoysharing.enjoysharing.Fragment.ProfileFragment;
 import enjoysharing.enjoysharing.Fragment.RecivedRequestFragment;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.R;
@@ -36,6 +33,9 @@ public class HomeActivity extends BaseActivity {
     protected ViewPager viewPager;
     protected HomeFragment homeFragment;
     protected RecivedRequestFragment requestFragment;
+    protected FriendsFragment friendsFragment;
+    protected NotifierFragment notifierFragment;
+    protected ProfileFragment profileFragment;
     protected Bitmap profilePhoto;
     protected ImageView imgUser;
     protected int REQUEST_CODE = 1;
@@ -67,6 +67,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ((ViewPagerAdapter)viewPager.getAdapter()).List().get(currentMenuPosition).onActivityResult(requestCode, resultCode, data);
         CallStartFragment(currentMenuPosition);
     }
     // Used to create fragments
@@ -76,9 +77,24 @@ public class HomeActivity extends BaseActivity {
         homeFragment.SetActivity(HomeActivity.this);
         homeFragment.setCurrentUser(user);
         homeFragment.setProgressView(mProgressView);
+
         requestFragment = new RecivedRequestFragment();
         requestFragment.SetActivity(HomeActivity.this);
         requestFragment.setCurrentUser(user);
+
+        friendsFragment = new FriendsFragment();
+        friendsFragment.SetActivity(HomeActivity.this);
+        friendsFragment.setCurrentUser(user);
+        friendsFragment.setProgressView(mProgressView);
+
+        notifierFragment = new NotifierFragment();
+        notifierFragment.SetActivity(HomeActivity.this);
+        notifierFragment.setCurrentUser(user);
+        notifierFragment.setProgressView(mProgressView);
+
+        profileFragment= new ProfileFragment();
+        profileFragment.SetActivity(HomeActivity.this);
+        profileFragment.setCurrentUser(user);
         /*myEventsFragment = new MyEventsFragment();
         myEventsFragment.SetActivity(HomeActivity.this);
         myEventsFragment.setCurrentUser(user);
@@ -140,6 +156,9 @@ public class HomeActivity extends BaseActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(homeFragment);
         adapter.AddFragment(requestFragment);
+        adapter.AddFragment(friendsFragment);
+        adapter.AddFragment(notifierFragment);
+        adapter.AddFragment(profileFragment);
         //adapter.AddFragment(myEventsFragment);
         viewPager.setAdapter(adapter);
     }
@@ -157,10 +176,13 @@ public class HomeActivity extends BaseActivity {
                     viewPager.setCurrentItem(1);
                     break;
                 case R.id.nav_menu_friends:
-                    // TODO
+                    viewPager.setCurrentItem(2);
                     break;
                 case R.id.nav_menu_notification:
-                    // TODO
+                    viewPager.setCurrentItem(3);
+                    break;
+                case R.id.nav_menu_profile:
+                    viewPager.setCurrentItem(4);
                     break;
             }
             return true;

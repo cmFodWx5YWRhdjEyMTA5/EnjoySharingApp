@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_notification_custom"
         android:title="@string/nav_menu_notification"
         android:orderInCategory="3" />
+    <item
+        android:id="@+id/nav_menu_profile"
+        android:icon="@drawable/ic_person_search"
+        android:orderInCategory="3"
+        android:title="@string/nav_menu_profile" />
 </menu>

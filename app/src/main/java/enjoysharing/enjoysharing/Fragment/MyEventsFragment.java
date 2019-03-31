@@ -39,7 +39,7 @@ public class MyEventsFragment extends FragmentBase {
         return vMain;
     }
     @Override
-    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==2; }
+    protected boolean CheckForCurrentFragment() { return parentFragment.CheckForCurrentFragment() && parentFragment.getCurrentMenuPosition()==2; }
     @Override
     protected void ShowProgress(boolean state)
     {
@@ -49,8 +49,11 @@ public class MyEventsFragment extends FragmentBase {
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        super.StartFragment();
-        LoadTable();
+        if(tableCardsMyEvent != null)
+        {
+            super.StartFragment();
+            LoadTable();
+        }
     }
 
     protected CardCollection myEventCards;

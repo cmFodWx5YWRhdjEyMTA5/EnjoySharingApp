@@ -1,6 +1,7 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,9 +48,12 @@ public class FragmentBase extends Fragment {
     protected TableRow row_progress;
     protected ProgressBar row_progress_bar;
     protected ScrollView tableReloadScrollView;
+    protected int currentMenuPosition;
+    protected FragmentBase parentFragment;
 
     protected View progressView;
     protected View formView;
+    protected boolean mGlobalListenersAdded;
 
     public void setProgressView(View progressView) {
         this.progressView = progressView;
@@ -69,6 +73,9 @@ public class FragmentBase extends Fragment {
 
     protected void setTableReloadScrollView(ScrollView table) { tableReloadScrollView = table; }
 
+    public int getCurrentMenuPosition() { return currentMenuPosition; }
+
+    public void setParentFragment(FragmentBase parentFragment) { this.parentFragment = parentFragment; }
     // Lo creo solo per il refresh
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,24 +96,7 @@ public class FragmentBase extends Fragment {
                 }
             });
         }
-        if(reloadOnSwipeBottom)
-        {
-            tableReloadScrollView.getViewTreeObserver()
-                    .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                        @Override
-                        public void onScrollChanged() {
-                            if(CheckForCurrentFragment())
-                            {
-                                if (!tableReloadScrollView.canScrollVertically(1)) {
-                                    SetRowProgressVisibility(true);
-                                    LoadTable();
-                                }
-                                if (!tableReloadScrollView.canScrollVertically(-1)) {
-                                }
-                            }
-                        }
-                    });
-        }
+        mGlobalListenersAdded = false;
         InitReload();
         row_progress = (TableRow) LayoutInflater.from(activity).inflate(R.layout.progress_bar, null);
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
@@ -131,6 +121,11 @@ public class FragmentBase extends Fragment {
     protected void OpenRequestList(Context context, Class cl, CardBase card, boolean canManageList)
     {
         activity.OpenRequestList(context, cl, card, canManageList);
+    }
+    // Enter in Activity with swipe from Up to Down
+    protected void SwipeDownOpenActivity(Context context, Class cl)
+    {
+        activity.SwipeDownOpenActivity(context, cl);
     }
     // Enter in Activity with swipe from Up to Down
     protected void SwipeDownOpenActivity(Context context, Class cl, CardBase card)
@@ -164,6 +159,25 @@ public class FragmentBase extends Fragment {
     // Used for functionality
     public void StartFragment()
     {
+        if(!mGlobalListenersAdded && reloadOnSwipeBottom)
+        {
+            tableReloadScrollView.getViewTreeObserver()
+                    .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                        @Override
+                        public void onScrollChanged() {
+                            if(CheckForCurrentFragment())
+                            {
+                                if (!tableReloadScrollView.canScrollVertically(1)) {
+                                    SetRowProgressVisibility(true);
+                                    LoadTable();
+                                }
+                                if (!tableReloadScrollView.canScrollVertically(-1)) {
+                                }
+                            }
+                        }
+                    });
+            mGlobalListenersAdded = true;
+        }
         InitReload();
     }
     // Used when load table
@@ -264,6 +278,7 @@ public class FragmentBase extends Fragment {
         {
             params.Add(name, value);
         }
+        public void SetBitmap(String bitmapField, Bitmap bitmap) { businessCallService.SetBitmap(bitmapField, bitmap); }
 
         public FragmentRequestTask()
         {
