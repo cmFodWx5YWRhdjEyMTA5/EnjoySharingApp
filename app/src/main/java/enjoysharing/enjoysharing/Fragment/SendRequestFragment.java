@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,19 +34,23 @@ public class SendRequestFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_send_request, container, false);
         tableSendRequests = (TableLayout) vMain.findViewById(R.id.tableSendRequests);
+        setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_send_request));
         setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableSendRequestScrollView));
         reloadOnSwipeBottom = true;
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;
     }
     @Override
-    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==1; }
+    protected boolean CheckForCurrentFragment() { return parentFragment.CheckForCurrentFragment() && parentFragment.getCurrentMenuPosition()==1; }
     @Override
     public void StartFragment()
     {
         business = new BusinessBase(activity);
-        super.StartFragment();
-        LoadTable();
+        if(tableSendRequests != null)
+        {
+            super.StartFragment();
+            LoadTable();
+        }
     }
 
     protected CardCollection sendRequestCards;

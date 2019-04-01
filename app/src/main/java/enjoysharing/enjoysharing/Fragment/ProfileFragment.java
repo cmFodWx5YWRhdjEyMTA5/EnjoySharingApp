@@ -1,4 +1,4 @@
-package enjoysharing.enjoysharing.Activity;
+package enjoysharing.enjoysharing.Fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,27 +11,25 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.io.IOException;
-
+import enjoysharing.enjoysharing.Activity.IUProfileActivity;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.Business.BusinessBase;
-import enjoysharing.enjoysharing.Fragment.GalleryFragment;
-import enjoysharing.enjoysharing.Fragment.MyEventsFragment;
-import enjoysharing.enjoysharing.Fragment.SendRequestFragment;
 import enjoysharing.enjoysharing.R;
 
-public class ProfileActivity extends BaseActivity {
+import static android.app.Activity.RESULT_OK;
 
+public class ProfileFragment extends FragmentBase {
+
+    protected BottomNavigationView nav_profile_menu;
     protected MenuItem prevMenuItem;
     protected ViewPager profile_form;
     protected GalleryFragment galleryFragment;
@@ -49,85 +47,67 @@ public class ProfileActivity extends BaseActivity {
     protected boolean swipeState; // true = down done, false = up done
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SetContext(ProfileActivity.this);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        business = new BusinessBase(ProfileActivity.this);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        vMain = inflater.inflate(R.layout.fragment_profile, container, false);
+        setFormView(vMain.findViewById(R.id.main_frame));
+        setProgressView(vMain.findViewById(R.id.progress));
+        InitFragment();
+        super.onCreateView(inflater,container,savedInstanceState);
+        return vMain;
+    }
+    protected void InitFragment()
+    {
         CreateMenuElements();
 
-        mFormView = findViewById(R.id.main_frame);
-        mProgressView = findViewById(R.id.progress);
+        CreateFragments();
+        setupViewPager(profile_form);
+        swipeState = true;
 
-        Button btnModifyProfile = (Button) findViewById(R.id.btnModifyProfile);
+        Button btnModifyProfile = (Button) vMain.findViewById(R.id.btnModifyProfile);
         btnModifyProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SwipeDownOpenActivity(ProfileActivity.this, IUProfileActivity.class);
+                SwipeDownOpenActivity(activity, IUProfileActivity.class);
             }
         });
 
-        image_user_layout = (LinearLayout) findViewById(R.id.image_user_layout);
+        image_user_layout = (LinearLayout) vMain.findViewById(R.id.image_user_layout);
 
-        info_profile_layout = findViewById(R.id.info_profile_layout);
-        btnViewInfoProfile = findViewById(R.id.btnViewInfoProfile);
+        info_profile_layout = vMain.findViewById(R.id.info_profile_layout);
+        btnViewInfoProfile = vMain.findViewById(R.id.btnViewInfoProfile);
         btnViewInfoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(infoVisible)
                 {
-                    collapseChilds(info_profile_layout);
+                    activity.collapseChilds(info_profile_layout);
                     ((Button)view).setText(getString(R.string.btnShowViewInfoProfile));
                 }
                 else
                 {
-                    expandChilds(info_profile_layout);
+                    activity.expandChilds(info_profile_layout);
                     ((Button)view).setText(getString(R.string.btnHideViewInfoProfile));
                 }
                 infoVisible = !infoVisible;
             }
         });
-
-        CreateFragments();
-        setupViewPager(profile_form);
+    }
+    @Override
+    protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==4; }
+    @Override
+    protected void ShowProgress(boolean state)
+    {
+        ShowProgressPassView(state);
+    }
+    @Override
+    public void StartFragment()
+    {
+        business = new BusinessBase(activity);
+        super.StartFragment();
         FillUserData();
-        swipeState = true;
-
-        // Set this to use onTouch events!
-        mFormView.setOnTouchListener(this);
-        // Set default page (HOME)
-        profile_form.setCurrentItem(0);
-        CallStartFragment(0);
-    }
-    // Quando effettuo lo swipe up devo nascondere immagine profilo e nome utente
-    @Override
-    protected void ActivityUpSwipe(float deltaY)
-    {
-        if(swipeState)
-        {
-            if(infoVisible)
-                btnViewInfoProfile.performClick();
-            collapse(btnViewInfoProfile);
-            collapse(txtUsername);
-            collapseImageView(btnChooseImage,1000,0);
-            collapseImageView(imgProfile,1000, business.PixelToDP(50));
-            swipeState = !swipeState;
-        }
-    }
-    // Quando effettuo lo swipe down devo mostrare immagine profilo e nome utente
-    @Override
-    protected void ActivityDownSwipe(float deltaY)
-    {
-        if(!swipeState)
-        {
-            expandImageView(imgProfile,1000,business.PixelToDP(100));
-            expandImageView(btnChooseImage,1000,business.PixelToDP(40));
-            expand(txtUsername, 1300);
-            expand(btnViewInfoProfile,1300,business.PixelToDP(25));
-            swipeState = !swipeState;
-        }
+        CallStartFragment(currentMenuPosition);
     }
     // Used when activity reloaded
     @Override
@@ -136,7 +116,7 @@ public class ProfileActivity extends BaseActivity {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null ){
             Uri uri = data.getData();
             try {
-                profilePhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                profilePhoto = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
                 SavePhoto();
             }
             catch (IOException e){
@@ -150,10 +130,9 @@ public class ProfileActivity extends BaseActivity {
         }
         CallStartFragment(currentMenuPosition);
     }
-    // Used to save new photo profile
     protected void SavePhoto()
     {
-        mTask = new RequestTask(true, false, "UserServlet",false);
+        mTask = new FragmentRequestTask(true, false, "UserServlet",false);
         mTask.AddParameter("RequestType","SP");  // Save Photo
         mTask.SetBitmap("Photo",profilePhoto);
         try
@@ -162,32 +141,17 @@ public class ProfileActivity extends BaseActivity {
         }
         catch (Exception e)
         {
-            retObj.setStateResponse(false);
-            retObj.setMessage("GeneralError");
+            activity.retObj.setStateResponse(false);
+            activity.retObj.setMessage("GeneralError");
         }
     }
     // Used to create menu elements
     protected void CreateMenuElements()
     {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back button pressed
-                onBackPressed();
-            }
-        });
-
-        /*drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();*/
-
-        profile_form = (ViewPager) findViewById(R.id.profile_form);
+        profile_form = (ViewPager) vMain.findViewById(R.id.profile_form);
         // Nav menu Home
-        nav_menu_home = (BottomNavigationView) findViewById(R.id.nav_profile_menu);
-        nav_menu_home.setOnNavigationItemSelectedListener(tabSelected);
+        nav_profile_menu = (BottomNavigationView) vMain.findViewById(R.id.nav_profile_menu);
+        nav_profile_menu.setOnNavigationItemSelectedListener(tabSelected);
 
         profile_form.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -200,10 +164,10 @@ public class ProfileActivity extends BaseActivity {
                 if (prevMenuItem != null)
                     prevMenuItem.setChecked(false);
                 else
-                    nav_menu_home.getMenu().getItem(0).setChecked(false);
+                    nav_profile_menu.getMenu().getItem(0).setChecked(false);
 
-                nav_menu_home.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = nav_menu_home.getMenu().getItem(position);
+                nav_profile_menu.getMenu().getItem(position).setChecked(true);
+                prevMenuItem = nav_profile_menu.getMenu().getItem(position);
                 // Call start fragment when selected
                 CallStartFragment(position);
             }
@@ -217,23 +181,23 @@ public class ProfileActivity extends BaseActivity {
     // FillUserData
     protected void FillUserData()
     {
-        txtUsername = (TextView) findViewById(R.id.txtUsername);
+        txtUsername = (TextView) vMain.findViewById(R.id.txtUsername);
         txtUsername.setText(user.getUsername());
 
-        TextView txtName = (TextView) findViewById(R.id.txtName);
+        TextView txtName = (TextView) vMain.findViewById(R.id.txtName);
         txtName.setText(user.getName());
 
-        TextView txtSurname = (TextView) findViewById(R.id.txtSurname);
+        TextView txtSurname = (TextView) vMain.findViewById(R.id.txtSurname);
         txtSurname.setText(user.getSurname());
 
-        TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
+        TextView txtEmail = (TextView) vMain.findViewById(R.id.txtEmail);
         txtEmail.setText(user.getEmail());
 
-        imgProfile  = (ImageView) findViewById(R.id.imgProfile);
+        imgProfile  = (ImageView) vMain.findViewById(R.id.imgProfile);
         imgProfile.setClipToOutline(true);
         business.LoadUserImage(imgProfile);
 
-        btnChooseImage = (FloatingActionButton) findViewById(R.id.btnChooseImage);
+        btnChooseImage = (FloatingActionButton) vMain.findViewById(R.id.btnChooseImage);
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,51 +220,61 @@ public class ProfileActivity extends BaseActivity {
     @Override
     protected void OnRequestPostExecute()
     {
-        if(requestSuccess && retObj.isOkResponse())
+        if(requestSuccess && activity.retObj.isOkResponse())
         {
             imgProfile.setImageBitmap(profilePhoto);
             user.setProfileImage(business.ImageToString(profilePhoto));
             user.SaveOnXMLFile();
         }
         else
-            ShowShortMessage(retObj.getMessage());
+            ShowShortMessage(activity.retObj.getMessage());
         profilePhoto = null;
     }
     // Used to create fragments
     protected void CreateFragments()
     {
-        View mProgressViewTab = findViewById(R.id.progress_tab);
+        View mProgressViewTab = vMain.findViewById(R.id.progress_tab);
         galleryFragment = new GalleryFragment();
-        galleryFragment.SetActivity(ProfileActivity.this);
+        galleryFragment.SetActivity(activity);
         galleryFragment.setCurrentUser(user);
         galleryFragment.setFormView(profile_form);
         galleryFragment.setProgressView(mProgressViewTab);
+        galleryFragment.setParentFragment(this);
         sendRequestFragment = new SendRequestFragment();
-        sendRequestFragment.SetActivity(ProfileActivity.this);
+        sendRequestFragment.SetActivity(activity);
         sendRequestFragment.setCurrentUser(user);
         sendRequestFragment.setFormView(profile_form);
         sendRequestFragment.setProgressView(mProgressViewTab);
+        sendRequestFragment.setParentFragment(this);
         myEventsFragment = new MyEventsFragment();
-        myEventsFragment.SetActivity(ProfileActivity.this);
+        myEventsFragment.SetActivity(activity);
         myEventsFragment.setCurrentUser(user);
         myEventsFragment.setFormView(profile_form);
         myEventsFragment.setProgressView(mProgressViewTab);
+        myEventsFragment.setParentFragment(this);
     }
     // Used to call StartFragment of current fragment
     protected void CallStartFragment(int position)
     {
         currentMenuPosition = position;
-        ((ViewPagerAdapter)profile_form.getAdapter()).List().get(position).StartFragment();
+        FragmentBase fragment = ((ViewPagerAdapter)profile_form.getAdapter()).List().get(position);
+        getChildFragmentManager()
+                .beginTransaction()
+                .detach(fragment)
+                .attach(fragment)
+                .commit();
+        fragment.StartFragment();
     }
     // Used to set view pager for swipe touch screen
     protected void setupViewPager(ViewPager viewPager)
     {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.AddFragment(galleryFragment);
         adapter.AddFragment(sendRequestFragment);
         adapter.AddFragment(myEventsFragment);
         viewPager.setAdapter(adapter);
-    }// Used when user click in tab menu
+    }
+    // Used when user click in tab menu
     protected BottomNavigationView.OnNavigationItemSelectedListener tabSelected
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 

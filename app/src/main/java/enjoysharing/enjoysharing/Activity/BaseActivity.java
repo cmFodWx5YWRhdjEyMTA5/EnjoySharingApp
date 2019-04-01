@@ -58,7 +58,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected CurrentUser user;
     protected BusinessBase business;
     // Used to load menu elements
-    protected Toolbar toolbar;
+    public Toolbar toolbar;
     protected DrawerLayout drawer;
     protected NavigationView navigationView;
     protected BottomNavigationView nav_menu_home;
@@ -90,7 +90,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected ProgressBar row_progress_bar;
     protected ScrollView tableReloadScrollView;
     // Used to check current fragment
-    protected int currentMenuPosition;
+    public int currentMenuPosition;
     protected Bitmap currentUserImage;
     public ParameterCollection userImageToLoad;
     public ParameterCollection userImageUpdateDate;
@@ -151,7 +151,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
     }
     // Used to expand view childs
-    protected void expandChilds(LinearLayout view) {
+    public void expandChilds(LinearLayout view) {
         View child;
         for (int i = 0; i < view.getChildCount(); i++) {
             child = view.getChildAt(i);
@@ -188,7 +188,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         mAnimator.start();
     }
     // Used to collapse view childs
-    protected void collapseChilds(final LinearLayout view) {
+    public void collapseChilds(final LinearLayout view) {
         View child;
         for (int i = 0; i < view.getChildCount(); i++) {
             child = view.getChildAt(i);

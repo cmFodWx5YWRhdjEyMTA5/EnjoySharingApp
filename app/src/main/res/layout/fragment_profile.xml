@@ -1,0 +1,106 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="enjoysharing.enjoysharing.Fragment.ProfileFragment"
+    android:id="@+id/main_frame_profile">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/EnjoySharingProgressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="154dp"
+            tools:layout_editor_absoluteY="495dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnModifyProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparentColor"
+                    android:text="@string/btnModifyProfile"
+                    android:textColor="@color/baseColorButton" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/profile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtBlank"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/baseColorLight" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/nav_profile_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="0dp"
+            android:itemBackground="@color/whiteTrasparent"
+            android:textAlignment="center"
+            app:itemIconTint="@color/nav_profile_color"
+            app:itemTextColor="@color/nav_profile_color"
+            app:menu="@menu/nav_menu_profile"></android.support.design.widget.BottomNavigationView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp">
+
+            <ProgressBar
+                android:id="@+id/progress_tab"
+                style="@style/EnjoySharingProgressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="154dp"
+                tools:layout_editor_absoluteY="495dp" />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/profile_form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+</FrameLayout>
+
