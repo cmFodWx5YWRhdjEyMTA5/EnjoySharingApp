@@ -43,7 +43,7 @@ public class ProfileFragment extends FragmentBase {
     protected FloatingActionButton btnChooseImage;
     protected Bitmap profilePhoto;
     protected ImageView imgProfile;
-    protected int REQUEST_CODE = 1;
+    protected int REQUEST_CODE_CHOOSE_PHOTO = 10;
     protected boolean swipeState; // true = down done, false = up done
 
     @Override
@@ -113,7 +113,7 @@ public class ProfileFragment extends FragmentBase {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null ){
+        if(requestCode == REQUEST_CODE_CHOOSE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null ){
             Uri uri = data.getData();
             try {
                 profilePhoto = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
@@ -214,7 +214,7 @@ public class ProfileFragment extends FragmentBase {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE);
+            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE_CHOOSE_PHOTO);
         }
     }
     @Override

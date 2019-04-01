@@ -3,13 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_my_account"
-            android:icon="@drawable/ic_account_custom"
-            android:title="@string/nav_my_account" />
-    </group>
-
     <item android:title="@string/nav_general">
         <menu>
             <item

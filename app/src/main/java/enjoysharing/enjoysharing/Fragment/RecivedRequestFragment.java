@@ -160,10 +160,10 @@ public class RecivedRequestFragment extends FragmentBase {
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserRecivedRequest = (TextView)relLayout.findViewById(R.id.txtUserRecivedRequest);
-            txtUserRecivedRequest.setWidth(txtUserTitleWidth);
-            txtUserRecivedRequest.setText(card.getUsernames());
-            txtUserRecivedRequest.setOnClickListener(new View.OnClickListener() {
+            TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
+            txtUserCard.setWidth(txtUserTitleWidth);
+            txtUserCard.setText(card.getUsernames());
+            txtUserCard.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open list of persons
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getEventId()), true);
@@ -173,11 +173,11 @@ public class RecivedRequestFragment extends FragmentBase {
             // Set width based on screen percentage
             txtRecivedRequest.setWidth(txtUserTitleWidth);
             if(card.IsMultiUsers()) txtRecivedRequest.setText(R.string.txtMultiRequestRecived);
-            TextView txtTitleRecivedRequest = (TextView)relLayout.findViewById(R.id.txtTitleRecivedRequest);
+            TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
-            txtTitleRecivedRequest.setWidth(txtUserTitleWidth);
-            txtTitleRecivedRequest.setText(card.getTitle());
-            txtTitleRecivedRequest.setOnClickListener(new View.OnClickListener() {
+            txtTitleCard.setWidth(txtUserTitleWidth);
+            txtTitleCard.setText(card.getTitle());
+            txtTitleCard.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     // Open event detail
                     CardRequestRecived cardReq = (CardRequestRecived) cardCollection.GetCard(card.getEventId());

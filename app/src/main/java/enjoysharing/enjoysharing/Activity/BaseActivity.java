@@ -459,7 +459,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         overridePendingTransition(0, R.anim.activity_exit_to_top);
     }
     // Back to Activity with swipe from Down to Up when called from startActivityForResult
-    protected void SwipeUpCloseActivityFromResult(Context context, Class cl)
+    protected void SwipeUpCloseActivityFromResult()
     {
         //setResult(Activity.RESULT_OK, intent);
         finish();

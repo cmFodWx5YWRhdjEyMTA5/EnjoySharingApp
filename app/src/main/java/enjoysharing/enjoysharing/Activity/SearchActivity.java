@@ -260,8 +260,8 @@ public class SearchActivity extends BaseActivity {
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
             txtContentCard.setText(card.getContent());
 
-            ImageView imgUserCardHome = (ImageView)relLayout.findViewById(R.id.imgUserCardHome);
-            AddUserToLoadImage(card,imgUserCardHome);
+            ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);
+            AddUserToLoadImage(card,imgUserCard);
 
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));

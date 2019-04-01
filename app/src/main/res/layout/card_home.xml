@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imgUserCardHome"
+                android:id="@+id/imgUserCard"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentTop="true"
@@ -74,7 +74,7 @@
                 android:id="@+id/txtTitleCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imgUserCardHome"
+                android:layout_alignBottom="@+id/imgUserCard"
                 android:layout_alignStart="@+id/txtUserCard"
                 android:layout_weight="1"
                 android:singleLine="true"
@@ -85,8 +85,8 @@
                 android:id="@+id/txtDateEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/txtTitleCardMyEvent"
-                android:layout_alignStart="@+id/txtTitleCardMyEvent"
+                android:layout_alignBottom="@+id/txtTitle"
+                android:layout_alignStart="@+id/txtTitle"
                 android:layout_weight="1"
                 android:textAlignment="textStart"
                 android:textColor="@color/grey_dark"
@@ -109,7 +109,7 @@
                 android:id="@+id/txtContentCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/imgUserCardHome"
+                android:layout_below="@+id/imgUserCard"
                 android:layout_centerHorizontal="false"
                 android:layout_weight="1"
                 android:ellipsize="end"

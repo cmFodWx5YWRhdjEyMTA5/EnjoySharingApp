@@ -190,9 +190,9 @@ public class HomeFragment extends FragmentBase {
             txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
             txtContentCard.setText(card.getContent());
 
-            ImageView imgUserCardHome = (ImageView)relLayout.findViewById(R.id.imgUserCardHome);
-            AddUserToLoadImage(card,imgUserCardHome);
-            imgUserCardHome.setOnClickListener(new View.OnClickListener() {
+            ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);
+            AddUserToLoadImage(card,imgUserCard);
+            imgUserCard.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     OpenUserProfile(card.getUserId());
                 }

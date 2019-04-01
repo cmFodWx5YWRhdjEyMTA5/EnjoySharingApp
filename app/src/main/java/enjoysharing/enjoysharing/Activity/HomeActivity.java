@@ -213,9 +213,6 @@ public class HomeActivity extends BaseActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.nav_my_account:
-                    OpenActivityNoFinish(context,ProfileActivity.class);
-                    break;
                 case R.id.nav_settings:
                     OpenActivityNoFinish(context, SettingsActivity.class);
                     break;

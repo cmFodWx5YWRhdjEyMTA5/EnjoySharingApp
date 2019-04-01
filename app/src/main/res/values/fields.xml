@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nav_my_account">Il mio account</string>
     <string name="nav_general">Generali</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="nav_logout">Disconnetti</string>
@@ -14,7 +13,7 @@
     <string name="nav_gallery_profile">Galleria</string>
     <string name="nav_send_request_profile">Richieste Inviate</string>
     <string name="nav_my_events_profile">I Miei Eventi</string>
-    <string name="btnModifyProfile">Modifica</string>
+    <string name="btnModifyProfile">Modifica Profilo</string>
 
     <!-- Simple text -->
     <string name="txtSimple_users">Utenti</string>
@@ -35,13 +34,9 @@
     <string name="btnLogin">Connettiti</string>
 
     <!-- Card Detail -->
-    <string name="txtTitleHomeDetail">Titolo Evento</string>
-    <string name="txtContentHomeDetail">Descrizione Evento</string>
     <string name="btnPartecipateRequest">Partecipa</string>
 
     <!-- Iuevent -->
-    <string name="txtTitleIUEvent">Titolo Evento</string>
-    <string name="txtContentIUEvent">Descrizione Evento</string>
     <string name="btnCreateEvent">Fatto</string>
 
     <!-- Profile Info -->
@@ -56,12 +51,6 @@
 
     <!-- Request List -->
     <string name="txtSearch">Cerca Eventi</string>
-
-    <!-- Card Home-->
-    <string name="txtContentCardHome">Contenuto</string>
-
-    <!-- My Event-->
-    <string name="txtContentCardMyEvent">Contenuto</string>
 
     <!-- Request Received-->
     <string name="txtRecivedRequest">ha chiesto di partecipare all\'evento</string>

@@ -115,29 +115,35 @@ public class MyEventsFragment extends FragmentBase {
             final CardMyEvent card = (CardMyEvent)cards.List().get(i);
             if(CardAlreadyExists(card)) continue;
             TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_my_event, null);
+            
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
+            
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardMyEvent = (TextView)relLayout.findViewById(R.id.txtUserCardMyEvent);
+            TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
-            txtUserCardMyEvent.setWidth(txtUserTitleWidth);
-            txtUserCardMyEvent.setText(card.getUserName());
-            TextView txtTitleCardMyEvent = (TextView)relLayout.findViewById(R.id.txtTitleCardMyEvent);
+            txtUserCard.setWidth(txtUserTitleWidth);
+            txtUserCard.setText(card.getUserName());
+            
+            TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
-            txtTitleCardMyEvent.setWidth(txtUserTitleWidth);
-            txtTitleCardMyEvent.setText(card.getTitle());
-            TextView txtContentCardMyEvent = (TextView)relLayout.findViewById(R.id.txtContentCardMyEvent);
+            txtTitleCard.setWidth(txtUserTitleWidth);
+            txtTitleCard.setText(card.getTitle());
+            
+            TextView txtContentCard = (TextView)relLayout.findViewById(R.id.txtContentCard);
             // Set the same width of parent - tollerance
-            txtContentCardMyEvent.setWidth(((LinearLayout)txtContentCardMyEvent.getParent()).getWidth()-parentTollerancePX);
-            txtContentCardMyEvent.setText(card.getContent());
+            txtContentCard.setWidth(((LinearLayout)txtContentCard.getParent()).getWidth()-parentTollerancePX);
+            txtContentCard.setText(card.getContent());
 
-            ImageView imgUserCardMyEvent = (ImageView)relLayout.findViewById(R.id.imgUserCardMyEvent);
-            imgUserCardMyEvent.setClipToOutline(true);
-            business.LoadUserImage(imgUserCardMyEvent);
+            ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);
+            imgUserCard.setClipToOutline(true);
+            business.LoadUserImage(imgUserCard);
 
             TextView txtDateEvent = (TextView)relLayout.findViewById(R.id.txtDateEvent);
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
+            
             TextView txtNumberPerson = (TextView)relLayout.findViewById(R.id.txtNumberPerson);
             txtNumberPerson.setText(card.getAcceptedRequest() + "/" + card.getMaxRequest());
+            
             final ImageButton imgBtnNumberPerson = (ImageButton) relLayout.findViewById(R.id.imgBtnNumberPerson);
             imgBtnNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -145,14 +151,17 @@ public class MyEventsFragment extends FragmentBase {
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, card, true);
                 }
             });
+            
             LinearLayout layoutNumberPerson = (LinearLayout) relLayout.findViewById(R.id.layoutNumberPerson);
             layoutNumberPerson.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     imgBtnNumberPerson.performClick();
                 }
             });
+            
             ImageView imgBtnGender = (ImageView)relLayout.findViewById(R.id.imgBtnGender);
             imgBtnGender.setImageResource(business.GetGenderIcon(card.getGenderEventId()));
+            
             TextView txtGender = (TextView)relLayout.findViewById(R.id.txtGender);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
             row.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +169,7 @@ public class MyEventsFragment extends FragmentBase {
                     onRowClick(v, card.getEventId());
                 }
             });
+            
             table.addView(row);
             AddToExistingCards(card);
         }

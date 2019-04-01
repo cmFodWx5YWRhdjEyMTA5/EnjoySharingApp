@@ -28,12 +28,12 @@ import enjoysharing.enjoysharing.R;
 
 public class IUEventActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    protected EditText txtTitleIUEvent;
+    protected EditText txtTitleCard;
     protected Spinner genderIUEvent;
     protected ImageView imgBtnGender;
-    protected EditText txtContentIUEvent;
+    protected EditText txtContentCard;
     protected EditText txtNumberPerson;
-    protected TextView txtUserIUEvent;
+    protected TextView txtUserCard;
     protected TextView txtDateEvent;
     protected ImageButton imgBtnEventDate;
     //protected ImageButton imgBtnNumberPerson;
@@ -67,9 +67,9 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         mFormView = findViewById(R.id.iuevent_form);
         mProgressView = findViewById(R.id.iuevent_progress);
 
-        ImageView imgUserCardIUEvent = (ImageView)findViewById(R.id.imgUserCardIUEvent);
-        imgUserCardIUEvent.setClipToOutline(true);
-        business.LoadUserImage(imgUserCardIUEvent);
+        ImageView imgUserCard = (ImageView)findViewById(R.id.imgUserCard);
+        imgUserCard.setClipToOutline(true);
+        business.LoadUserImage(imgUserCard);
 
         genderIUEvent = (Spinner) findViewById(R.id.genderIUEvent);
         // Adapter for textsize
@@ -109,11 +109,11 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         });
         txtGender = (TextView)findViewById(R.id.txtGender);
 
-        txtTitleIUEvent = (EditText) findViewById(R.id.txtTitleIUEvent);
-        txtContentIUEvent = (EditText) findViewById(R.id.txtContentIUEvent);
+        txtTitleCard = (EditText) findViewById(R.id.txtTitleCard);
+        txtContentCard = (EditText) findViewById(R.id.txtContentCard);
         // In case of update username remain because is MY EVENTS!
-        txtUserIUEvent = (TextView) findViewById(R.id.txtUserIUEvent);
-        txtUserIUEvent.setText(user.getUsername());
+        txtUserCard = (TextView) findViewById(R.id.txtUserCard);
+        txtUserCard.setText(user.getUsername());
 
         txtNumberPerson = (EditText) findViewById(R.id.txtNumberPerson);
         layoutNumberPerson = (LinearLayout) findViewById(R.id.layoutNumberPerson);
@@ -169,8 +169,8 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             final CardMyEvent card = (CardMyEvent) cardBase;
             isUpdate = true;
             EventId = card.getEventId();
-            txtTitleIUEvent.setText(card.getTitle());
-            txtContentIUEvent.setText(card.getContent());
+            txtTitleCard.setText(card.getTitle());
+            txtContentCard.setText(card.getContent());
             txtNumberPerson.setText(""+card.getMaxRequest());
             genderIUEvent.setSelection(card.getGenderEventId()-1);
             txtGender.setText(business.GetGenderItem(card.getGenderEventId()-1));
@@ -203,8 +203,8 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             mTask = new RequestTask(true, false, "EventServlet");
             mTask.AddParameter("RequestType",isUpdate?"UE":"NE");
             mTask.AddParameter("EventId",EventId);
-            mTask.AddParameter("Title",txtTitleIUEvent.getText());
-            mTask.AddParameter("Content",txtContentIUEvent.getText());
+            mTask.AddParameter("Title",txtTitleCard.getText());
+            mTask.AddParameter("Content",txtContentCard.getText());
             mTask.AddParameter("MaxRequest",txtNumberPerson.getText());
             mTask.AddParameter("GenderEventId",business.GetGenderIndex(genderIUEvent.getSelectedItem().toString())+1);
             mTask.AddParameter("DateEvent",business.GetDateStringShort(DateEvent));
@@ -232,14 +232,14 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         }
 
         // Reset errors.
-        txtTitleIUEvent.setError(null);
-        txtContentIUEvent.setError(null);
+        txtTitleCard.setError(null);
+        txtContentCard.setError(null);
         txtNumberPerson.setError(null);
         txtDateEvent.setError(null);
 
         // Store values to check
-        String title = txtTitleIUEvent.getText().toString();
-        String content = txtContentIUEvent.getText().toString();
+        String title = txtTitleCard.getText().toString();
+        String content = txtContentCard.getText().toString();
         String numberPerson = txtNumberPerson.getText().toString();
         String eventDate = txtDateEvent.getText().toString();
 
@@ -260,14 +260,14 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
         }
         // Check for content
         if (TextUtils.isEmpty(content)) {
-            txtContentIUEvent.setError(getString(R.string.error_content_required));
-            focusView = txtContentIUEvent;
+            txtContentCard.setError(getString(R.string.error_content_required));
+            focusView = txtContentCard;
             cancel = true;
         }
         // Check for title
         if (TextUtils.isEmpty(title)) {
-            txtTitleIUEvent.setError(getString(R.string.error_title_required));
-            focusView = txtTitleIUEvent;
+            txtTitleCard.setError(getString(R.string.error_title_required));
+            focusView = txtTitleCard;
             cancel = true;
         }
         if (cancel) {

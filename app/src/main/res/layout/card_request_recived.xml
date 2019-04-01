@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtUserRecivedRequest"
+                android:id="@+id/txtUserCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,8 +38,8 @@
                 android:id="@+id/txtRecivedRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imgUserCardMyEvent"
-                android:layout_alignStart="@+id/txtUserCardMyEvent"
+                android:layout_alignBottom="@+id/imgUserCard"
+                android:layout_alignStart="@+id/txtUserCard"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="@string/txtRecivedRequest"
@@ -47,10 +47,10 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/txtTitleRecivedRequest"
+                android:id="@+id/txtTitleCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/txtUserCardMyEvent"
+                android:layout_alignStart="@+id/txtUserCard"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text=""

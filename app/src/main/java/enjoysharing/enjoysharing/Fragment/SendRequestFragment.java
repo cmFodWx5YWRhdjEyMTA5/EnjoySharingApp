@@ -170,24 +170,24 @@ public class SendRequestFragment extends FragmentBase {
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
 
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
-            TextView txtUserCardSendRequest = (TextView)relLayout.findViewById(R.id.txtUserCardSendRequest);
+            TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             // Set width based on screen percentage
-            txtUserCardSendRequest.setWidth(txtUserTitleWidth);
-            txtUserCardSendRequest.setText(card.getUserName());
-            txtUserCardSendRequest.setOnClickListener(new View.OnClickListener() {
+            txtUserCard.setWidth(txtUserTitleWidth);
+            txtUserCard.setText(card.getUserName());
+            txtUserCard.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     OpenUserProfile(card.getUserId());
                 }
             });
 
-            TextView txtTitleCardSendRequest = (TextView)relLayout.findViewById(R.id.txtTitleCardSendRequest);
+            TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
-            txtTitleCardSendRequest.setWidth(txtUserTitleWidth);
-            txtTitleCardSendRequest.setText(card.getTitle());
+            txtTitleCard.setWidth(txtUserTitleWidth);
+            txtTitleCard.setText(card.getTitle());
 
-            ImageView imgUserCardSendRequest = (ImageView)relLayout.findViewById(R.id.imgUserCardSendRequest);
-            AddUserToLoadImage(card,imgUserCardSendRequest);
-            imgUserCardSendRequest.setOnClickListener(new View.OnClickListener() {
+            ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);
+            AddUserToLoadImage(card,imgUserCard);
+            imgUserCard.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     OpenUserProfile(card.getUserId());
                 }
