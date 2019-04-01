@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
+import java.util.Date;
 import enjoysharing.enjoysharing.Activity.BaseActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
@@ -217,6 +218,11 @@ public class FragmentBase extends Fragment {
     protected void AddUserToLoadImage(CardBase card, ImageView imageView)
     {
         activity.AddUserToLoadImage(card,imageView);
+    }
+    // Used to add user for load image profile
+    protected void AddUserToLoadImage(String userId, Date LastUpdateProfileImage, ImageView imageView)
+    {
+        activity.AddUserToLoadImage(userId, LastUpdateProfileImage, imageView);
     }
     // Used to add into card list
     protected void AddToExistingCards(CardBase card)

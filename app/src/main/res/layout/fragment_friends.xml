@@ -5,25 +5,46 @@
     tools:context="enjoysharing.enjoysharing.Fragment.FriendsFragment"
     android:id="@+id/main_frame_friends">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeToRefresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ScrollView
-            android:id="@+id/tableFriendsScrollView"
+        <EditText
+            android:id="@+id/txtSearch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Cerca"
+            android:inputType="textPersonName" />
 
-            <TableLayout
-                android:id="@+id/tableFriends"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ScrollView
+                android:id="@+id/tableFriendsScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </TableLayout>
-        </ScrollView>
+                <TableLayout
+                    android:id="@+id/tableFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+                </TableLayout>
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 </FrameLayout>
 

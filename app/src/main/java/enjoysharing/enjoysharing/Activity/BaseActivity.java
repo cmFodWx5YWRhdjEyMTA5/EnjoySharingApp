@@ -328,7 +328,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         AddUserToLoadImage(userId, LastUpdateProfileImage, imageView);
     }
 
-    protected void AddUserToLoadImage(String userId, Date LastUpdateProfileImage, ImageView imageView)
+    public void AddUserToLoadImage(String userId, Date LastUpdateProfileImage, ImageView imageView)
     {
         if(userImageToLoad == null)
             userImageToLoad = new ParameterCollection();

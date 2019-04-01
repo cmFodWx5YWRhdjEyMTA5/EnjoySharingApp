@@ -159,6 +159,7 @@ public class RecivedRequestFragment extends FragmentBase {
             if(CardAlreadyExists(card)) continue;
             final TableRow row = (TableRow) LayoutInflater.from(activity).inflate(R.layout.card_request_recived, null);
             LinearLayout relLayout = (LinearLayout)row.getChildAt(0);
+
             // row.getChildAt(0) è il relative layout che contiene tutti gli elementi
             TextView txtUserCard = (TextView)relLayout.findViewById(R.id.txtUserCard);
             txtUserCard.setWidth(txtUserTitleWidth);
@@ -169,10 +170,12 @@ public class RecivedRequestFragment extends FragmentBase {
                     OpenRequestList(activity.getBaseContext(),RequestListActivity.class, cardCollection.GetCard(card.getEventId()), true);
                 }
             });
+
             TextView txtRecivedRequest = (TextView)relLayout.findViewById(R.id.txtRecivedRequest);
             // Set width based on screen percentage
             txtRecivedRequest.setWidth(txtUserTitleWidth);
             if(card.IsMultiUsers()) txtRecivedRequest.setText(R.string.txtMultiRequestRecived);
+
             TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
             // Set width based on screen percentage
             txtTitleCard.setWidth(txtUserTitleWidth);
@@ -187,6 +190,7 @@ public class RecivedRequestFragment extends FragmentBase {
                     }
                 }
             });
+
             final Button btnConfirmRequest = (Button)relLayout.findViewById(R.id.btnConfirmRequest);
             final Button btnDeclineRequest = (Button)relLayout.findViewById(R.id.btnDeclineRequest);
             final TextView txtConfirmDeclineRequest = (TextView)relLayout.findViewById(R.id.txtConfirmDeclineRequest);
@@ -200,11 +204,13 @@ public class RecivedRequestFragment extends FragmentBase {
                     onRequestDecline(card.getEventId(),btnConfirmRequest, btnDeclineRequest, txtConfirmDeclineRequest);
                 }
             });
+
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     onRowClick(v);
                 }
             });
+
             table.addView(row);
             AddToExistingCards(card);
         }
