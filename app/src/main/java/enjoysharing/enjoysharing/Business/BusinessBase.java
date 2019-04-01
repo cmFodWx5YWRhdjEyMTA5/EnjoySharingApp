@@ -2,6 +2,7 @@ package enjoysharing.enjoysharing.Business;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.util.Base64;
 import android.widget.Button;
@@ -349,8 +350,35 @@ public class BusinessBase {
         return resultCards;
     }
 
+    // Method for Request Status
+    // TODO
+    //Aggiungere in input anche la view e aggiungere ai case il richiamo ai drwable creati per i colori
+    public void getRequestStatus(int requestStatusId, TextView RequestView)
+    {
+        String text = null;
+        int imgCode = 0;
+        switch (requestStatusId) {
+            case 1:
+                text =  activity.getString(R.string.txtRequestAccepted);
+                imgCode = R.drawable.button_border_green;
+                break;
+            case 2:
+                text = activity.getString(R.string.txtRequestSuspended);
+                imgCode = R.drawable.button_border_grey;
+                break;
+            case 3:
+                text = activity.getString(R.string.txtRequestDeclined);
+                imgCode = R.drawable.button_border_red;
+                break;
+        }
+
+        RequestView.setText(text);
+        RequestView.setForeground(ContextCompat.getDrawable(activity.getBaseContext(), imgCode));
+    }
+
     // Used by BusinessJSON
     public ParameterCollection GetParamsByJSON(String message) {
         return null;
     }
+
 }

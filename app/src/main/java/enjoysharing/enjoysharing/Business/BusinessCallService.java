@@ -31,7 +31,7 @@ public class BusinessCallService {
     protected boolean executeGet = false;
     // Questa variabile la uso per le esecuzioni a server spento!
     // Di default è true ma in realtà viene valorizzata con quella dell'Activity!
-    public boolean simulateCall = true;
+    public boolean simulateCall = false;
     // Siccome la conversione da bitmap a string ci mette molto gliela faccio fare nell'async!
     protected Bitmap bitmap = null;
     protected String bitmapField = "Bitmap";
