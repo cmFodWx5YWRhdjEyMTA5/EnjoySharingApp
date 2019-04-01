@@ -82,6 +82,10 @@
     <string name="txtConfirmedRequest">Tutte le richieste accettate</string>
     <string name="txtDeclinedRequest">Tutte le richieste rifiutate</string>
 
+    <string name="txtRequestAccepted">Accettata</string>
+    <string name="txtRequestDeclined">Rifiutata</string>
+    <string name="txtRequestSuspended">In Attesa</string>
+
     <string name="txtName">Nome:</string>
     <string name="txtSurname">Cognome:</string>
     <string name="txtEmail">Email:</string>

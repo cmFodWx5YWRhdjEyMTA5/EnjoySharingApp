@@ -179,6 +179,10 @@ public class SendRequestFragment extends FragmentBase {
             // Set width based on screen percentage
             txtTitleCardSendRequest.setWidth(txtUserTitleWidth);
             txtTitleCardSendRequest.setText(card.getTitle());
+            // Set RequestStatus
+            TextView txtRequestStatus = (TextView)relLayout.findViewById(R.id.txtRequestStatus);
+            txtRequestStatus.setWidth(txtUserTitleWidth);
+            business.getRequestStatus(card.getRequestStatusId(), txtRequestStatus);
 
             ImageView imgUserCardSendRequest = (ImageView)relLayout.findViewById(R.id.imgUserCardSendRequest);
             AddUserToLoadImage(card,imgUserCardSendRequest);
