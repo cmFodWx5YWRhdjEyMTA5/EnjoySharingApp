@@ -13,6 +13,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -184,6 +187,11 @@ public class SendRequestFragment extends FragmentBase {
             // Set width based on screen percentage
             txtTitleCard.setWidth(txtUserTitleWidth);
             txtTitleCard.setText(card.getTitle());
+
+            // Set RequestStatus
+            TextView txtRequestStatus = (TextView)relLayout.findViewById(R.id.txtRequestStatus);
+            txtRequestStatus.setWidth(txtUserTitleWidth);
+            business.getRequestStatus(card.getRequestStatusId(), txtRequestStatus);
 
             ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);
             AddUserToLoadImage(card,imgUserCard);
