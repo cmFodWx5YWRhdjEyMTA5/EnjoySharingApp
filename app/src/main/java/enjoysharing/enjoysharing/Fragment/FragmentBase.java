@@ -269,6 +269,7 @@ public class FragmentBase extends Fragment {
         mTask = null;
         ShowProgress(false);
     }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.

@@ -109,9 +109,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
     public Bitmap GetCurrentUserImage()
     {
+        return GetCurrentUserImage(false);
+    }
+
+    public Bitmap GetCurrentUserImage(boolean reloadImage)
+    {
         if(user.getProfileImage() != null && !user.getProfileImage().equals(""))
         {
-            if(currentUserImage == null)
+            if(currentUserImage == null || reloadImage)
                 currentUserImage = business.StringToImage(user.getProfileImage());
             return currentUserImage;
         }
@@ -159,29 +164,29 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
     // Used to expand VIEWS
-    protected void expand(View view, int duration, int finalHeight) {
+    public void expand(View view, int duration, int finalHeight) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimator(view, initialHeight, finalHeight);
         mAnimator.setDuration(duration);
         mAnimator.start();
     }
     // Used to expand VIEWS
-    protected void expand(View view, int duration) {
+    public void expand(View view, int duration) {
         expand(view,duration,ViewGroup.LayoutParams.WRAP_CONTENT);
     }
     // Used to expand VIEWS
-    protected void expand(View view) {
+    public void expand(View view) {
         expand(view,500);
     }
     // Used to expand IMAGE VIEWS
-    protected void expandImageView(View view, int duration, int finalHeight) {
+    public void expandImageView(View view, int duration, int finalHeight) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimatorImageView(view, initialHeight, finalHeight);
         mAnimator.setDuration(duration);
         mAnimator.start();
     }
     // Used to expand Width
-    protected void expandWidth(View view) {
+    public void expandWidth(View view) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimatorWidth(view, initialHeight, ViewGroup.LayoutParams.WRAP_CONTENT);
         mAnimator.setDuration(500);
@@ -196,29 +201,29 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
     // Used to collapse view
-    protected void collapse(View view, int duration, int finalHeight) {
+    public void collapse(View view, int duration, int finalHeight) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimator(view, initialHeight, finalHeight);
         mAnimator.setDuration(duration);
         mAnimator.start();
     }
     // Used to collapse view
-    protected void collapse(View view, int duration) {
+    public void collapse(View view, int duration) {
         collapse(view,duration,0);
     }
     // Used to collapse view
-    protected void collapse(View view) {
+    public void collapse(View view) {
         collapse(view,500);
     }
     // Used to collapse image view
-    protected void collapseImageView(View view, int duration, int finalHeight) {
+    public void collapseImageView(View view, int duration, int finalHeight) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimatorImageView(view, initialHeight, finalHeight);
         mAnimator.setDuration(duration);
         mAnimator.start();
     }
     // Used to collapse Width
-    protected void collapseWidth(View view) {
+    public void collapseWidth(View view) {
         int initialHeight = view.getHeight();
         ValueAnimator mAnimator = slideAnimatorWidth(view, initialHeight, 0);
         mAnimator.setDuration(500);

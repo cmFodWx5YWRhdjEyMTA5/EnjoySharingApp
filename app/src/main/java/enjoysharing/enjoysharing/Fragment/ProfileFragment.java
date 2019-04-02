@@ -1,15 +1,11 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,7 +15,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.io.IOException;
+
 import enjoysharing.enjoysharing.Activity.IUProfileActivity;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -35,16 +33,9 @@ public class ProfileFragment extends FragmentBase {
     protected GalleryFragment galleryFragment;
     protected SendRequestFragment sendRequestFragment;
     protected MyEventsFragment myEventsFragment;
+    protected LinearLayout profile_info_layout;
     protected LinearLayout image_user_layout;
-    protected LinearLayout info_profile_layout;
-    protected boolean infoVisible = false;
     protected TextView txtUsername;
-    protected Button btnViewInfoProfile;
-    protected FloatingActionButton btnChooseImage;
-    protected Bitmap profilePhoto;
-    protected ImageView imgProfile;
-    protected int REQUEST_CODE_CHOOSE_PHOTO = 10;
-    protected boolean swipeState; // true = down done, false = up done
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +54,6 @@ public class ProfileFragment extends FragmentBase {
 
         CreateFragments();
         setupViewPager(profile_form);
-        swipeState = true;
 
         Button btnModifyProfile = (Button) vMain.findViewById(R.id.btnModifyProfile);
         btnModifyProfile.setOnClickListener(new View.OnClickListener() {
@@ -73,26 +63,9 @@ public class ProfileFragment extends FragmentBase {
             }
         });
 
-        image_user_layout = (LinearLayout) vMain.findViewById(R.id.image_user_layout);
+        profile_info_layout = (LinearLayout) vMain.findViewById(R.id.profile_info_layout);
 
-        info_profile_layout = vMain.findViewById(R.id.info_profile_layout);
-        btnViewInfoProfile = vMain.findViewById(R.id.btnViewInfoProfile);
-        btnViewInfoProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(infoVisible)
-                {
-                    activity.collapseChilds(info_profile_layout);
-                    ((Button)view).setText(getString(R.string.btnShowViewInfoProfile));
-                }
-                else
-                {
-                    activity.expandChilds(info_profile_layout);
-                    ((Button)view).setText(getString(R.string.btnHideViewInfoProfile));
-                }
-                infoVisible = !infoVisible;
-            }
-        });
+        image_user_layout = (LinearLayout) vMain.findViewById(R.id.image_user_layout);
     }
     @Override
     protected boolean CheckForCurrentFragment() { return activity.getCurrentMenuPosition()==4; }
@@ -113,37 +86,7 @@ public class ProfileFragment extends FragmentBase {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_CHOOSE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null ){
-            Uri uri = data.getData();
-            try {
-                profilePhoto = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
-                SavePhoto();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            user.LoadFromXMLFile();
-            FillUserData();
-        }
         CallStartFragment(currentMenuPosition);
-    }
-    protected void SavePhoto()
-    {
-        mTask = new FragmentRequestTask(true, false, "UserServlet",false);
-        mTask.AddParameter("RequestType","SP");  // Save Photo
-        mTask.SetBitmap("Photo",profilePhoto);
-        try
-        {
-            mTask.execute();
-        }
-        catch (Exception e)
-        {
-            activity.retObj.setStateResponse(false);
-            activity.retObj.setMessage("GeneralError");
-        }
     }
     // Used to create menu elements
     protected void CreateMenuElements()
@@ -184,51 +127,9 @@ public class ProfileFragment extends FragmentBase {
         txtUsername = (TextView) vMain.findViewById(R.id.txtUsername);
         txtUsername.setText(user.getUsername());
 
-        TextView txtName = (TextView) vMain.findViewById(R.id.txtName);
-        txtName.setText(user.getName());
-
-        TextView txtSurname = (TextView) vMain.findViewById(R.id.txtSurname);
-        txtSurname.setText(user.getSurname());
-
-        TextView txtEmail = (TextView) vMain.findViewById(R.id.txtEmail);
-        txtEmail.setText(user.getEmail());
-
-        imgProfile  = (ImageView) vMain.findViewById(R.id.imgProfile);
+        ImageView imgProfile  = (ImageView) vMain.findViewById(R.id.imgProfile);
         imgProfile.setClipToOutline(true);
-        business.LoadUserImage(imgProfile);
-
-        btnChooseImage = (FloatingActionButton) vMain.findViewById(R.id.btnChooseImage);
-        btnChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-
-        profilePhoto = null;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    protected void selectImage(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE_CHOOSE_PHOTO);
-        }
-    }
-    @Override
-    protected void OnRequestPostExecute()
-    {
-        if(requestSuccess && activity.retObj.isOkResponse())
-        {
-            imgProfile.setImageBitmap(profilePhoto);
-            user.setProfileImage(business.ImageToString(profilePhoto));
-            user.SaveOnXMLFile();
-        }
-        else
-            ShowShortMessage(activity.retObj.getMessage());
-        profilePhoto = null;
+        business.LoadUserImage(imgProfile,true);
     }
     // Used to create fragments
     protected void CreateFragments()

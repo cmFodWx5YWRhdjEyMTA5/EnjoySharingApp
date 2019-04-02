@@ -1,11 +1,20 @@
 package enjoysharing.enjoysharing.Activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import java.io.IOException;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
 
@@ -13,6 +22,11 @@ public class IUProfileActivity extends BaseActivity {
 
     protected EditText txtName;
     protected EditText txtSurname;
+    protected FloatingActionButton btnChooseImage;
+    protected Bitmap profilePhoto;
+    protected ImageView imgProfile;
+    protected int REQUEST_CODE_CHOOSE_PHOTO = 10;
+    protected boolean postForImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +56,20 @@ public class IUProfileActivity extends BaseActivity {
         txtSurname = (EditText) findViewById(R.id.txtSurname);
         txtSurname.setText(user.getSurname());
 
+        imgProfile  = (ImageView) findViewById(R.id.imgProfile);
+        imgProfile.setClipToOutline(true);
+        business.LoadUserImage(imgProfile);
+
+        btnChooseImage = (FloatingActionButton) findViewById(R.id.btnChooseImage);
+        btnChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+
+        profilePhoto = null;
+
         Button btnSaveProfile = (Button) findViewById(R.id.btnSaveProfile);
         btnSaveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,9 +85,53 @@ public class IUProfileActivity extends BaseActivity {
         SwipeUpCloseActivityFromResult();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    protected void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            startActivityForResult(Intent.createChooser(intent,"Select Picture"),REQUEST_CODE_CHOOSE_PHOTO);
+        }
+    }
+
+    // Used when activity reloaded
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_CHOOSE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null ){
+            Uri uri = data.getData();
+            try {
+                profilePhoto = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                SavePhoto();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void SavePhoto()
+    {
+        postForImage = true;
+        mTask = new RequestTask(true, false, "UserServlet",false);
+        mTask.AddParameter("RequestType","SP");  // Save Photo
+        mTask.SetBitmap("Photo",profilePhoto);
+        try
+        {
+            mTask.execute();
+        }
+        catch (Exception e)
+        {
+            retObj.setStateResponse(false);
+            retObj.setMessage("GeneralError");
+        }
+    }
+
     // Used to store information profile
     protected void SaveProfile()
     {
+        postForImage = false;
         if(CheckInformations())
         {
             showProgress(true);
@@ -120,11 +192,23 @@ public class IUProfileActivity extends BaseActivity {
     {
         if(requestSuccess && retObj.isOkResponse())
         {
-            SaveUser();
-            onBackPressed();
+            if(postForImage)
+            {
+                imgProfile.setImageBitmap(profilePhoto);
+                user.setProfileImage(business.ImageToString(profilePhoto));
+                user.SaveOnXMLFile();
+                business.LoadUserImage(imgProfile,true);
+            }
+            else
+            {
+                SaveUser();
+                onBackPressed();
+            }
         }
         else
             ShowShortMessage(retObj.getMessage());
+        profilePhoto = null;
+        postForImage = false;
     }
 
     protected void SaveUser()

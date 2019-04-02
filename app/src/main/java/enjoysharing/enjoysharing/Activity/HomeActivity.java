@@ -67,7 +67,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ((ViewPagerAdapter)viewPager.getAdapter()).List().get(currentMenuPosition).onActivityResult(requestCode, resultCode, data);
+        user.LoadFromXMLFile();
+        FillUserData();
         CallStartFragment(currentMenuPosition);
     }
     // Used to create fragments

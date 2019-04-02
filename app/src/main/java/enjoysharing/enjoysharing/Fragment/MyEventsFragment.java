@@ -1,6 +1,5 @@
 package enjoysharing.enjoysharing.Fragment;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,7 @@ import enjoysharing.enjoysharing.R;
 public class MyEventsFragment extends FragmentBase {
 
     protected TableLayout tableCardsMyEvent;
+    protected ScrollView tableMyEventScrollView;
     // Alla selezione di un tab vengono caricati anche il precedente ed il successivo
     // quindi la funzionalità la metto in un metodo a parte!
     @Override
@@ -32,8 +32,10 @@ public class MyEventsFragment extends FragmentBase {
         // Inflate the layout for this fragment
         vMain = inflater.inflate(R.layout.fragment_my_events, container, false);
         tableCardsMyEvent = (TableLayout) vMain.findViewById(R.id.tableCardsMyEvent);
-        setFormView((FrameLayout) vMain.findViewById(R.id.main_frame_my_event));
-        setTableReloadScrollView((ScrollView)vMain.findViewById(R.id.tableMyEventScrollView));
+        final FrameLayout main_frame_my_event = (FrameLayout) vMain.findViewById(R.id.main_frame_my_event);
+        setFormView(main_frame_my_event);
+        tableMyEventScrollView = (ScrollView)vMain.findViewById(R.id.tableMyEventScrollView);
+        setTableReloadScrollView(tableMyEventScrollView);
         reloadOnSwipeBottom = true;
         super.onCreateView(inflater,container,savedInstanceState);
         return vMain;

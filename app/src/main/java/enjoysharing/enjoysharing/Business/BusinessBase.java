@@ -44,7 +44,7 @@ public class BusinessBase {
         this.activity = activity;
     }
 
-    public int PixelToDP(int pixels)
+    public int DPToPixel(int pixels)
     {
         final float scale = activity.getResources().getDisplayMetrics().density;
         return (int) (pixels * scale + 0.5f);
@@ -66,7 +66,12 @@ public class BusinessBase {
 
     public void LoadUserImage(ImageView img)
     {
-        LoadImage(img,activity.GetCurrentUserImage());
+        LoadUserImage(img,false);
+    }
+
+    public void LoadUserImage(ImageView img, boolean forceReload)
+    {
+        LoadImage(img,activity.GetCurrentUserImage(forceReload));
     }
 
     public void LoadImage(ImageView img, Bitmap imageBitmap)
