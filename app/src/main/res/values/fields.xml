@@ -15,6 +15,10 @@
     <string name="nav_my_events_profile">I Miei Eventi</string>
     <string name="btnModifyProfile">Modifica Profilo</string>
 
+    <!-- Generals -->
+    <string name="txtTitleCard_hint">Titolo</string>
+    <string name="txtContentCard_hint">Descrizione</string>
+
     <!-- Simple text -->
     <string name="txtSimple_users">Utenti</string>
     <string name="txtSimple_events">Eventi</string>

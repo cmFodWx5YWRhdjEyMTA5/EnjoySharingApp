@@ -165,7 +165,9 @@ public class SendRequestFragment extends FragmentBase {
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         super.DrawCardsOnTable(cards,table);
-        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(87);
+        int txtRequestStatusWidth = business.ConvertWidthBasedOnPerc(15);
+        int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardRequestSent card = (CardRequestSent)cards.List().get(i);
             if(CardAlreadyExists(card)) continue;
@@ -184,13 +186,12 @@ public class SendRequestFragment extends FragmentBase {
             });
 
             TextView txtTitleCard = (TextView)relLayout.findViewById(R.id.txtTitleCard);
-            // Set width based on screen percentage
-            txtTitleCard.setWidth(txtUserTitleWidth);
+            // Set the same width of parent - tollerance
+            txtTitleCard.setWidth(((LinearLayout)txtTitleCard.getParent()).getWidth()-parentTollerancePX);
             txtTitleCard.setText(card.getTitle());
 
             // Set RequestStatus
             TextView txtRequestStatus = (TextView)relLayout.findViewById(R.id.txtRequestStatus);
-            txtRequestStatus.setWidth(txtUserTitleWidth);
             business.getRequestStatus(card.getRequestStatusId(), txtRequestStatus);
 
             ImageView imgUserCard = (ImageView)relLayout.findViewById(R.id.imgUserCard);

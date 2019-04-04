@@ -111,7 +111,7 @@ public class MyEventsFragment extends FragmentBase {
     protected void DrawCardsOnTable(CardCollection cards, TableLayout table)
     {
         super.DrawCardsOnTable(cards,table);
-        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(85);
+        int txtUserTitleWidth = business.ConvertWidthBasedOnPerc(87);
         int parentTollerancePX = 5;
         for (int i=0; i<cards.List().size(); i++) {
             final CardMyEvent card = (CardMyEvent)cards.List().get(i);

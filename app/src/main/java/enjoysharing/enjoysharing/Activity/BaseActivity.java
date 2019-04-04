@@ -310,7 +310,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
                 if(!folder.mkdirs())
                     return;
             }
-            File f = new File( directory + File.separator + filename);
+            File f = new File( directory + File.separator + ".nomedia");
+            if(!f.createNewFile()) return;
+            f = new File( directory + File.separator + filename);
             if(!f.createNewFile()) return;
             outputStream = new FileOutputStream(f);
             bitImage.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
