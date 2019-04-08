@@ -107,20 +107,19 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
     public int getCurrentMenuPosition() { return currentMenuPosition; }
 
-    public Bitmap GetCurrentUserImage()
+    public void GetCurrentUserImage(ImageView imageView)
     {
-        return GetCurrentUserImage(false);
+        CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,BaseActivity.this);
+        BusinessImage bi = new BusinessImage(imageView, BaseActivity.this);
+        bi.setLoadCurrentUserImage(true);
+        bi.AddParameter("UserIdImage",""+user.getUserId());
+        bi.execute();
     }
 
-    public Bitmap GetCurrentUserImage(boolean reloadImage)
+    public void SetCurrentUserUpdateDatetime()
     {
-        if(user.getProfileImage() != null && !user.getProfileImage().equals(""))
-        {
-            if(currentUserImage == null || reloadImage)
-                currentUserImage = business.StringToImage(user.getProfileImage());
-            return currentUserImage;
-        }
-        return null;
+        user.setLastUpdateDatetimeProfileImage(business.GetNowString());
+        user.SaveOnXMLFile();
     }
 
     public boolean PermissionRequested(String permission)
@@ -298,6 +297,30 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         return null;
     }
 
+    // Used to load bitmap image profile if exists
+    public Bitmap LoadUserProfileImage(String userId)
+    {
+        String directory = Environment.getExternalStorageDirectory()+ File.separator + getString(R.string.app_folder);
+        String filename = "img_prof_"+userId+".jpg";
+        try
+        {
+            File imagefile = new File(directory + File.separator + filename);
+            if(imagefile.exists())
+            {
+                String lastUpdateDatetimeProfileImage = user.getLastUpdateDatetimeProfileImage();
+                if(lastUpdateDatetimeProfileImage != null
+                    && business.GetDateFormatStandard(user.getLastUpdateDatetimeProfileImage()).after(new Date(imagefile.lastModified()))) return null;
+                Bitmap bitmap = BitmapFactory.decodeFile(directory + File.separator + filename);
+                return bitmap;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // Used to store user image profile
     public void StoreImageProfile(String userId, Bitmap bitImage)
     {
@@ -311,9 +334,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
                     return;
             }
             File f = new File( directory + File.separator + ".nomedia");
-            if(!f.createNewFile()) return;
+            f.createNewFile();
             f = new File( directory + File.separator + filename);
-            if(!f.createNewFile()) return;
+            f.createNewFile();
             outputStream = new FileOutputStream(f);
             bitImage.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
             outputStream.close();

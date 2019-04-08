@@ -7,5 +7,5 @@
     <string name="email"></string>
     <string name="password"></string>
     <string name="remember_me"></string>
-    <string name="profile_image"></string>
+    <string name="lastUpdateDatetimeProfileImage"></string>
 </resources>

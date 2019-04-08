@@ -71,7 +71,8 @@ public class BusinessBase {
 
     public void LoadUserImage(ImageView img, boolean forceReload)
     {
-        LoadImage(img,activity.GetCurrentUserImage(forceReload));
+        activity.GetCurrentUserImage(img);
+        //LoadImage(img,activity.GetCurrentUserImage(forceReload));
     }
 
     public void LoadImage(ImageView img, Bitmap imageBitmap)
@@ -134,6 +135,32 @@ public class BusinessBase {
 
         }
         return false;
+    }
+    public String GetNowString()
+    {
+        return GetStringFormatStandard(GetNow());
+    }
+    public Date GetNow()
+    {
+        Calendar cNow = Calendar.getInstance();
+        return cNow.getTime();
+    }
+    public String GetStringFormatStandard(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DateTimeFormatJSON_IN);
+        return sdf.format(date);
+    }
+    public Date GetDateFormatStandard(String dateStr)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DateTimeFormatJSON_IN);
+            return sdf.parse(dateStr);
+        }
+        catch (ParseException e)
+        {
+            return null;
+        }
     }
     public Date GetDate(String dateStr)
     {
@@ -356,8 +383,6 @@ public class BusinessBase {
     }
 
     // Method for Request Status
-    // TODO
-    //Aggiungere in input anche la view e aggiungere ai case il richiamo ai drwable creati per i colori
     public void getRequestStatus(int requestStatusId, TextView RequestView)
     {
         String text = null;

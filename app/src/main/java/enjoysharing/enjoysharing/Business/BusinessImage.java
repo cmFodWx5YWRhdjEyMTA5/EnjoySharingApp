@@ -21,6 +21,9 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
     protected JSONServiceResponseOBJ retObj;
     protected String userIdImage;
     protected Bitmap bitImage;
+    protected boolean loadCurrentUserImage = false;
+
+    public void setLoadCurrentUserImage(boolean loadCurrentUserImage) { this.loadCurrentUserImage = loadCurrentUserImage; }
 
     public void AddParameter(String name, Object value)
     {
@@ -64,7 +67,10 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
         {
             userIdImage = params.Get("UserIdImage").toString();
             bitImage = null;
-            bitImage = activity.LoadProfileImage(userIdImage);
+            if(loadCurrentUserImage)
+                bitImage = activity.LoadUserProfileImage(userIdImage);
+            else
+                bitImage = activity.LoadProfileImage(userIdImage);
             if(bitImage != null) return true;
             return LoadFromServer();
         } catch (Exception e)
@@ -98,12 +104,18 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
                 ParameterCollection params = new BusinessJSON().GetParamsByJSON(retObj.getMessage());
                 bitImage = new BusinessBase().StringToImage(params.Get("Photo").toString());
                 if(bitImage != null)
+                {
+                    if(loadCurrentUserImage)
+                        activity.SetCurrentUserUpdateDatetime();
                     activity.StoreImageProfile(userIdImage,bitImage);
+                }
             }
             if(bitImage != null)
             {
                 if(imageView != null)
+                {
                     activity.InsertImage(imageView, bitImage);
+                }
                 else
                     LoadUserImages();
             }

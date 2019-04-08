@@ -265,7 +265,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 user.setUsername(params.Get("UserName").toString());
                 user.setName(params.Get("Name").toString());
                 user.setSurname(params.Get("Surname").toString());
-                user.setProfileImage(params.Get("ProfileImage").toString());
+                user.setLastUpdateDatetimeProfileImage(params.Get("LastUpdateDatetimeProfileImage").toString());
             }
             else
             {
@@ -281,7 +281,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             user.Clear();
             user.SaveOnXMLFile();
             String message = retObj.getMessage();
-            ShowShortMessage(message == ""?"UserError":message);
+            ShowShortMessage(message.equals("") ?"UserError":message);
         }
     }
 

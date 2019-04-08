@@ -15,7 +15,7 @@ public class CurrentUser {
     protected String email;
     protected String password;
     protected boolean remember_me;
-    protected String profile_image;
+    protected String lastUpdateDatetimeProfileImage;
 
     public CurrentUser(Activity activity) {
         this.activity = activity;
@@ -61,12 +61,12 @@ public class CurrentUser {
         this.password = password;
     }
 
-    public String getProfileImage() {
-        return profile_image;
+    public String getLastUpdateDatetimeProfileImage() {
+        return lastUpdateDatetimeProfileImage;
     }
 
-    public void setProfileImage(String profile_image) {
-        this.profile_image = profile_image;
+    public void setLastUpdateDatetimeProfileImage(String lastUpdateDatetimeProfileImage) {
+        this.lastUpdateDatetimeProfileImage = lastUpdateDatetimeProfileImage;
     }
 
     public boolean getRememberMe() { return remember_me; }
@@ -86,7 +86,7 @@ public class CurrentUser {
         name = "";
         surname = "";
         remember_me = false;
-        profile_image = "";
+        lastUpdateDatetimeProfileImage = "";
     }
     // Load data from xml
     public void LoadFromXMLFile()
@@ -101,7 +101,7 @@ public class CurrentUser {
         setEmail(sharedPref.getString("email",null));
         setPassword(sharedPref.getString("password",null));
         setRememberMe(sharedPref.getString("remember_me","0").equals("1"));
-        setProfileImage(sharedPref.getString("profile_image",null));
+        setLastUpdateDatetimeProfileImage(sharedPref.getString("lastUpdateDatetimeProfileImage",null));
     }
     // Store on xml
     public void SaveOnXMLFile()
@@ -116,7 +116,7 @@ public class CurrentUser {
         ed.putString("email", getEmail());
         ed.putString("password", getPassword());
         ed.putString("remember_me", getRememberMe()?"1":"0");
-        ed.putString("profile_image", getProfileImage());
+        ed.putString("lastUpdateDatetimeProfileImage", getLastUpdateDatetimeProfileImage());
         ed.apply();
     }
 

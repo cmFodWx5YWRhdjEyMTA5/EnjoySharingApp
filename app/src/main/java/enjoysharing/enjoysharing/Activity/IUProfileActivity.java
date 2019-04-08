@@ -195,8 +195,8 @@ public class IUProfileActivity extends BaseActivity {
             if(postForImage)
             {
                 imgProfile.setImageBitmap(profilePhoto);
-                user.setProfileImage(business.ImageToString(profilePhoto));
-                user.SaveOnXMLFile();
+                SetCurrentUserUpdateDatetime();
+                StoreImageProfile(user.getUserId()+"",profilePhoto);
                 business.LoadUserImage(imgProfile,true);
             }
             else

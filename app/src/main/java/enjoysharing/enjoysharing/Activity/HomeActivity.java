@@ -58,10 +58,12 @@ public class HomeActivity extends BaseActivity {
         CreateFragments();
         setupViewPager(viewPager);
 
-        FillUserData();
         // Set default page (HOME)
         viewPager.setCurrentItem(0);
         CallStartFragment(0);
+
+        // Load user data after all to load image
+        FillUserData();
     }
     // Used when activity reloaded
     @Override
@@ -240,20 +242,6 @@ public class HomeActivity extends BaseActivity {
         imgUser = (ImageView) header.findViewById(R.id.imgUser);
         imgUser.setClipToOutline(true);
         business.LoadUserImage(imgUser);
-    }
-
-    @Override
-    protected void OnRequestPostExecute()
-    {
-        if(requestSuccess && retObj.isOkResponse())
-        {
-            imgUser.setImageBitmap(profilePhoto);
-            user.setProfileImage(business.ImageToString(profilePhoto));
-            user.SaveOnXMLFile();
-        }
-        else
-            ShowShortMessage(retObj.getMessage());
-        profilePhoto = null;
     }
     // When click on card home row -> redirect to detail row!
     @Override
