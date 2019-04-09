@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -171,21 +170,27 @@ public class FragmentBase extends Fragment {
     {
         if(!mGlobalListenersAdded && reloadOnSwipeBottom)
         {
-            tableReloadScrollView.getViewTreeObserver()
-                    .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                        @Override
-                        public void onScrollChanged() {
-                            if(CheckForCurrentFragment())
-                            {
-                                if (!tableReloadScrollView.canScrollVertically(1)) {
-                                    SetRowProgressVisibility(true);
-                                    LoadTable();
-                                }
-                                if (!tableReloadScrollView.canScrollVertically(-1)) {
-                                }
+            tableReloadScrollView.setOnScrollChangeListener(new ScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View scrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    // We take the last son in the scrollview
+                    View view = ((ScrollView)scrollView).getChildAt(((ScrollView)scrollView).getChildCount() - 1);
+                    int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+
+                    // if diff is zero, then the bottom has been reached
+                    if (diff == 0) {
+                        if(CheckForCurrentFragment())
+                        {
+                            if (!tableReloadScrollView.canScrollVertically(1)) {
+                                SetRowProgressVisibility(true);
+                                LoadTable();
+                            }
+                            if (!tableReloadScrollView.canScrollVertically(-1)) {
                             }
                         }
-                    });
+                    }
+                }
+            });
             mGlobalListenersAdded = true;
         }
         InitReload();
