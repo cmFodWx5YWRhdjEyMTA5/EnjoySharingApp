@@ -208,7 +208,7 @@ public class CardDetailActivity extends BaseActivity {
             final CardRequestRecived card = (CardRequestRecived) cardBase;
             imgUserCard.setClipToOutline(true);
             business.LoadUserImage(imgUserCard);
-            txtUserCard.setText(card.getUserName());
+            txtUserCard.setText(user.getUsername());
             txtTitleCard.setText(card.getTitle());
             txtDateEvent.setText(business.GetDateString(card.getDateEvent()));
             txtContentCard.setText(card.getContent());
