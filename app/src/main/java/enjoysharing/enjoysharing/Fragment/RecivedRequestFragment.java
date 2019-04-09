@@ -112,10 +112,7 @@ public class RecivedRequestFragment extends FragmentBase {
     {
         if(!PostCall)
         {
-            if (activity.simulateCall)
-                cardCollection = business.GetRequestRecivedCards(null);
-            else
-                cardCollection = new BusinessJSON(activity).GetRequestRecivedCards(activity.retObj.getMessage());
+            cardCollection = new BusinessJSON(activity).GetRequestRecivedCards(activity.retObj.getMessage());
             recivedRequestCards = business.GetGroupedCards(cardCollection);
         }
     }

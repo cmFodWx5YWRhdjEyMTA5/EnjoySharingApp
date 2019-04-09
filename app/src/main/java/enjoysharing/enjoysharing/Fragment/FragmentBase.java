@@ -1,6 +1,7 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -101,8 +102,16 @@ public class FragmentBase extends Fragment {
         InitReload();
         row_progress = (TableRow) LayoutInflater.from(activity).inflate(R.layout.progress_bar, null);
         row_progress_bar = (ProgressBar) row_progress.findViewById(R.id.progress_bar);
+        StartFragment();
         return vMain;
     }
+    // Used when activity reloaded
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ReloadFragment();
+    }
+    public void ReloadFragment() { StartFragment(); }
 
     protected void InitReload()
     {
@@ -304,7 +313,6 @@ public class FragmentBase extends Fragment {
             activity.retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
             businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
-            businessCallService.simulateCall = activity.simulateCall;
             AddParameter("V",activity.getString(R.string.current_version));
         }
 
@@ -317,7 +325,6 @@ public class FragmentBase extends Fragment {
             activity.retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
             businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,user,executePost,executeGet);
-            businessCallService.simulateCall = activity.simulateCall;
             AddParameter("V",activity.getString(R.string.current_version));
         }
 

@@ -1,9 +1,7 @@
 package enjoysharing.enjoysharing.Fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -15,15 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
-
 import enjoysharing.enjoysharing.Activity.IUProfileActivity;
 import enjoysharing.enjoysharing.AdapterObject.ViewPagerAdapter;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.R;
-
-import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends FragmentBase {
 
@@ -84,9 +77,8 @@ public class ProfileFragment extends FragmentBase {
     }
     // Used when activity reloaded
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        CallStartFragment(currentMenuPosition);
+    public void ReloadFragment() {
+        CallStartFragment(currentMenuPosition,true);
     }
     // Used to create menu elements
     protected void CreateMenuElements()
@@ -157,14 +149,24 @@ public class ProfileFragment extends FragmentBase {
     // Used to call StartFragment of current fragment
     protected void CallStartFragment(int position)
     {
+        CallStartFragment(position,false);
+    }
+    // Used to call StartFragment of current fragment
+    protected void CallStartFragment(int position, boolean reload)
+    {
         currentMenuPosition = position;
-        FragmentBase fragment = ((ViewPagerAdapter)profile_form.getAdapter()).List().get(position);
+        if(reload)
+        {
+            FragmentBase fragment = ((ViewPagerAdapter)profile_form.getAdapter()).List().get(position);
+            fragment.ReloadFragment();
+        }
+        /*FragmentBase fragment = ((ViewPagerAdapter)profile_form.getAdapter()).List().get(position);
         getChildFragmentManager()
                 .beginTransaction()
                 .detach(fragment)
                 .attach(fragment)
-                .commit();
-        fragment.StartFragment();
+                .commit();*/
+        //fragment.StartFragment();
     }
     // Used to set view pager for swipe touch screen
     protected void setupViewPager(ViewPager viewPager)

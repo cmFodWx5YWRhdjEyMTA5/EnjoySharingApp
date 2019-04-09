@@ -258,21 +258,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     {
         if(requestSuccess && retObj.isOkResponse())
         {
-            if(!simulateCall)
-            {
-                ParameterCollection params = business.GetParamsByJSON(retObj.getMessage());
-                user.setUserId(Integer.parseInt(params.Get("UserId").toString()));
-                user.setUsername(params.Get("UserName").toString());
-                user.setName(params.Get("Name").toString());
-                user.setSurname(params.Get("Surname").toString());
-                user.setLastUpdateDatetimeProfileImage(params.Get("LastUpdateDatetimeProfileImage").toString());
-            }
-            else
-            {
-                user.setUsername("Utente Test");
-                user.setName("Utente");
-                user.setSurname("Test");
-            }
+            ParameterCollection params = business.GetParamsByJSON(retObj.getMessage());
+            user.setUserId(Integer.parseInt(params.Get("UserId").toString()));
+            user.setUsername(params.Get("UserName").toString());
+            user.setName(params.Get("Name").toString());
+            user.setSurname(params.Get("Surname").toString());
+            user.setLastUpdateDatetimeProfileImage(params.Get("LastUpdateDatetimeProfileImage").toString());
             user.SaveOnXMLFile();
             SwipeOpenActivity(LoginActivity.this,HomeActivity.class);
         }

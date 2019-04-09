@@ -75,8 +75,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     protected boolean isUpdate = false;
     // Used to retrieve result from service call
     public JSONServiceResponseOBJ retObj;
-    // Questa variabile la uso per le esecuzioni a server spento!
-    public boolean simulateCall = false;
     // Usata da alcune activity per distinguere Post da Get nel result
     protected boolean PostCall;
     // Usata dal metodo OnTouch
@@ -766,7 +764,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
             businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
-            businessCallService.simulateCall = simulateCall;
             AddParameter("V",getString(R.string.current_version));
         }
 
@@ -779,7 +776,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
             retObj = new JSONServiceResponseOBJ();
             this.servletName = servletName;
             businessCallService = new BusinessCallService(getString(R.string.service_url),servletName,user,executePost,executeGet);
-            businessCallService.simulateCall = simulateCall;
             AddParameter("V",getString(R.string.current_version));
         }
 

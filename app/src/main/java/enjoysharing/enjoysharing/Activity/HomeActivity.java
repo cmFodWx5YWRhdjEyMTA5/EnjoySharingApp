@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import enjoysharing.enjoysharing.Business.BusinessBase;
+import enjoysharing.enjoysharing.Fragment.FragmentBase;
 import enjoysharing.enjoysharing.Fragment.FriendsFragment;
 import enjoysharing.enjoysharing.Fragment.NotifierFragment;
 import enjoysharing.enjoysharing.Fragment.ProfileFragment;
@@ -71,7 +72,7 @@ public class HomeActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         user.LoadFromXMLFile();
         FillUserData();
-        CallStartFragment(currentMenuPosition);
+        CallStartFragment(currentMenuPosition,true);
     }
     // Used to create fragments
     protected void CreateFragments()
@@ -150,8 +151,17 @@ public class HomeActivity extends BaseActivity {
     // Used to call StartFragment of current fragment
     protected void CallStartFragment(int position)
     {
+        CallStartFragment(position,false);
+    }
+    // Used to call StartFragment of current fragment
+    protected void CallStartFragment(int position, boolean reload)
+    {
         currentMenuPosition = position;
-        ((ViewPagerAdapter)viewPager.getAdapter()).List().get(position).StartFragment();
+        if(reload)
+        {
+            ((ViewPagerAdapter)viewPager.getAdapter()).List().get(position).ReloadFragment();
+        }
+        //((ViewPagerAdapter)viewPager.getAdapter()).List().get(position).StartFragment();
     }
     // Used to set view pager for swipe touch screen
     protected void setupViewPager(ViewPager viewPager)

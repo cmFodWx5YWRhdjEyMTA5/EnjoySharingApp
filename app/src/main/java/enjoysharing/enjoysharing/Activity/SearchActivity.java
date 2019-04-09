@@ -141,11 +141,7 @@ public class SearchActivity extends BaseActivity {
     {
         if(!PostCall)
         {
-            if (simulateCall) {
-                searchCards = business.GetHomeCards(null);
-                searchCards.FilterByTitle(searchTo.getText().toString());
-            } else
-                searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
+            searchCards = new BusinessJSON(SearchActivity.this).GetHomeCards(retObj.getMessage());
         }
     }
 

@@ -38,7 +38,6 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
         params = new ParameterCollection();
         retObj = new JSONServiceResponseOBJ();
         businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,activity.GetUser(),false,true);
-        businessCallService.simulateCall = activity.simulateCall;
         AddParameter("RequestType","GI");
         AddParameter("V",activity.getString(R.string.current_version));
     }
@@ -51,7 +50,6 @@ public class BusinessImage extends AsyncTask<Void, Void, Boolean> {
         params = new ParameterCollection();
         retObj = new JSONServiceResponseOBJ();
         businessCallService = new BusinessCallService(activity.getString(R.string.service_url),servletName,activity.GetUser(),false,true);
-        businessCallService.simulateCall = activity.simulateCall;
         AddParameter("RequestType","GI");
         AddParameter("V",activity.getString(R.string.current_version));
     }

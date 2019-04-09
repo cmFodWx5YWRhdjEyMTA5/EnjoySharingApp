@@ -138,13 +138,7 @@ public class RequestListActivity extends BaseActivity {
     {
         if(!PostCall)
         {
-            if(simulateCall)
-            {
-                users = business.GetRequestList(null);
-                users.FilterByUsername(txtSearch.getText().toString());
-            }
-            else
-                users = new BusinessJSON(RequestListActivity.this).GetRequestList(retObj.getMessage());
+            users = new BusinessJSON(RequestListActivity.this).GetRequestList(retObj.getMessage());
         }
     }
 

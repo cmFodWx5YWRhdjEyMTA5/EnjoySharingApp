@@ -87,10 +87,7 @@ public class MyEventsFragment extends FragmentBase {
     @Override
     protected void DoInBackground()
     {
-        if(activity.simulateCall)
-            myEventCards = business.GetMyEventsCards(null);
-        else
-            myEventCards = new BusinessJSON(activity).GetMyEventsCards(activity.retObj.getMessage());
+        myEventCards = new BusinessJSON(activity).GetMyEventsCards(activity.retObj.getMessage());
     }
 
     @Override

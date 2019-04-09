@@ -113,10 +113,7 @@ public class HomeFragment extends FragmentBase {
     {
         if(!PostCall)
         {
-            if (activity.simulateCall)
-                homeCards = business.GetHomeCards(null);
-            else
-                homeCards = new BusinessJSON(activity).GetHomeCards(activity.retObj.getMessage());
+            homeCards = new BusinessJSON(activity).GetHomeCards(activity.retObj.getMessage());
         }
     }
 

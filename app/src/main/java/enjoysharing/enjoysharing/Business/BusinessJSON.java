@@ -48,7 +48,7 @@ public class BusinessJSON extends BusinessBase {
             return null;
         }
     }
-    @Override
+
     public CardCollection GetHomeCards(String JSONStr)
     {
         Gson gson = new GsonBuilder().setDateFormat(Constants.DateTimeFormatJSON_IN).create();
@@ -61,7 +61,7 @@ public class BusinessJSON extends BusinessBase {
         }
         return cards;
     }
-    @Override
+
     public CardCollection GetMyEventsCards(String JSONStr)
     {
         Gson gson = new GsonBuilder().setDateFormat(Constants.DateTimeFormatJSON_IN).create();
@@ -74,7 +74,7 @@ public class BusinessJSON extends BusinessBase {
         }
         return cards;
     }
-    @Override
+
     public CardCollection GetRequestRecivedCards(String JSONStr)
     {
         Gson gson = new GsonBuilder().setDateFormat(Constants.DateTimeFormatJSON_IN).create();
@@ -87,7 +87,7 @@ public class BusinessJSON extends BusinessBase {
         }
         return cards;
     }
-    @Override
+
     public UserCollection GetRequestList(String JSONStr)
     {
         Gson gson = new GsonBuilder().setDateFormat(Constants.DateTimeFormatJSON_IN).create();
@@ -100,7 +100,7 @@ public class BusinessJSON extends BusinessBase {
         }
         return users;
     }
-    @Override
+
     public CardCollection GetRequestSentCards(String JSONStr)
     {
         Gson gson = new GsonBuilder().setDateFormat(Constants.DateTimeFormatJSON_IN).create();

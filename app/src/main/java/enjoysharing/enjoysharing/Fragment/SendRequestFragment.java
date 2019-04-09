@@ -116,12 +116,7 @@ public class SendRequestFragment extends FragmentBase {
     {
         if(!PostCall)
         {
-            if(activity.simulateCall)
-            {
-                sendRequestCards = business.GetRequestSentCards(null);
-            }
-            else
-                sendRequestCards = new BusinessJSON(activity).GetRequestSentCards(activity.retObj.getMessage());
+            sendRequestCards = new BusinessJSON(activity).GetRequestSentCards(activity.retObj.getMessage());
         }
     }
 
