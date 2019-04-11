@@ -84,4 +84,9 @@
     <string name="txtSurname">Cognome:</string>
     <string name="txtEmail">Email:</string>
 
+    <!-- Error-->
+    <string name="txtError">Errore</string>
+
+
+
 </resources>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import enjoysharing.enjoysharing.Activity.CardDetailActivity;
+import enjoysharing.enjoysharing.Activity.ErrorActivity;
 import enjoysharing.enjoysharing.Activity.RequestListActivity;
 import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
@@ -162,6 +163,8 @@ public class FriendsFragment extends FragmentBase {
     {
         // TODO
         // When click on user open his/her profile
-        ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
+        //  ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
+
+        OpenActivity(activity.getBaseContext(), ErrorActivity.class, null);
     }
 }

@@ -38,7 +38,7 @@
                 android:id="@+id/txtRecivedRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imgUserCard"
+                android:layout_alignBottom="@+id/imgError"
                 android:layout_alignStart="@+id/txtUserCard"
                 android:layout_weight="1"
                 android:singleLine="true"
