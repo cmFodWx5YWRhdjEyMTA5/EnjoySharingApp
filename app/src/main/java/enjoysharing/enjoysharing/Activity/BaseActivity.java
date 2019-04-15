@@ -40,7 +40,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessCallService;
 import enjoysharing.enjoysharing.Business.BusinessImage;
@@ -107,11 +106,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void GetCurrentUserImage(ImageView imageView)
     {
-        CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,BaseActivity.this);
-        BusinessImage bi = new BusinessImage(imageView, BaseActivity.this);
-        bi.setLoadCurrentUserImage(true);
-        bi.AddParameter("UserIdImage",""+user.getUserId());
-        bi.execute();
+        if(CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,BaseActivity.this))
+        {
+            BusinessImage bi = new BusinessImage(imageView, BaseActivity.this);
+            bi.setLoadCurrentUserImage(true);
+            bi.AddParameter("UserIdImage",""+user.getUserId());
+            bi.execute();
+        }
     }
 
     public void SetCurrentUserUpdateDatetime()
@@ -377,24 +378,27 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         if(userImageToLoad == null) return;
         if(!userImageToLoad.GetParametersList().isEmpty())
         {
-            CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,activity);
-        }
-        for(Parameter param : userImageToLoad.GetParametersList())
-        {
-            BusinessImage bi = new BusinessImage(activity);
-            bi.AddParameter("UserIdImage",""+param.GetName());
-            bi.execute();
+            if(CheckForPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},101,activity))
+            {
+                for(Parameter param : userImageToLoad.GetParametersList())
+                {
+                    BusinessImage bi = new BusinessImage(activity);
+                    bi.AddParameter("UserIdImage",""+param.GetName());
+                    bi.execute();
+                }
+            }
         }
     }
 
-    public void CheckForPermissions(String[] permissions, int codeRequest, BaseActivity activity)
+    public boolean CheckForPermissions(String[] permissions, int codeRequest, BaseActivity activity)
     {
         activityApp = null;
         List<String> requestPermissions = new ArrayList<>();
         for(String perm : permissions)
         {
+            // permesso garantito?
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED
-                    && !PermissionRequested(perm))
+                    && !PermissionRequested(perm))  // permesso già richiesto?
             {
                 permissionRequested.add(perm);
                 requestPermissions.add(perm);
@@ -404,19 +408,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         {
             activityApp = activity;
             ActivityCompat.requestPermissions(this, requestPermissions.toArray(new String[requestPermissions.size()]), codeRequest);
+            return false;
         }
+        return true;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        //boolean allPermitted = true;
         switch (requestCode) {
-            case 101:  // Request for external storage
-                /*for(int permiss : grantResults)
-                    if (permiss != PackageManager.PERMISSION_GRANTED)
-                        allPermitted = false;*/
-                LoadUserImages(activityApp);
-                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -435,6 +434,22 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("CardPassed", card);
         startActivityForResult(intent,1);
+        overridePendingTransition(0,0);
+        //finish();
+    }
+    // Switch Activity with custom request code and parameters
+    public void OpenActivity(Context context, Class cl, int requestCode, ParameterCollection params)
+    {
+        Intent intent = new Intent(context, cl);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(params != null)
+        {
+            for(Parameter param : params.ParameterList)
+            {
+                intent.putExtra(param.GetName(), param.GetValue().toString());
+            }
+        }
+        startActivityForResult(intent,requestCode);
         overridePendingTransition(0,0);
         //finish();
     }

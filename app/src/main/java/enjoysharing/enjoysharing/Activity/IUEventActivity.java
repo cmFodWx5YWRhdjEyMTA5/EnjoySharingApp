@@ -36,6 +36,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     protected TextView txtUserCard;
     protected TextView txtDateEvent;
     protected ImageButton imgBtnEventDate;
+    protected ImageButton imgBtnLocation;
     //protected ImageButton imgBtnNumberPerson;
     protected LinearLayout layoutNumberPerson;
     protected LinearLayout layoutGender;
@@ -43,6 +44,7 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
     protected int EventId;
     protected int year, month, day;
     protected Date DateEvent=null;
+    protected int REQUEST_CODE_LOCATION = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +145,14 @@ public class IUEventActivity extends BaseActivity implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 imgBtnEventDate.performClick();
+            }
+        });
+
+        imgBtnLocation = (ImageButton) findViewById(R.id.imgBtnLocation);
+        imgBtnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenActivity(IUEventActivity.this, MapsActivity.class, REQUEST_CODE_LOCATION, null);
             }
         });
 

@@ -2,7 +2,7 @@ package enjoysharing.enjoysharing.Activity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
+import enjoysharing.enjoysharing.R;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 
 public class ErrorActivity extends BaseActivity {

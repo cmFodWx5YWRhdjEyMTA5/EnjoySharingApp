@@ -48,6 +48,8 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        activityApp = HomeActivity.this;
+
         business = new BusinessBase(HomeActivity.this);
 
         CreateMenuElements();
@@ -73,6 +75,19 @@ public class HomeActivity extends BaseActivity {
         user.LoadFromXMLFile();
         FillUserData();
         CallStartFragment(currentMenuPosition,true);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        //boolean allPermitted = true;
+        switch (requestCode) {
+            case 101:  // Request for external storage
+                FillUserData();
+                ((ViewPagerAdapter)viewPager.getAdapter()).List().get(currentMenuPosition).onRequestPermissionsResult(requestCode, permissions, grantResults);
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
     // Used to create fragments
     protected void CreateFragments()

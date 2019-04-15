@@ -110,6 +110,18 @@ public class FragmentBase extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         ReloadFragment();
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        //boolean allPermitted = true;
+        switch (requestCode) {
+            case 101:  // Request for external storage
+                LoadUserImages();
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
     public void ReloadFragment() { StartFragment(); }
 
     protected void InitReload()
