@@ -1,7 +1,9 @@
 package enjoysharing.enjoysharing.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.R;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 
@@ -15,8 +17,11 @@ public class ErrorActivity extends BaseActivity {
 
         business = new BusinessBase(ErrorActivity.this);
 
+        Intent i = getIntent();
+        ParameterCollection params = (ParameterCollection)i.getSerializableExtra("ParameterCollectionPassed");
+        String errorString = params.Get("ErrorString");
         TextView txtError = (TextView) findViewById(R.id.txtError);
-        txtError.setText("Errore A caso");
+        txtError.setText(errorString);
     }
 
     @Override

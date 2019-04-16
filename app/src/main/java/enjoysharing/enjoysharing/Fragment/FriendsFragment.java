@@ -27,6 +27,8 @@ import enjoysharing.enjoysharing.Business.BusinessJSON;
 import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
 import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserList;
 import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserListCollection;
+import enjoysharing.enjoysharing.DataObject.Parameter;
+import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;
 import enjoysharing.enjoysharing.R;
@@ -164,7 +166,8 @@ public class FriendsFragment extends FragmentBase {
         // TODO
         // When click on user open his/her profile
         //  ShowShortMessage("EH VOLEEEEVI! Dobbiamo ancora sviluppare questa parte");
-
-        OpenActivity(activity.getBaseContext(), ErrorActivity.class, null);
+        ParameterCollection params = new ParameterCollection();
+        params.Add("ErrorString", "Errore Generico");
+        OpenActivity(activity, ErrorActivity.class, params);
     }
 }

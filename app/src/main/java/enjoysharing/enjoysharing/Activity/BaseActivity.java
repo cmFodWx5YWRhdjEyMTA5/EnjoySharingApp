@@ -437,6 +437,16 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
         overridePendingTransition(0,0);
         //finish();
     }
+    // Switch Activity and pass parameter collection
+    public void OpenActivity(Context context, Class cl, ParameterCollection params)
+    {
+        Intent intent = new Intent(context, cl);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("ParameterCollectionPassed", params);
+        startActivityForResult(intent,1);
+        overridePendingTransition(0,0);
+        //finish();
+    }
     // Switch Activity with custom request code and parameters
     public void OpenActivity(Context context, Class cl, int requestCode, ParameterCollection params)
     {

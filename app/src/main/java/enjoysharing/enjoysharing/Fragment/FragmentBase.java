@@ -159,6 +159,12 @@ public class FragmentBase extends Fragment {
         activity.OpenActivity(context, cl, card);
         //finish();
     }
+    // Switch Activity
+    protected void OpenActivity(Context context, Class cl, ParameterCollection params)
+    {
+        activity.OpenActivity(context, cl, params);
+        //finish();
+    }
     // Used to show a message with ToastMessage
     protected void ShowShortMessage(String message)
     {

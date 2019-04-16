@@ -89,6 +89,9 @@
         <activity
             android:name=".Activity.MapsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ErrorActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
