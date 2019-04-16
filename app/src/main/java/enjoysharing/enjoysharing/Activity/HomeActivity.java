@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import enjoysharing.enjoysharing.Business.BusinessBase;
-import enjoysharing.enjoysharing.Fragment.FragmentBase;
 import enjoysharing.enjoysharing.Fragment.FriendsFragment;
 import enjoysharing.enjoysharing.Fragment.NotifierFragment;
 import enjoysharing.enjoysharing.Fragment.ProfileFragment;
