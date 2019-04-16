@@ -18,8 +18,7 @@ public class ErrorActivity extends BaseActivity {
         business = new BusinessBase(ErrorActivity.this);
 
         Intent i = getIntent();
-        ParameterCollection params = (ParameterCollection)i.getSerializableExtra("ParameterCollectionPassed");
-        String errorString = params.Get("ErrorString");
+        String errorString = (String)i.getSerializableExtra("ErrorString");
         TextView txtError = (TextView) findViewById(R.id.txtError);
         txtError.setText(errorString);
     }

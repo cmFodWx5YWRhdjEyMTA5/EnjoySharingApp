@@ -6,28 +6,16 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.HashMap;
-
-import enjoysharing.enjoysharing.Activity.CardDetailActivity;
 import enjoysharing.enjoysharing.Activity.ErrorActivity;
-import enjoysharing.enjoysharing.Activity.RequestListActivity;
-import enjoysharing.enjoysharing.AdapterObject.CardSwipeDetector;
 import enjoysharing.enjoysharing.Business.BusinessBase;
 import enjoysharing.enjoysharing.Business.BusinessJSON;
-import enjoysharing.enjoysharing.DataObject.Card.CardRequestRecived;
-import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserList;
-import enjoysharing.enjoysharing.DataObject.Card.CardRequestUserListCollection;
-import enjoysharing.enjoysharing.DataObject.Parameter;
 import enjoysharing.enjoysharing.DataObject.ParameterCollection;
 import enjoysharing.enjoysharing.DataObject.RequestUser;
 import enjoysharing.enjoysharing.DataObject.UserCollection;

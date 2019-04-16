@@ -442,7 +442,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnTouchListe
     {
         Intent intent = new Intent(context, cl);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("ParameterCollectionPassed", params);
+        for(Parameter param : params.GetParametersList())
+            intent.putExtra(param.GetName(), param.GetValue().toString());
         startActivityForResult(intent,1);
         overridePendingTransition(0,0);
         //finish();
